@@ -23,7 +23,9 @@ def generate_dummy_audio(filepath):
 
 def main():
     # 1. Configuration
-    audio_path = "data/input_vocals.wav" 
+    audio_dir = os.path.join("data", "vocals")
+    os.makedirs(audio_dir, exist_ok=True)
+    audio_path = os.path.join(audio_dir, "input_vocals.wav")
     output_dir = "data"
     os.makedirs(output_dir, exist_ok=True)
     

@@ -47,9 +47,8 @@ htmlcov/
 Thumbs.db
 
 # Audio and generated data
-data/
-*.wav
-*.mp3
+# Raw vocal recordings (ignored)
+data/vocals/
 generated_melody.mid
 
 # Misc
