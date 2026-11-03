@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-04",
+  "python": "3.14.3",
+  "commands": [
+    "python -m unittest discover -v",
+    "node --check src/web/app.js",
+    "python -m compileall -q src tests main.py",
+    "python main.py benchmark --output .cache/final-benchmark --estimators pyin torchcrepe",
+    "python main.py benchmark --suite stress --output .cache/final-stress --estimators pyin torchcrepe"
+  ],
+  "source_sha256": {
+    "src\\__init__.py": "6d491c3f7d2e436d90ac6ca9b1a220c13dce66abcbca413421d90f80f36f2356",
+    "src\\analyzer.py": "f95f6addc7d274061dd41d78706008ab5ff23cdb97ab21abf9ca7664d01d6d9f",
+    "src\\audio_processor.py": "7027beea8019ebab7ed9121de39f8e9f1761789afe534ae6ed99d57acd3f5cd1",
+    "src\\cli.py": "252f5bddeb5e126e35e5044df8ff891241d2950d6876e363e5c3bfd680b92677",
+    "src\\composition.py": "b8aa5745328c4c1f1155e780555fe98d0c2d73a615a11b63e6066dcc518e49c9",
+    "src\\corpus.py": "d6fb1c0a52f21dea322bae7798a2742e9e57f12aa3927d3738eafc530aacd117",
+    "src\\evaluation.py": "6066657da097104a6a0a8472ad051ded9d63db7210c608a86eaefda9dd9bb9e9",
+    "src\\features.py": "1808217460fb3e681b5304d001694fca84819cb3cae52d730812d98f7d589e46",
+    "src\\generator.py": "c598b216fc6c25dcf58689f2f04e57837af0710a1ba0c482a0470424143a6544",
+    "src\\motifs.py": "a766bd2f4c6c60bd3d4eb6e1627843888b75df7c4d0d97af7cff90a9b79ec926",
+    "src\\note_models.py": "0881cf454795169c59636f961ebb96a6c5372add8df8e0190c504d478780e54f",
+    "src\\pipeline.py": "fbdce8ca78a075cce53a683d3e3db9424d2ab662aa61f8c436a11d90e5ec2268",
+    "src\\pitch.py": "3a150ff5622c80d63851c6f756b759e154b454e53a46f1e8de18053c95436e8b",
+    "src\\schema.py": "7f58ff94a76acdf1075810914499c6c744741322a711ceec80b57e651738105e",
+    "src\\storage.py": "8e1e539366ea37e4bb55366f950901cae9a671ebdef24dcd8f5468e590acc905",
+    "src\\transcription.py": "ac7475a488389af1459fd8e1054e638a553cbd1a6f1aba0704139cc7760a2a59",
+    "src\\visualization.py": "651fdff4d238d2fb9bf3db304dda11ace2af69effaf60ca439045ab10401464a",
+    "src\\web\\app.js": "e74afafd4cc3ee4216c4b7c2998c2ba675df5a6c875e027648b9bfe1bfbd0f5c",
+    "src\\web\\index.html": "27173a0f95d085fd814a17b15e156bb0505d72e6fb007075d48476a256345d51",
+    "src\\web\\style.css": "5800d3a010c0bd4efa94c7543ad74b9c34911ed017ae86f4e1ec5f3af972cd9e",
+    "src\\workspace.py": "ed7affcea2b60fdbd3faf1e39f0caf9e8f29c5c0fe8d0dbe29130a5ecd5dc0c1"
+  },
+  "test_sha256": {
+    "tests\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests\\test_analysis.py": "798405dbfcdfe3ee3b36c39296c0dd967457cd92976801d3b35a41b02ca381f6",
+    "tests\\test_model_contracts.py": "da69ee456906e6773de0697ab2d68f299807393d915dd773e5570f4767858901",
+    "tests\\test_pipeline.py": "d5d2bae1ac708be528c0a13659da28434c8e28d0b7a2d69831b17340c9395c3f",
+    "tests\\test_transcription.py": "97cae67f240f9746e9aaa89238c78ae9090662ce7a5e5f226b5aed7ef9d073b8"
+  },
+  "scope": "Final delivered source. Benchmark records retain hashes at measurement time; all six ingestion/F0/transcription stage hashes match final source. Later UI and composition assessment changes do not affect note scores."
+}

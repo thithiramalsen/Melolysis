@@ -1,0 +1,19 @@
+{
+  "estimator": "pyin",
+  "sample_rate": 22050,
+  "hop_length": 220,
+  "frame_length": 2048,
+  "fmin": 65.406,
+  "fmax": 1046.503,
+  "confidence": 0.15,
+  "min_note_seconds": 0.06,
+  "transition_seconds": 0.08,
+  "pitch_change_semitones": 0.75,
+  "phrase_rest_seconds": 0.35,
+  "silence_db": -55,
+  "chunk_seconds": 20,
+  "context_seconds": 1,
+  "channel": "loudest",
+  "input_kind": "isolated_vocal",
+  "device": "auto"
+}

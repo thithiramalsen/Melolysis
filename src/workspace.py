@@ -1,0 +1,235 @@
+"""Local-only review application using the existing Python pipeline, no cloud service."""
+from dataclasses import asdict
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+from threading import RLock
+from urllib.parse import parse_qs, urlparse
+import hashlib
+import json
+import logging
+import mimetypes
+import re
+import traceback
+from .audio_processor import SUPPORTED_AUDIO_EXTENSIONS
+from .composition import CompositionConfig, generate_candidates
+from .corpus import assess_attempt, profile_artist, songwriting_exercises
+from .features import analyze_notes
+from .motifs import discover_motifs
+from .note_models import attach_frames
+from .pipeline import analyze_file, export_notes, load_report
+from .schema import AnalysisConfig, PitchTrack, notes_from_dicts
+from .storage import key_for, latest_correction, save_correction, write_json
+from .transcription import assign_phrases
+
+log = logging.getLogger(__name__)
+STATIC = Path(__file__).parent / "web"
+
+
+class Workspace:
+    def __init__(self, root="outputs"):
+        self.root = Path(root).resolve()
+        self.root.mkdir(parents=True, exist_ok=True)
+        self.lock = RLock()
+
+    def catalog(self):
+        return {key_for(str(p.relative_to(self.root))): p
+                for p in sorted((self.root/"analyses").glob("*/*/report.json"))}
+
+    def get_report(self, report_id):
+        with self.lock:
+            return self._get_report(report_id)
+
+    def _get_report(self, report_id):
+        path = self.catalog().get(report_id)
+        if path is None:
+            raise ValueError("Unknown analysis")
+        report = load_report(path)
+        correction = latest_correction(self.root/"corrections", report["audio"]["content_sha256"])
+        if correction and correction["revision"] != report["provenance"].get("correction_revision"):
+            self.update_active(path, report, correction)
+        return path, report
+
+    def update_active(self, path, report, correction):
+        notes = assign_phrases(attach_frames(notes_from_dicts(correction["notes"]), PitchTrack(**report["raw_pitch"])),
+            report["provenance"]["config"]["phrase_rest_seconds"])
+        if any(n.end > report["audio"]["duration"]+.001 for n in notes):
+            raise ValueError("Corrected notes exceed source duration")
+        report["notes"] = [n.to_dict() for n in notes]
+        report["features"] = analyze_notes(notes, PitchTrack(**report["raw_pitch"]),
+            report.get("context", {}).get("beat_grid"), report.get("context", {}).get("chords"),
+            report.get("context", {}).get("tonal_context"))
+        report["motifs"] = discover_motifs(notes)
+        report["provenance"]["correction_revision"] = correction["revision"]
+        report["provenance"]["correction_base_prediction"] = correction["base_prediction"]
+        export_notes(notes, path.parent/"notes.csv", path.parent/"notes.mid")
+        write_json(path, report)
+
+    def dispatch(self, action, data):
+        with self.lock:
+            if action == "analyze":
+                source_id = data["upload_id"]
+                if not re.fullmatch(r"[a-f0-9]{64}\.(wav|mp3|flac|m4a|ogg|aac)", source_id):
+                    raise ValueError("Invalid upload identifier")
+                r = analyze_file(self.root/"imports"/source_id, self.root,
+                    AnalysisConfig(**data.get("config", {})), metadata=data.get("metadata"))
+                return {"id": key_for(str(Path(r["report_path"]).relative_to(self.root))), "report": r}
+            if action == "correct":
+                path, r = self.get_report(data["id"])
+                notes = notes_from_dicts(data["notes"])
+                if any(n.end > r["audio"]["duration"]+.001 for n in notes):
+                    raise ValueError("Notes exceed source duration")
+                c = save_correction(self.root/"corrections", r["audio"]["content_sha256"], notes, r["prediction_id"])
+                self.update_active(path, r, c)
+                return r
+            if action == "metadata":
+                path, r = self.get_report(data["id"])
+                allowed = {"artist", "song", "section", "tempo", "key", "mode", "language", "genre", "tags"}
+                r["metadata"].update({k: v for k, v in data["metadata"].items() if k in allowed})
+                write_json(path, r)
+                return r
+            if action in {"profile", "compose", "exercises"}:
+                reports = [self.get_report(i)[1] for i in data["ids"]]
+                reference = [self.get_report(i)[1] for i in data.get("reference_ids", [])]
+                profile = profile_artist(reports, data.get("artist", "Selected recordings"), reference)
+                exercises = songwriting_exercises(profile)
+                profile["exercises"] = exercises
+                if action != "compose":
+                    write_json(self.root/"profiles"/(key_for(profile)+".json"), profile)
+                    return profile
+                c = CompositionConfig(**data.get("config", {}))
+                result = generate_candidates(profile, c)
+                identifier = key_for(result)
+                directory = self.root/"compositions"/identifier
+                write_json(directory/"candidates.json", result)
+                for i, candidate in enumerate(result["candidates"]):
+                    export_notes(notes_from_dicts(candidate["notes"]), directory/f"candidate-{i}.csv",
+                                 directory/f"candidate-{i}.mid", c.tempo)
+                result["id"] = identifier
+                return result
+            if action == "attempt":
+                _, report = self.get_report(data["id"])
+                return assess_attempt(notes_from_dicts(report["notes"]), data["exercise"])
+            raise ValueError("Unknown action")
+
+
+def make_handler(workspace):
+    class Handler(BaseHTTPRequestHandler):
+        def send(self, status, body, mime="application/json", extra=None):
+            if isinstance(body, (dict, list)):
+                body = json.dumps(body, allow_nan=False).encode()
+            if isinstance(body, str):
+                body = body.encode()
+            self.send_response(status)
+            self.send_header("Content-Type", mime)
+            self.send_header("Content-Length", str(len(body)))
+            self.send_header("X-Content-Type-Options", "nosniff")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; media-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'")
+            for k, v in (extra or {}).items():
+                self.send_header(k, v)
+            self.end_headers()
+            self.wfile.write(body)
+
+        def allowed_host(self):
+            return self.headers.get("Host") in {f"127.0.0.1:{self.server.server_port}", f"localhost:{self.server.server_port}"}
+
+        def do_GET(self):
+            if not self.allowed_host():
+                return self.send(403, {"error": "Local workspace only"})
+            try:
+                parsed = urlparse(self.path)
+                query = {k: v[0] for k, v in parse_qs(parsed.query).items()}
+                if parsed.path == "/api/state":
+                    rows = []
+                    for identifier in workspace.catalog():
+                        _, r = workspace.get_report(identifier)
+                        rows.append({"id": identifier, "metadata": r["metadata"], "audio": r["audio"],
+                            "model": r["provenance"]["note_model"], "notes": len(r["notes"]),
+                            "correction_revision": r["provenance"].get("correction_revision")})
+                    return self.send(200, {"analyses": rows})
+                if parsed.path == "/api/report":
+                    return self.send(200, workspace.get_report(query["id"])[1])
+                if parsed.path in {"/api/audio", "/api/download"}:
+                    path, _ = workspace.get_report(query["id"])
+                    kind = query.get("type", "json")
+                    names = {"json": "report.json", "csv": "notes.csv", "midi": "notes.mid"}
+                    name = "playback.wav" if parsed.path == "/api/audio" else names[kind]
+                    return self.send_file(path.parent/name, attachment=parsed.path == "/api/download")
+                if parsed.path == "/api/candidate":
+                    identifier = query["id"]
+                    index = int(query["index"])
+                    if not re.fullmatch(r"[a-f0-9]{64}", identifier) or not 0 <= index < 8:
+                        raise ValueError("Invalid candidate")
+                    return self.send_file(workspace.root/"compositions"/identifier/f"candidate-{index}.mid", attachment=True)
+                files = {"/": "index.html", "/app.js": "app.js", "/style.css": "style.css"}
+                if parsed.path in files:
+                    path = STATIC/files[parsed.path]
+                    return self.send(200, path.read_bytes(), mimetypes.guess_type(path)[0] or "text/plain")
+                self.send(404, {"error": "Not found"})
+            except (ValueError, KeyError, FileNotFoundError) as exc:
+                self.send(400, {"error": str(exc)})
+
+        def send_file(self, path, attachment=False):
+            size = path.stat().st_size
+            start, end, status = 0, size-1, 200
+            range_header = self.headers.get("Range")
+            if range_header:
+                match = re.fullmatch(r"bytes=(\d+)-(\d*)", range_header)
+                if not match:
+                    return self.send(416, "Invalid range")
+                start = int(match[1]); end = min(size-1, int(match[2]) if match[2] else size-1)
+                if start > end:
+                    return self.send(416, "Invalid range")
+                status = 206
+            extra = {"Accept-Ranges": "bytes"}
+            if status == 206:
+                extra["Content-Range"] = f"bytes {start}-{end}/{size}"
+            if attachment:
+                extra["Content-Disposition"] = f'attachment; filename="{path.name}"'
+            with path.open("rb") as f:
+                f.seek(start)
+                self.send(status, f.read(end-start+1), mimetypes.guess_type(path)[0] or "application/octet-stream", extra)
+
+        def do_POST(self):
+            if not self.allowed_host() or self.headers.get("Origin") not in {
+                f"http://127.0.0.1:{self.server.server_port}", f"http://localhost:{self.server.server_port}"}:
+                return self.send(403, {"error": "Same-origin local requests required"})
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                if not 0 < length <= 256*1024*1024:
+                    return self.send(413, {"error": "Upload limit is 256 MiB per recording"})
+                body = self.rfile.read(length)
+                parsed = urlparse(self.path)
+                if parsed.path == "/api/import":
+                    name = parse_qs(parsed.query).get("name", [""])[0]
+                    suffix = Path(name).suffix.lower()
+                    if suffix not in SUPPORTED_AUDIO_EXTENSIONS:
+                        raise ValueError("Upload WAV, FLAC, MP3, M4A, OGG or AAC")
+                    identifier = hashlib.sha256(body).hexdigest()+suffix
+                    directory = workspace.root/"imports"
+                    directory.mkdir(parents=True, exist_ok=True)
+                    path = directory/identifier
+                    if not path.exists():
+                        path.write_bytes(body)
+                    return self.send(200, {"upload_id": identifier, "original_name": Path(name).name})
+                if not parsed.path.startswith("/api/"):
+                    raise ValueError("Unknown action")
+                return self.send(200, workspace.dispatch(parsed.path.removeprefix("/api/"), json.loads(body)))
+            except Exception as exc:
+                log.error("Workspace request failed: %s", exc)
+                self.send(400, {"error": str(exc)})
+
+        def log_message(self, fmt, *args):
+            log.info(fmt, *args)
+    return Handler
+
+
+def serve(root="outputs", port=8765):
+    server = ThreadingHTTPServer(("127.0.0.1", port), make_handler(Workspace(root)))
+    print(f"Melolysis workspace: http://127.0.0.1:{server.server_port}", flush=True)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()

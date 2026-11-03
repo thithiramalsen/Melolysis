@@ -1,0 +1,7 @@
+{
+  "description": "Annotation format illustration only; these notes do not annotate any bundled recording.",
+  "notes": [
+    {"id": "ref-1", "start": 0.2, "end": 0.8, "pitch": 64, "confidence": 1},
+    {"id": "ref-2", "start": 1.1, "end": 1.7, "pitch": 67, "confidence": 1}
+  ]
+}

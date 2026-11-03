@@ -24,8 +24,11 @@ def build_markov_model(notes):
         
     return markov_model
 
-def generate_melody(markov_model, start_note, min_pitch, max_pitch, length=30, max_jump=5):
-    """Generates a new melody using the Markov chain."""
+def generate_melody(markov_model, start_note, min_pitch, max_pitch, length=30, max_jump=5, seed=None):
+    """Legacy pitch-chain API. New CLI uses src.composition with resemblance screening."""
+    if length < 1 or max_jump < 0 or not 0 <= min_pitch <= start_note <= max_pitch <= 127:
+        raise ValueError("Invalid melody length, jump or MIDI range")
+    rng = np.random.default_rng(seed)
     print("Generating new melody based on Markov chain...")
     generated_notes = [start_note]
     current_note = start_note
@@ -47,14 +50,14 @@ def generate_melody(markov_model, start_note, min_pitch, max_pitch, length=30, m
                 # Normalize probabilities
                 total_prob = sum(valid_probs)
                 valid_probs = [p / total_prob for p in valid_probs]
-                next_note = np.random.choice(valid_notes, p=valid_probs)
+                next_note = rng.choice(valid_notes, p=valid_probs)
             else:
                 # Fallback: random valid step
-                step = np.random.choice(range(-max_jump, max_jump + 1))
+                step = rng.choice(range(-max_jump, max_jump + 1))
                 next_note = np.clip(current_note + step, min_pitch, max_pitch)
         else:
             # Fallback if state has no known transitions
-            step = np.random.choice(range(-max_jump, max_jump + 1))
+            step = rng.choice(range(-max_jump, max_jump + 1))
             next_note = np.clip(current_note + step, min_pitch, max_pitch)
             
         generated_notes.append(next_note)
@@ -64,6 +67,8 @@ def generate_melody(markov_model, start_note, min_pitch, max_pitch, length=30, m
 
 def save_midi(generated_notes, filepath, duration_sec=0.3):
     """Converts the generated melody to a MIDI file using pretty_midi."""
+    if duration_sec <= 0 or not np.isfinite(duration_sec):
+        raise ValueError("MIDI duration must be positive and finite")
     print(f"Saving generated melody to '{filepath}'...")
     pm = pretty_midi.PrettyMIDI()
     

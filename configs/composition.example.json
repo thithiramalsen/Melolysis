@@ -1,0 +1,23 @@
+{
+  "tonic": 0,
+  "scale": "major",
+  "tempo": 100,
+  "time_signature": [4, 4],
+  "low": 60,
+  "high": 76,
+  "bars": 4,
+  "density": 1,
+  "contour": "late_peak",
+  "repetition": 0.3,
+  "section": "verse",
+  "subjective_direction": "A question that opens into a relaxed answer",
+  "syllables": null,
+  "stress_notes": [0, 4, 8],
+  "chords": [
+    {"start_beat": 0, "end_beat": 8, "pitch_classes": [0, 4, 7]},
+    {"start_beat": 8, "end_beat": 16, "pitch_classes": [5, 9, 0]}
+  ],
+  "seed": 0,
+  "candidates": 3,
+  "similarity_limit": 0.92
+}

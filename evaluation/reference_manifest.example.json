@@ -1,0 +1,11 @@
+{
+  "description": "Template only. Add your own real audio excerpts and independently corrected labels; no real reference data is bundled.",
+  "items": [
+    {
+      "audio": "private/verse-excerpt.wav",
+      "reference": "private/verse-excerpt.notes.json",
+      "annotator": "Your name",
+      "convention": "Source seconds; [start,end) acoustic note boundaries; scoops assigned to landing note; vibrato is one note; repeated syllable attacks separate; main melody only"
+    }
+  ]
+}

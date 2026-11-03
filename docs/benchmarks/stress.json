@@ -1,0 +1,2143 @@
+{
+  "dataset": "eight deterministic harmonic synthetic stress cases; NOT human vocal validation",
+  "seed": 0,
+  "real_annotated_excerpts": 0,
+  "records": [
+    {
+      "case": "stress_sustain_vibrato",
+      "system": "original-pyin-and-segmentation",
+      "audio_sha256": "118a5026903ee46c2607d60f8727bb021a51a6847c7f5002c45930ae62b00e2b",
+      "notes": {
+        "reference_notes": 1,
+        "estimated_notes": 20,
+        "onset_only": {
+          "precision": 0.05,
+          "recall": 1.0,
+          "f1": 0.09523809523809523,
+          "matches": 1
+        },
+        "onset_pitch": {
+          "precision": 0.05,
+          "recall": 1.0,
+          "f1": 0.09523809523809523,
+          "matches": 1
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": 0.009433106575963746,
+        "offset_mae_seconds": 1.255238095238095,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.9463087248322147,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 0.8156028368794326,
+        "median_absolute_cents_on_joint_voiced": 37.07464932239457,
+        "mean_absolute_cents_on_joint_voiced": 34.11168487426586,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 141,
+        "joint_voiced_frames": 141
+      },
+      "inference_seconds": 12.946251300047152,
+      "python_tracemalloc_peak_bytes": 76454157
+    },
+    {
+      "case": "stress_sustain_vibrato",
+      "system": "pyin-stable-events",
+      "audio_sha256": "118a5026903ee46c2607d60f8727bb021a51a6847c7f5002c45930ae62b00e2b",
+      "notes": {
+        "reference_notes": 1,
+        "estimated_notes": 1,
+        "onset_only": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 1
+        },
+        "onset_pitch": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 1
+        },
+        "onset_pitch_offset": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 1
+        },
+        "onset_mae_seconds": 0.006530612244897954,
+        "offset_mae_seconds": 0.01623582766439924,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "overlap": 0.9840432294977748
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.986013986013986,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 0.8865248226950354,
+        "median_absolute_cents_on_joint_voiced": 34.12123854278535,
+        "mean_absolute_cents_on_joint_voiced": 31.332410377589937,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 141,
+        "joint_voiced_frames": 141
+      },
+      "inference_seconds": 2.313229200022761,
+      "python_tracemalloc_peak_bytes": 28834803,
+      "runtime": {
+        "seconds": 1.8290586999501102,
+        "pitch_cache_hit": false,
+        "note_cache_hit": false
+      },
+      "provenance": {
+        "config": {
+          "estimator": "pyin",
+          "sample_rate": 22050,
+          "hop_length": 220,
+          "frame_length": 2048,
+          "fmin": 65.406,
+          "fmax": 1046.503,
+          "confidence": 0.15,
+          "min_note_seconds": 0.06,
+          "transition_seconds": 0.08,
+          "pitch_change_semitones": 0.75,
+          "phrase_rest_seconds": 0.35,
+          "silence_db": -55.0,
+          "chunk_seconds": 20.0,
+          "context_seconds": 1.0,
+          "channel": "loudest",
+          "input_kind": "isolated_vocal",
+          "device": "auto",
+          "model_seed": 0,
+          "model_language": "",
+          "model_boundary_threshold": 0.2,
+          "model_presence_threshold": 0.2
+        },
+        "packages": {
+          "librosa": "0.11.0",
+          "numpy": "2.4.4",
+          "scipy": "1.17.1",
+          "soundfile": "0.13.1",
+          "soxr": "1.0.0"
+        },
+        "python": "3.14.3",
+        "code_sha256": {
+          "analyzer.py": "f95f6addc7d274061dd41d78706008ab5ff23cdb97ab21abf9ca7664d01d6d9f",
+          "audio_processor.py": "7027beea8019ebab7ed9121de39f8e9f1761789afe534ae6ed99d57acd3f5cd1",
+          "cli.py": "252f5bddeb5e126e35e5044df8ff891241d2950d6876e363e5c3bfd680b92677",
+          "composition.py": "1f4503761f3421223a370f74c1670049b5232053221cd646f6d02aee5ab8989a",
+          "corpus.py": "d6fb1c0a52f21dea322bae7798a2742e9e57f12aa3927d3738eafc530aacd117",
+          "evaluation.py": "6066657da097104a6a0a8472ad051ded9d63db7210c608a86eaefda9dd9bb9e9",
+          "features.py": "1808217460fb3e681b5304d001694fca84819cb3cae52d730812d98f7d589e46",
+          "generator.py": "c598b216fc6c25dcf58689f2f04e57837af0710a1ba0c482a0470424143a6544",
+          "motifs.py": "a766bd2f4c6c60bd3d4eb6e1627843888b75df7c4d0d97af7cff90a9b79ec926",
+          "note_models.py": "0881cf454795169c59636f961ebb96a6c5372add8df8e0190c504d478780e54f",
+          "pipeline.py": "fbdce8ca78a075cce53a683d3e3db9424d2ab662aa61f8c436a11d90e5ec2268",
+          "pitch.py": "3a150ff5622c80d63851c6f756b759e154b454e53a46f1e8de18053c95436e8b",
+          "schema.py": "7f58ff94a76acdf1075810914499c6c744741322a711ceec80b57e651738105e",
+          "storage.py": "8e1e539366ea37e4bb55366f950901cae9a671ebdef24dcd8f5468e590acc905",
+          "transcription.py": "ac7475a488389af1459fd8e1054e638a553cbd1a6f1aba0704139cc7760a2a59",
+          "visualization.py": "651fdff4d238d2fb9bf3db304dda11ace2af69effaf60ca439045ab10401464a",
+          "workspace.py": "ed7affcea2b60fdbd3faf1e39f0caf9e8f29c5c0fe8d0dbe29130a5ecd5dc0c1",
+          "__init__.py": "6d491c3f7d2e436d90ac6ca9b1a220c13dce66abcbca413421d90f80f36f2356"
+        },
+        "note_model": {
+          "name": "heuristic",
+          "runtime": "builtin-v2.1"
+        },
+        "timestamp_convention": "centered F0 frames at sample index k*hop; event spans [start,end)",
+        "model_timestamp_offset_seconds": 0.0,
+        "separation": "none",
+        "correction_revision": null,
+        "correction_base_prediction": null,
+        "playback_only_gain": 1.0
+      }
+    },
+    {
+      "case": "stress_sustain_vibrato",
+      "system": "pyin-legacy-segmentation-same-contour",
+      "notes": {
+        "reference_notes": 1,
+        "estimated_notes": 36,
+        "onset_only": {
+          "precision": 0.027777777777777776,
+          "recall": 1.0,
+          "f1": 0.05405405405405406,
+          "matches": 1
+        },
+        "onset_pitch": {
+          "precision": 0.027777777777777776,
+          "recall": 1.0,
+          "f1": 0.05405405405405406,
+          "matches": 1
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": 0.003446712018140591,
+        "offset_mae_seconds": 1.3406802721088433,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      }
+    },
+    {
+      "case": "stress_sustain_vibrato",
+      "system": "pyin-frame-rounding-correct-timebase",
+      "notes": {
+        "reference_notes": 1,
+        "estimated_notes": 36,
+        "onset_only": {
+          "precision": 0.027777777777777776,
+          "recall": 1.0,
+          "f1": 0.05405405405405406,
+          "matches": 1
+        },
+        "onset_pitch": {
+          "precision": 0.027777777777777776,
+          "recall": 1.0,
+          "f1": 0.05405405405405406,
+          "matches": 1
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": 0.03646258503401359,
+        "offset_mae_seconds": 1.4304761904761905,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      }
+    },
+    {
+      "case": "stress_sustain_vibrato",
+      "system": "torchcrepe",
+      "status": "unavailable",
+      "reason": "Install optional PyTorch and TorchCREPE to select this estimator"
+    },
+    {
+      "case": "stress_stepwise",
+      "system": "original-pyin-and-segmentation",
+      "audio_sha256": "8434a30ee04f2613f20a1df197764e777cd2511ea0aac2b879c6bcbb4598bea9",
+      "notes": {
+        "reference_notes": 5,
+        "estimated_notes": 7,
+        "onset_only": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": null,
+        "offset_mae_seconds": null,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.9457831325301205,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 0.9490445859872612,
+        "median_absolute_cents_on_joint_voiced": 0.0,
+        "mean_absolute_cents_on_joint_voiced": 7.070063694267542,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 157,
+        "joint_voiced_frames": 157
+      },
+      "inference_seconds": 1.5624105000169948,
+      "python_tracemalloc_peak_bytes": 38258899
+    },
+    {
+      "case": "stress_stepwise",
+      "system": "pyin-stable-events",
+      "audio_sha256": "8434a30ee04f2613f20a1df197764e777cd2511ea0aac2b879c6bcbb4598bea9",
+      "notes": {
+        "reference_notes": 5,
+        "estimated_notes": 5,
+        "onset_only": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 5
+        },
+        "onset_pitch": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 5
+        },
+        "onset_pitch_offset": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 5
+        },
+        "onset_mae_seconds": 0.011464852607709713,
+        "offset_mae_seconds": 0.012117913832199489,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "overlap": 0.9278598697344649
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.9936708860759493,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 0.9617834394904459,
+        "median_absolute_cents_on_joint_voiced": 0.010357970165820143,
+        "mean_absolute_cents_on_joint_voiced": 5.995771835359167,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 157,
+        "joint_voiced_frames": 157
+      },
+      "inference_seconds": 2.186290400044527,
+      "python_tracemalloc_peak_bytes": 28696216,
+      "runtime": {
+        "seconds": 1.8959392000106163,
+        "pitch_cache_hit": false,
+        "note_cache_hit": false
+      },
+      "provenance": {
+        "config": {
+          "estimator": "pyin",
+          "sample_rate": 22050,
+          "hop_length": 220,
+          "frame_length": 2048,
+          "fmin": 65.406,
+          "fmax": 1046.503,
+          "confidence": 0.15,
+          "min_note_seconds": 0.06,
+          "transition_seconds": 0.08,
+          "pitch_change_semitones": 0.75,
+          "phrase_rest_seconds": 0.35,
+          "silence_db": -55.0,
+          "chunk_seconds": 20.0,
+          "context_seconds": 1.0,
+          "channel": "loudest",
+          "input_kind": "isolated_vocal",
+          "device": "auto",
+          "model_seed": 0,
+          "model_language": "",
+          "model_boundary_threshold": 0.2,
+          "model_presence_threshold": 0.2
+        },
+        "packages": {
+          "librosa": "0.11.0",
+          "numpy": "2.4.4",
+          "scipy": "1.17.1",
+          "soundfile": "0.13.1",
+          "soxr": "1.0.0"
+        },
+        "python": "3.14.3",
+        "code_sha256": {
+          "analyzer.py": "f95f6addc7d274061dd41d78706008ab5ff23cdb97ab21abf9ca7664d01d6d9f",
+          "audio_processor.py": "7027beea8019ebab7ed9121de39f8e9f1761789afe534ae6ed99d57acd3f5cd1",
+          "cli.py": "252f5bddeb5e126e35e5044df8ff891241d2950d6876e363e5c3bfd680b92677",
+          "composition.py": "1f4503761f3421223a370f74c1670049b5232053221cd646f6d02aee5ab8989a",
+          "corpus.py": "d6fb1c0a52f21dea322bae7798a2742e9e57f12aa3927d3738eafc530aacd117",
+          "evaluation.py": "6066657da097104a6a0a8472ad051ded9d63db7210c608a86eaefda9dd9bb9e9",
+          "features.py": "1808217460fb3e681b5304d001694fca84819cb3cae52d730812d98f7d589e46",
+          "generator.py": "c598b216fc6c25dcf58689f2f04e57837af0710a1ba0c482a0470424143a6544",
+          "motifs.py": "a766bd2f4c6c60bd3d4eb6e1627843888b75df7c4d0d97af7cff90a9b79ec926",
+          "note_models.py": "0881cf454795169c59636f961ebb96a6c5372add8df8e0190c504d478780e54f",
+          "pipeline.py": "fbdce8ca78a075cce53a683d3e3db9424d2ab662aa61f8c436a11d90e5ec2268",
+          "pitch.py": "3a150ff5622c80d63851c6f756b759e154b454e53a46f1e8de18053c95436e8b",
+          "schema.py": "7f58ff94a76acdf1075810914499c6c744741322a711ceec80b57e651738105e",
+          "storage.py": "8e1e539366ea37e4bb55366f950901cae9a671ebdef24dcd8f5468e590acc905",
+          "transcription.py": "ac7475a488389af1459fd8e1054e638a553cbd1a6f1aba0704139cc7760a2a59",
+          "visualization.py": "651fdff4d238d2fb9bf3db304dda11ace2af69effaf60ca439045ab10401464a",
+          "workspace.py": "ed7affcea2b60fdbd3faf1e39f0caf9e8f29c5c0fe8d0dbe29130a5ecd5dc0c1",
+          "__init__.py": "6d491c3f7d2e436d90ac6ca9b1a220c13dce66abcbca413421d90f80f36f2356"
+        },
+        "note_model": {
+          "name": "heuristic",
+          "runtime": "builtin-v2.1"
+        },
+        "timestamp_convention": "centered F0 frames at sample index k*hop; event spans [start,end)",
+        "model_timestamp_offset_seconds": 0.0,
+        "separation": "none",
+        "correction_revision": null,
+        "correction_base_prediction": null,
+        "playback_only_gain": 1.0
+      }
+    },
+    {
+      "case": "stress_stepwise",
+      "system": "pyin-legacy-segmentation-same-contour",
+      "notes": {
+        "reference_notes": 5,
+        "estimated_notes": 9,
+        "onset_only": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": null,
+        "offset_mae_seconds": null,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      }
+    },
+    {
+      "case": "stress_stepwise",
+      "system": "pyin-frame-rounding-correct-timebase",
+      "notes": {
+        "reference_notes": 5,
+        "estimated_notes": 9,
+        "onset_only": {
+          "precision": 0.5555555555555556,
+          "recall": 1.0,
+          "f1": 0.7142857142857143,
+          "matches": 5
+        },
+        "onset_pitch": {
+          "precision": 0.5555555555555556,
+          "recall": 1.0,
+          "f1": 0.7142857142857143,
+          "matches": 5
+        },
+        "onset_pitch_offset": {
+          "precision": 0.5555555555555556,
+          "recall": 1.0,
+          "f1": 0.7142857142857143,
+          "matches": 5
+        },
+        "onset_mae_seconds": 0.012589569160997743,
+        "offset_mae_seconds": 0.01574603174603175,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.5555555555555556,
+          "recall": 1.0,
+          "f1": 0.7142857142857143,
+          "overlap": 0.9148258969694918
+        }
+      }
+    },
+    {
+      "case": "stress_stepwise",
+      "system": "torchcrepe",
+      "status": "unavailable",
+      "reason": "Install optional PyTorch and TorchCREPE to select this estimator"
+    },
+    {
+      "case": "stress_large_jumps",
+      "system": "original-pyin-and-segmentation",
+      "audio_sha256": "b20d0a301a88fdede69e35fe9eb38b342cd089f0493f410bedc45dba4ba9da3c",
+      "notes": {
+        "reference_notes": 4,
+        "estimated_notes": 5,
+        "onset_only": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": null,
+        "offset_mae_seconds": null,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.8432432432432433,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 1.0,
+        "median_absolute_cents_on_joint_voiced": 2.8830838534334263e-13,
+        "mean_absolute_cents_on_joint_voiced": 2.402569877861188e-13,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 156,
+        "joint_voiced_frames": 156
+      },
+      "inference_seconds": 1.6382536999881268,
+      "python_tracemalloc_peak_bytes": 38665212
+    },
+    {
+      "case": "stress_large_jumps",
+      "system": "pyin-stable-events",
+      "audio_sha256": "b20d0a301a88fdede69e35fe9eb38b342cd089f0493f410bedc45dba4ba9da3c",
+      "notes": {
+        "reference_notes": 4,
+        "estimated_notes": 4,
+        "onset_only": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 4
+        },
+        "onset_pitch": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 4
+        },
+        "onset_pitch_offset": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 4
+        },
+        "onset_mae_seconds": 0.004535147392290235,
+        "offset_mae_seconds": 0.01451247165532879,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "overlap": 0.9534368070953437
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.9512195121951219,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 1.0,
+        "median_absolute_cents_on_joint_voiced": 0.01035797016601235,
+        "mean_absolute_cents_on_joint_voiced": 0.07432773977917269,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 156,
+        "joint_voiced_frames": 156
+      },
+      "inference_seconds": 2.3228018000372685,
+      "python_tracemalloc_peak_bytes": 29459608,
+      "runtime": {
+        "seconds": 2.023290899989661,
+        "pitch_cache_hit": false,
+        "note_cache_hit": false
+      },
+      "provenance": {
+        "config": {
+          "estimator": "pyin",
+          "sample_rate": 22050,
+          "hop_length": 220,
+          "frame_length": 2048,
+          "fmin": 65.406,
+          "fmax": 1046.503,
+          "confidence": 0.15,
+          "min_note_seconds": 0.06,
+          "transition_seconds": 0.08,
+          "pitch_change_semitones": 0.75,
+          "phrase_rest_seconds": 0.35,
+          "silence_db": -55.0,
+          "chunk_seconds": 20.0,
+          "context_seconds": 1.0,
+          "channel": "loudest",
+          "input_kind": "isolated_vocal",
+          "device": "auto",
+          "model_seed": 0,
+          "model_language": "",
+          "model_boundary_threshold": 0.2,
+          "model_presence_threshold": 0.2
+        },
+        "packages": {
+          "librosa": "0.11.0",
+          "numpy": "2.4.4",
+          "scipy": "1.17.1",
+          "soundfile": "0.13.1",
+          "soxr": "1.0.0"
+        },
+        "python": "3.14.3",
+        "code_sha256": {
+          "analyzer.py": "f95f6addc7d274061dd41d78706008ab5ff23cdb97ab21abf9ca7664d01d6d9f",
+          "audio_processor.py": "7027beea8019ebab7ed9121de39f8e9f1761789afe534ae6ed99d57acd3f5cd1",
+          "cli.py": "252f5bddeb5e126e35e5044df8ff891241d2950d6876e363e5c3bfd680b92677",
+          "composition.py": "1f4503761f3421223a370f74c1670049b5232053221cd646f6d02aee5ab8989a",
+          "corpus.py": "d6fb1c0a52f21dea322bae7798a2742e9e57f12aa3927d3738eafc530aacd117",
+          "evaluation.py": "6066657da097104a6a0a8472ad051ded9d63db7210c608a86eaefda9dd9bb9e9",
+          "features.py": "1808217460fb3e681b5304d001694fca84819cb3cae52d730812d98f7d589e46",
+          "generator.py": "c598b216fc6c25dcf58689f2f04e57837af0710a1ba0c482a0470424143a6544",
+          "motifs.py": "a766bd2f4c6c60bd3d4eb6e1627843888b75df7c4d0d97af7cff90a9b79ec926",
+          "note_models.py": "0881cf454795169c59636f961ebb96a6c5372add8df8e0190c504d478780e54f",
+          "pipeline.py": "fbdce8ca78a075cce53a683d3e3db9424d2ab662aa61f8c436a11d90e5ec2268",
+          "pitch.py": "3a150ff5622c80d63851c6f756b759e154b454e53a46f1e8de18053c95436e8b",
+          "schema.py": "7f58ff94a76acdf1075810914499c6c744741322a711ceec80b57e651738105e",
+          "storage.py": "8e1e539366ea37e4bb55366f950901cae9a671ebdef24dcd8f5468e590acc905",
+          "transcription.py": "ac7475a488389af1459fd8e1054e638a553cbd1a6f1aba0704139cc7760a2a59",
+          "visualization.py": "651fdff4d238d2fb9bf3db304dda11ace2af69effaf60ca439045ab10401464a",
+          "workspace.py": "ed7affcea2b60fdbd3faf1e39f0caf9e8f29c5c0fe8d0dbe29130a5ecd5dc0c1",
+          "__init__.py": "6d491c3f7d2e436d90ac6ca9b1a220c13dce66abcbca413421d90f80f36f2356"
+        },
+        "note_model": {
+          "name": "heuristic",
+          "runtime": "builtin-v2.1"
+        },
+        "timestamp_convention": "centered F0 frames at sample index k*hop; event spans [start,end)",
+        "model_timestamp_offset_seconds": 0.0,
+        "separation": "none",
+        "correction_revision": null,
+        "correction_base_prediction": null,
+        "playback_only_gain": 1.0
+      }
+    },
+    {
+      "case": "stress_large_jumps",
+      "system": "pyin-legacy-segmentation-same-contour",
+      "notes": {
+        "reference_notes": 4,
+        "estimated_notes": 4,
+        "onset_only": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": null,
+        "offset_mae_seconds": null,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      }
+    },
+    {
+      "case": "stress_large_jumps",
+      "system": "pyin-frame-rounding-correct-timebase",
+      "notes": {
+        "reference_notes": 4,
+        "estimated_notes": 4,
+        "onset_only": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 4
+        },
+        "onset_pitch": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 4
+        },
+        "onset_pitch_offset": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 4
+        },
+        "onset_mae_seconds": 0.021995464852607692,
+        "offset_mae_seconds": 0.03945578231292521,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "overlap": 0.8646245059288538
+        }
+      }
+    },
+    {
+      "case": "stress_large_jumps",
+      "system": "torchcrepe",
+      "status": "unavailable",
+      "reason": "Install optional PyTorch and TorchCREPE to select this estimator"
+    },
+    {
+      "case": "stress_repeated_attacks",
+      "system": "original-pyin-and-segmentation",
+      "audio_sha256": "62f5563c96d6c013bf0b7c4b7552c9bd90eabbcf40a61f90cd7a117c789292d3",
+      "notes": {
+        "reference_notes": 4,
+        "estimated_notes": 1,
+        "onset_only": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": null,
+        "offset_mae_seconds": null,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.945054945054945,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 1.0,
+        "median_absolute_cents_on_joint_voiced": 3.844111804577902e-13,
+        "mean_absolute_cents_on_joint_voiced": 3.844111804577901e-13,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 172,
+        "joint_voiced_frames": 172
+      },
+      "inference_seconds": 1.5623907999834046,
+      "python_tracemalloc_peak_bytes": 38537286
+    },
+    {
+      "case": "stress_repeated_attacks",
+      "system": "pyin-stable-events",
+      "audio_sha256": "62f5563c96d6c013bf0b7c4b7552c9bd90eabbcf40a61f90cd7a117c789292d3",
+      "notes": {
+        "reference_notes": 4,
+        "estimated_notes": 4,
+        "onset_only": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 4
+        },
+        "onset_pitch": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 4
+        },
+        "onset_pitch_offset": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 4
+        },
+        "onset_mae_seconds": 0.006462585034013625,
+        "offset_mae_seconds": 0.008231292517006827,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "overlap": 0.9666026597545331
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.9885057471264368,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 1.0,
+        "median_absolute_cents_on_joint_voiced": 0.01035797016601235,
+        "mean_absolute_cents_on_joint_voiced": 0.010357970166012353,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 172,
+        "joint_voiced_frames": 172
+      },
+      "inference_seconds": 2.314807799994014,
+      "python_tracemalloc_peak_bytes": 29173407,
+      "runtime": {
+        "seconds": 2.0100557999685407,
+        "pitch_cache_hit": false,
+        "note_cache_hit": false
+      },
+      "provenance": {
+        "config": {
+          "estimator": "pyin",
+          "sample_rate": 22050,
+          "hop_length": 220,
+          "frame_length": 2048,
+          "fmin": 65.406,
+          "fmax": 1046.503,
+          "confidence": 0.15,
+          "min_note_seconds": 0.06,
+          "transition_seconds": 0.08,
+          "pitch_change_semitones": 0.75,
+          "phrase_rest_seconds": 0.35,
+          "silence_db": -55.0,
+          "chunk_seconds": 20.0,
+          "context_seconds": 1.0,
+          "channel": "loudest",
+          "input_kind": "isolated_vocal",
+          "device": "auto",
+          "model_seed": 0,
+          "model_language": "",
+          "model_boundary_threshold": 0.2,
+          "model_presence_threshold": 0.2
+        },
+        "packages": {
+          "librosa": "0.11.0",
+          "numpy": "2.4.4",
+          "scipy": "1.17.1",
+          "soundfile": "0.13.1",
+          "soxr": "1.0.0"
+        },
+        "python": "3.14.3",
+        "code_sha256": {
+          "analyzer.py": "f95f6addc7d274061dd41d78706008ab5ff23cdb97ab21abf9ca7664d01d6d9f",
+          "audio_processor.py": "7027beea8019ebab7ed9121de39f8e9f1761789afe534ae6ed99d57acd3f5cd1",
+          "cli.py": "252f5bddeb5e126e35e5044df8ff891241d2950d6876e363e5c3bfd680b92677",
+          "composition.py": "1f4503761f3421223a370f74c1670049b5232053221cd646f6d02aee5ab8989a",
+          "corpus.py": "d6fb1c0a52f21dea322bae7798a2742e9e57f12aa3927d3738eafc530aacd117",
+          "evaluation.py": "6066657da097104a6a0a8472ad051ded9d63db7210c608a86eaefda9dd9bb9e9",
+          "features.py": "1808217460fb3e681b5304d001694fca84819cb3cae52d730812d98f7d589e46",
+          "generator.py": "c598b216fc6c25dcf58689f2f04e57837af0710a1ba0c482a0470424143a6544",
+          "motifs.py": "a766bd2f4c6c60bd3d4eb6e1627843888b75df7c4d0d97af7cff90a9b79ec926",
+          "note_models.py": "0881cf454795169c59636f961ebb96a6c5372add8df8e0190c504d478780e54f",
+          "pipeline.py": "fbdce8ca78a075cce53a683d3e3db9424d2ab662aa61f8c436a11d90e5ec2268",
+          "pitch.py": "3a150ff5622c80d63851c6f756b759e154b454e53a46f1e8de18053c95436e8b",
+          "schema.py": "7f58ff94a76acdf1075810914499c6c744741322a711ceec80b57e651738105e",
+          "storage.py": "8e1e539366ea37e4bb55366f950901cae9a671ebdef24dcd8f5468e590acc905",
+          "transcription.py": "ac7475a488389af1459fd8e1054e638a553cbd1a6f1aba0704139cc7760a2a59",
+          "visualization.py": "651fdff4d238d2fb9bf3db304dda11ace2af69effaf60ca439045ab10401464a",
+          "workspace.py": "ed7affcea2b60fdbd3faf1e39f0caf9e8f29c5c0fe8d0dbe29130a5ecd5dc0c1",
+          "__init__.py": "6d491c3f7d2e436d90ac6ca9b1a220c13dce66abcbca413421d90f80f36f2356"
+        },
+        "note_model": {
+          "name": "heuristic",
+          "runtime": "builtin-v2.1"
+        },
+        "timestamp_convention": "centered F0 frames at sample index k*hop; event spans [start,end)",
+        "model_timestamp_offset_seconds": 0.0,
+        "separation": "none",
+        "correction_revision": null,
+        "correction_base_prediction": null,
+        "playback_only_gain": 1.0
+      }
+    },
+    {
+      "case": "stress_repeated_attacks",
+      "system": "pyin-legacy-segmentation-same-contour",
+      "notes": {
+        "reference_notes": 4,
+        "estimated_notes": 1,
+        "onset_only": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": null,
+        "offset_mae_seconds": null,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      }
+    },
+    {
+      "case": "stress_repeated_attacks",
+      "system": "pyin-frame-rounding-correct-timebase",
+      "notes": {
+        "reference_notes": 4,
+        "estimated_notes": 1,
+        "onset_only": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "matches": 1
+        },
+        "onset_pitch": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "matches": 1
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": 0.03646258503401359,
+        "offset_mae_seconds": 1.3304761904761904,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      }
+    },
+    {
+      "case": "stress_repeated_attacks",
+      "system": "torchcrepe",
+      "status": "unavailable",
+      "reason": "Install optional PyTorch and TorchCREPE to select this estimator"
+    },
+    {
+      "case": "stress_melisma",
+      "system": "original-pyin-and-segmentation",
+      "audio_sha256": "07f22e44a47243d2b08cd911ad3603831cb2ee9cce0810686cff9547ed15b42f",
+      "notes": {
+        "reference_notes": 6,
+        "estimated_notes": 10,
+        "onset_only": {
+          "precision": 0.4,
+          "recall": 0.6666666666666666,
+          "f1": 0.5,
+          "matches": 4
+        },
+        "onset_pitch": {
+          "precision": 0.1,
+          "recall": 0.16666666666666666,
+          "f1": 0.125,
+          "matches": 1
+        },
+        "onset_pitch_offset": {
+          "precision": 0.1,
+          "recall": 0.16666666666666666,
+          "f1": 0.125,
+          "matches": 1
+        },
+        "onset_mae_seconds": 0.03954648526077098,
+        "offset_mae_seconds": 0.023219954648526053,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.1,
+          "recall": 0.16666666666666666,
+          "f1": 0.125,
+          "overlap": 0.5260273972602741
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.88,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 0.8333333333333334,
+        "median_absolute_cents_on_joint_voiced": 3.8441118045779003e-13,
+        "mean_absolute_cents_on_joint_voiced": 20.90909090909105,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 66,
+        "joint_voiced_frames": 66
+      },
+      "inference_seconds": 0.9230622000177391,
+      "python_tracemalloc_peak_bytes": 36671131
+    },
+    {
+      "case": "stress_melisma",
+      "system": "pyin-stable-events",
+      "audio_sha256": "07f22e44a47243d2b08cd911ad3603831cb2ee9cce0810686cff9547ed15b42f",
+      "notes": {
+        "reference_notes": 6,
+        "estimated_notes": 3,
+        "onset_only": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "matches": 3
+        },
+        "onset_pitch": {
+          "precision": 0.6666666666666666,
+          "recall": 0.3333333333333333,
+          "f1": 0.4444444444444444,
+          "matches": 2
+        },
+        "onset_pitch_offset": {
+          "precision": 0.6666666666666666,
+          "recall": 0.3333333333333333,
+          "f1": 0.4444444444444444,
+          "matches": 2
+        },
+        "onset_mae_seconds": 0.015238095238095217,
+        "offset_mae_seconds": 0.021405895691609944,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.6666666666666666,
+          "recall": 0.3333333333333333,
+          "f1": 0.4444444444444444,
+          "overlap": 0.7208802724652872
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.9705882352941176,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 0.8636363636363636,
+        "median_absolute_cents_on_joint_voiced": 0.010357970166204556,
+        "mean_absolute_cents_on_joint_voiced": 18.33866925735816,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 66,
+        "joint_voiced_frames": 66
+      },
+      "inference_seconds": 1.423359900014475,
+      "python_tracemalloc_peak_bytes": 25796602,
+      "runtime": {
+        "seconds": 1.1800835999893025,
+        "pitch_cache_hit": false,
+        "note_cache_hit": false
+      },
+      "provenance": {
+        "config": {
+          "estimator": "pyin",
+          "sample_rate": 22050,
+          "hop_length": 220,
+          "frame_length": 2048,
+          "fmin": 65.406,
+          "fmax": 1046.503,
+          "confidence": 0.15,
+          "min_note_seconds": 0.06,
+          "transition_seconds": 0.08,
+          "pitch_change_semitones": 0.75,
+          "phrase_rest_seconds": 0.35,
+          "silence_db": -55.0,
+          "chunk_seconds": 20.0,
+          "context_seconds": 1.0,
+          "channel": "loudest",
+          "input_kind": "isolated_vocal",
+          "device": "auto",
+          "model_seed": 0,
+          "model_language": "",
+          "model_boundary_threshold": 0.2,
+          "model_presence_threshold": 0.2
+        },
+        "packages": {
+          "librosa": "0.11.0",
+          "numpy": "2.4.4",
+          "scipy": "1.17.1",
+          "soundfile": "0.13.1",
+          "soxr": "1.0.0"
+        },
+        "python": "3.14.3",
+        "code_sha256": {
+          "analyzer.py": "f95f6addc7d274061dd41d78706008ab5ff23cdb97ab21abf9ca7664d01d6d9f",
+          "audio_processor.py": "7027beea8019ebab7ed9121de39f8e9f1761789afe534ae6ed99d57acd3f5cd1",
+          "cli.py": "252f5bddeb5e126e35e5044df8ff891241d2950d6876e363e5c3bfd680b92677",
+          "composition.py": "1f4503761f3421223a370f74c1670049b5232053221cd646f6d02aee5ab8989a",
+          "corpus.py": "d6fb1c0a52f21dea322bae7798a2742e9e57f12aa3927d3738eafc530aacd117",
+          "evaluation.py": "6066657da097104a6a0a8472ad051ded9d63db7210c608a86eaefda9dd9bb9e9",
+          "features.py": "1808217460fb3e681b5304d001694fca84819cb3cae52d730812d98f7d589e46",
+          "generator.py": "c598b216fc6c25dcf58689f2f04e57837af0710a1ba0c482a0470424143a6544",
+          "motifs.py": "a766bd2f4c6c60bd3d4eb6e1627843888b75df7c4d0d97af7cff90a9b79ec926",
+          "note_models.py": "0881cf454795169c59636f961ebb96a6c5372add8df8e0190c504d478780e54f",
+          "pipeline.py": "fbdce8ca78a075cce53a683d3e3db9424d2ab662aa61f8c436a11d90e5ec2268",
+          "pitch.py": "3a150ff5622c80d63851c6f756b759e154b454e53a46f1e8de18053c95436e8b",
+          "schema.py": "7f58ff94a76acdf1075810914499c6c744741322a711ceec80b57e651738105e",
+          "storage.py": "8e1e539366ea37e4bb55366f950901cae9a671ebdef24dcd8f5468e590acc905",
+          "transcription.py": "ac7475a488389af1459fd8e1054e638a553cbd1a6f1aba0704139cc7760a2a59",
+          "visualization.py": "651fdff4d238d2fb9bf3db304dda11ace2af69effaf60ca439045ab10401464a",
+          "workspace.py": "ed7affcea2b60fdbd3faf1e39f0caf9e8f29c5c0fe8d0dbe29130a5ecd5dc0c1",
+          "__init__.py": "6d491c3f7d2e436d90ac6ca9b1a220c13dce66abcbca413421d90f80f36f2356"
+        },
+        "note_model": {
+          "name": "heuristic",
+          "runtime": "builtin-v2.1"
+        },
+        "timestamp_convention": "centered F0 frames at sample index k*hop; event spans [start,end)",
+        "model_timestamp_offset_seconds": 0.0,
+        "separation": "none",
+        "correction_revision": null,
+        "correction_base_prediction": null,
+        "playback_only_gain": 1.0
+      }
+    },
+    {
+      "case": "stress_melisma",
+      "system": "pyin-legacy-segmentation-same-contour",
+      "notes": {
+        "reference_notes": 6,
+        "estimated_notes": 9,
+        "onset_only": {
+          "precision": 0.4444444444444444,
+          "recall": 0.6666666666666666,
+          "f1": 0.5333333333333333,
+          "matches": 4
+        },
+        "onset_pitch": {
+          "precision": 0.1111111111111111,
+          "recall": 0.16666666666666666,
+          "f1": 0.13333333333333333,
+          "matches": 1
+        },
+        "onset_pitch_offset": {
+          "precision": 0.1111111111111111,
+          "recall": 0.16666666666666666,
+          "f1": 0.13333333333333333,
+          "matches": 1
+        },
+        "onset_mae_seconds": 0.023945578231292508,
+        "offset_mae_seconds": 0.014512471655328762,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.1111111111111111,
+          "recall": 0.16666666666666666,
+          "f1": 0.13333333333333333,
+          "overlap": 0.6891495601173024
+        }
+      }
+    },
+    {
+      "case": "stress_melisma",
+      "system": "pyin-frame-rounding-correct-timebase",
+      "notes": {
+        "reference_notes": 6,
+        "estimated_notes": 9,
+        "onset_only": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "matches": 6
+        },
+        "onset_pitch": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "matches": 6
+        },
+        "onset_pitch_offset": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "matches": 6
+        },
+        "onset_mae_seconds": 0.01529856386999244,
+        "offset_mae_seconds": 0.016719576719576707,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "overlap": 0.7537039198182965
+        }
+      }
+    },
+    {
+      "case": "stress_melisma",
+      "system": "torchcrepe",
+      "status": "unavailable",
+      "reason": "Install optional PyTorch and TorchCREPE to select this estimator"
+    },
+    {
+      "case": "stress_slide",
+      "system": "original-pyin-and-segmentation",
+      "audio_sha256": "7ab926b1957d372f3da372542481e181ac127b045271eb92b968dc7e90c77d41",
+      "notes": {
+        "reference_notes": 1,
+        "estimated_notes": 7,
+        "onset_only": {
+          "precision": 0.14285714285714285,
+          "recall": 1.0,
+          "f1": 0.25,
+          "matches": 1
+        },
+        "onset_pitch": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": null,
+        "offset_mae_seconds": null,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.9285714285714286,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 1.0,
+        "median_absolute_cents_on_joint_voiced": 3.844111804577902e-13,
+        "mean_absolute_cents_on_joint_voiced": 3.594976452119571,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 117,
+        "joint_voiced_frames": 117
+      },
+      "inference_seconds": 1.193375399976503,
+      "python_tracemalloc_peak_bytes": 37565384
+    },
+    {
+      "case": "stress_slide",
+      "system": "pyin-stable-events",
+      "audio_sha256": "7ab926b1957d372f3da372542481e181ac127b045271eb92b968dc7e90c77d41",
+      "notes": {
+        "reference_notes": 1,
+        "estimated_notes": 1,
+        "onset_only": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 1
+        },
+        "onset_pitch": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 1
+        },
+        "onset_pitch_offset": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 1
+        },
+        "onset_mae_seconds": 0.006530612244897954,
+        "offset_mae_seconds": 0.0107936507936508,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "overlap": 0.9854087089381206
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.9831932773109243,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 1.0,
+        "median_absolute_cents_on_joint_voiced": 0.01035797016601235,
+        "mean_absolute_cents_on_joint_voiced": 2.2699568018878287,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 117,
+        "joint_voiced_frames": 117
+      },
+      "inference_seconds": 1.9720073000062257,
+      "python_tracemalloc_peak_bytes": 27420568,
+      "runtime": {
+        "seconds": 1.6861538999946788,
+        "pitch_cache_hit": false,
+        "note_cache_hit": false
+      },
+      "provenance": {
+        "config": {
+          "estimator": "pyin",
+          "sample_rate": 22050,
+          "hop_length": 220,
+          "frame_length": 2048,
+          "fmin": 65.406,
+          "fmax": 1046.503,
+          "confidence": 0.15,
+          "min_note_seconds": 0.06,
+          "transition_seconds": 0.08,
+          "pitch_change_semitones": 0.75,
+          "phrase_rest_seconds": 0.35,
+          "silence_db": -55.0,
+          "chunk_seconds": 20.0,
+          "context_seconds": 1.0,
+          "channel": "loudest",
+          "input_kind": "isolated_vocal",
+          "device": "auto",
+          "model_seed": 0,
+          "model_language": "",
+          "model_boundary_threshold": 0.2,
+          "model_presence_threshold": 0.2
+        },
+        "packages": {
+          "librosa": "0.11.0",
+          "numpy": "2.4.4",
+          "scipy": "1.17.1",
+          "soundfile": "0.13.1",
+          "soxr": "1.0.0"
+        },
+        "python": "3.14.3",
+        "code_sha256": {
+          "analyzer.py": "f95f6addc7d274061dd41d78706008ab5ff23cdb97ab21abf9ca7664d01d6d9f",
+          "audio_processor.py": "7027beea8019ebab7ed9121de39f8e9f1761789afe534ae6ed99d57acd3f5cd1",
+          "cli.py": "252f5bddeb5e126e35e5044df8ff891241d2950d6876e363e5c3bfd680b92677",
+          "composition.py": "1f4503761f3421223a370f74c1670049b5232053221cd646f6d02aee5ab8989a",
+          "corpus.py": "d6fb1c0a52f21dea322bae7798a2742e9e57f12aa3927d3738eafc530aacd117",
+          "evaluation.py": "6066657da097104a6a0a8472ad051ded9d63db7210c608a86eaefda9dd9bb9e9",
+          "features.py": "1808217460fb3e681b5304d001694fca84819cb3cae52d730812d98f7d589e46",
+          "generator.py": "c598b216fc6c25dcf58689f2f04e57837af0710a1ba0c482a0470424143a6544",
+          "motifs.py": "a766bd2f4c6c60bd3d4eb6e1627843888b75df7c4d0d97af7cff90a9b79ec926",
+          "note_models.py": "0881cf454795169c59636f961ebb96a6c5372add8df8e0190c504d478780e54f",
+          "pipeline.py": "fbdce8ca78a075cce53a683d3e3db9424d2ab662aa61f8c436a11d90e5ec2268",
+          "pitch.py": "3a150ff5622c80d63851c6f756b759e154b454e53a46f1e8de18053c95436e8b",
+          "schema.py": "7f58ff94a76acdf1075810914499c6c744741322a711ceec80b57e651738105e",
+          "storage.py": "8e1e539366ea37e4bb55366f950901cae9a671ebdef24dcd8f5468e590acc905",
+          "transcription.py": "ac7475a488389af1459fd8e1054e638a553cbd1a6f1aba0704139cc7760a2a59",
+          "visualization.py": "651fdff4d238d2fb9bf3db304dda11ace2af69effaf60ca439045ab10401464a",
+          "workspace.py": "ed7affcea2b60fdbd3faf1e39f0caf9e8f29c5c0fe8d0dbe29130a5ecd5dc0c1",
+          "__init__.py": "6d491c3f7d2e436d90ac6ca9b1a220c13dce66abcbca413421d90f80f36f2356"
+        },
+        "note_model": {
+          "name": "heuristic",
+          "runtime": "builtin-v2.1"
+        },
+        "timestamp_convention": "centered F0 frames at sample index k*hop; event spans [start,end)",
+        "model_timestamp_offset_seconds": 0.0,
+        "separation": "none",
+        "correction_revision": null,
+        "correction_base_prediction": null,
+        "playback_only_gain": 1.0
+      }
+    },
+    {
+      "case": "stress_slide",
+      "system": "pyin-legacy-segmentation-same-contour",
+      "notes": {
+        "reference_notes": 1,
+        "estimated_notes": 8,
+        "onset_only": {
+          "precision": 0.125,
+          "recall": 1.0,
+          "f1": 0.2222222222222222,
+          "matches": 1
+        },
+        "onset_pitch": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": null,
+        "offset_mae_seconds": null,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      }
+    },
+    {
+      "case": "stress_slide",
+      "system": "pyin-frame-rounding-correct-timebase",
+      "notes": {
+        "reference_notes": 1,
+        "estimated_notes": 8,
+        "onset_only": {
+          "precision": 0.125,
+          "recall": 1.0,
+          "f1": 0.2222222222222222,
+          "matches": 1
+        },
+        "onset_pitch": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": null,
+        "offset_mae_seconds": null,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      }
+    },
+    {
+      "case": "stress_slide",
+      "system": "torchcrepe",
+      "status": "unavailable",
+      "reason": "Install optional PyTorch and TorchCREPE to select this estimator"
+    },
+    {
+      "case": "stress_rests",
+      "system": "original-pyin-and-segmentation",
+      "audio_sha256": "4de7b54cfee113857b655751b3583d3c508fa2502ed514fff6010afbd86b1d61",
+      "notes": {
+        "reference_notes": 3,
+        "estimated_notes": 4,
+        "onset_only": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": null,
+        "offset_mae_seconds": null,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.7894736842105263,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 1.0,
+        "median_absolute_cents_on_joint_voiced": 3.8441118045779003e-13,
+        "mean_absolute_cents_on_joint_voiced": 2.5627412030519334e-13,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 105,
+        "joint_voiced_frames": 105
+      },
+      "inference_seconds": 1.8968678999808617,
+      "python_tracemalloc_peak_bytes": 39189513
+    },
+    {
+      "case": "stress_rests",
+      "system": "pyin-stable-events",
+      "audio_sha256": "4de7b54cfee113857b655751b3583d3c508fa2502ed514fff6010afbd86b1d61",
+      "notes": {
+        "reference_notes": 3,
+        "estimated_notes": 3,
+        "onset_only": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 3
+        },
+        "onset_pitch": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 3
+        },
+        "onset_pitch_offset": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 3
+        },
+        "onset_mae_seconds": 0.0064550264550264635,
+        "offset_mae_seconds": 0.011685563114134526,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "overlap": 0.9508599508599508
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.9459459459459459,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 1.0,
+        "median_absolute_cents_on_joint_voiced": 0.01035797016543573,
+        "mean_absolute_cents_on_joint_voiced": 0.01035797016556387,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 105,
+        "joint_voiced_frames": 105
+      },
+      "inference_seconds": 2.6719263999839313,
+      "python_tracemalloc_peak_bytes": 30413510,
+      "runtime": {
+        "seconds": 2.3529116000281647,
+        "pitch_cache_hit": false,
+        "note_cache_hit": false
+      },
+      "provenance": {
+        "config": {
+          "estimator": "pyin",
+          "sample_rate": 22050,
+          "hop_length": 220,
+          "frame_length": 2048,
+          "fmin": 65.406,
+          "fmax": 1046.503,
+          "confidence": 0.15,
+          "min_note_seconds": 0.06,
+          "transition_seconds": 0.08,
+          "pitch_change_semitones": 0.75,
+          "phrase_rest_seconds": 0.35,
+          "silence_db": -55.0,
+          "chunk_seconds": 20.0,
+          "context_seconds": 1.0,
+          "channel": "loudest",
+          "input_kind": "isolated_vocal",
+          "device": "auto",
+          "model_seed": 0,
+          "model_language": "",
+          "model_boundary_threshold": 0.2,
+          "model_presence_threshold": 0.2
+        },
+        "packages": {
+          "librosa": "0.11.0",
+          "numpy": "2.4.4",
+          "scipy": "1.17.1",
+          "soundfile": "0.13.1",
+          "soxr": "1.0.0"
+        },
+        "python": "3.14.3",
+        "code_sha256": {
+          "analyzer.py": "f95f6addc7d274061dd41d78706008ab5ff23cdb97ab21abf9ca7664d01d6d9f",
+          "audio_processor.py": "7027beea8019ebab7ed9121de39f8e9f1761789afe534ae6ed99d57acd3f5cd1",
+          "cli.py": "252f5bddeb5e126e35e5044df8ff891241d2950d6876e363e5c3bfd680b92677",
+          "composition.py": "1f4503761f3421223a370f74c1670049b5232053221cd646f6d02aee5ab8989a",
+          "corpus.py": "d6fb1c0a52f21dea322bae7798a2742e9e57f12aa3927d3738eafc530aacd117",
+          "evaluation.py": "6066657da097104a6a0a8472ad051ded9d63db7210c608a86eaefda9dd9bb9e9",
+          "features.py": "1808217460fb3e681b5304d001694fca84819cb3cae52d730812d98f7d589e46",
+          "generator.py": "c598b216fc6c25dcf58689f2f04e57837af0710a1ba0c482a0470424143a6544",
+          "motifs.py": "a766bd2f4c6c60bd3d4eb6e1627843888b75df7c4d0d97af7cff90a9b79ec926",
+          "note_models.py": "0881cf454795169c59636f961ebb96a6c5372add8df8e0190c504d478780e54f",
+          "pipeline.py": "fbdce8ca78a075cce53a683d3e3db9424d2ab662aa61f8c436a11d90e5ec2268",
+          "pitch.py": "3a150ff5622c80d63851c6f756b759e154b454e53a46f1e8de18053c95436e8b",
+          "schema.py": "7f58ff94a76acdf1075810914499c6c744741322a711ceec80b57e651738105e",
+          "storage.py": "8e1e539366ea37e4bb55366f950901cae9a671ebdef24dcd8f5468e590acc905",
+          "transcription.py": "ac7475a488389af1459fd8e1054e638a553cbd1a6f1aba0704139cc7760a2a59",
+          "visualization.py": "651fdff4d238d2fb9bf3db304dda11ace2af69effaf60ca439045ab10401464a",
+          "workspace.py": "ed7affcea2b60fdbd3faf1e39f0caf9e8f29c5c0fe8d0dbe29130a5ecd5dc0c1",
+          "__init__.py": "6d491c3f7d2e436d90ac6ca9b1a220c13dce66abcbca413421d90f80f36f2356"
+        },
+        "note_model": {
+          "name": "heuristic",
+          "runtime": "builtin-v2.1"
+        },
+        "timestamp_convention": "centered F0 frames at sample index k*hop; event spans [start,end)",
+        "model_timestamp_offset_seconds": 0.0,
+        "separation": "none",
+        "correction_revision": null,
+        "correction_base_prediction": null,
+        "playback_only_gain": 1.0
+      }
+    },
+    {
+      "case": "stress_rests",
+      "system": "pyin-legacy-segmentation-same-contour",
+      "notes": {
+        "reference_notes": 3,
+        "estimated_notes": 2,
+        "onset_only": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": null,
+        "offset_mae_seconds": null,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      }
+    },
+    {
+      "case": "stress_rests",
+      "system": "pyin-frame-rounding-correct-timebase",
+      "notes": {
+        "reference_notes": 3,
+        "estimated_notes": 3,
+        "onset_only": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 3
+        },
+        "onset_pitch": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 3
+        },
+        "onset_pitch_offset": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 3
+        },
+        "onset_mae_seconds": 0.0363869992441421,
+        "offset_mae_seconds": 0.048269085411942525,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "overlap": 0.8057851239669422
+        }
+      }
+    },
+    {
+      "case": "stress_rests",
+      "system": "torchcrepe",
+      "status": "unavailable",
+      "reason": "Install optional PyTorch and TorchCREPE to select this estimator"
+    },
+    {
+      "case": "stress_noisy_leakage",
+      "system": "original-pyin-and-segmentation",
+      "audio_sha256": "be6fe584b133b4cd8908e37a1d4eeb5607e8771907b79807e943fc58e4d4a2d9",
+      "notes": {
+        "reference_notes": 4,
+        "estimated_notes": 5,
+        "onset_only": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": null,
+        "offset_mae_seconds": null,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      },
+      "frames": {
+        "voicing_precision": 0.8524590163934426,
+        "voicing_recall": 1.0,
+        "raw_pitch_accuracy_50c": 1.0,
+        "median_absolute_cents_on_joint_voiced": 10.000000000000016,
+        "mean_absolute_cents_on_joint_voiced": 10.064102564102573,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 156,
+        "joint_voiced_frames": 156
+      },
+      "inference_seconds": 1.7803446000325494,
+      "python_tracemalloc_peak_bytes": 38662880
+    },
+    {
+      "case": "stress_noisy_leakage",
+      "system": "pyin-stable-events",
+      "audio_sha256": "be6fe584b133b4cd8908e37a1d4eeb5607e8771907b79807e943fc58e4d4a2d9",
+      "notes": {
+        "reference_notes": 4,
+        "estimated_notes": 4,
+        "onset_only": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 4
+        },
+        "onset_pitch": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 4
+        },
+        "onset_pitch_offset": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "matches": 4
+        },
+        "onset_mae_seconds": 0.04036281179138322,
+        "offset_mae_seconds": 0.02539682539682543,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "overlap": 0.8313953488372092
+        }
+      },
+      "frames": {
+        "voicing_precision": 1.0,
+        "voicing_recall": 0.8333333333333334,
+        "raw_pitch_accuracy_50c": 0.8333333333333334,
+        "median_absolute_cents_on_joint_voiced": 9.989642029834013,
+        "mean_absolute_cents_on_joint_voiced": 8.383818617679527,
+        "octave_error_rate_on_joint_voiced": 0.0,
+        "reference_voiced_frames": 156,
+        "joint_voiced_frames": 130
+      },
+      "inference_seconds": 2.403647299972363,
+      "python_tracemalloc_peak_bytes": 29458128,
+      "runtime": {
+        "seconds": 2.108002199965995,
+        "pitch_cache_hit": false,
+        "note_cache_hit": false
+      },
+      "provenance": {
+        "config": {
+          "estimator": "pyin",
+          "sample_rate": 22050,
+          "hop_length": 220,
+          "frame_length": 2048,
+          "fmin": 65.406,
+          "fmax": 1046.503,
+          "confidence": 0.15,
+          "min_note_seconds": 0.06,
+          "transition_seconds": 0.08,
+          "pitch_change_semitones": 0.75,
+          "phrase_rest_seconds": 0.35,
+          "silence_db": -55.0,
+          "chunk_seconds": 20.0,
+          "context_seconds": 1.0,
+          "channel": "loudest",
+          "input_kind": "isolated_vocal",
+          "device": "auto",
+          "model_seed": 0,
+          "model_language": "",
+          "model_boundary_threshold": 0.2,
+          "model_presence_threshold": 0.2
+        },
+        "packages": {
+          "librosa": "0.11.0",
+          "numpy": "2.4.4",
+          "scipy": "1.17.1",
+          "soundfile": "0.13.1",
+          "soxr": "1.0.0"
+        },
+        "python": "3.14.3",
+        "code_sha256": {
+          "analyzer.py": "f95f6addc7d274061dd41d78706008ab5ff23cdb97ab21abf9ca7664d01d6d9f",
+          "audio_processor.py": "7027beea8019ebab7ed9121de39f8e9f1761789afe534ae6ed99d57acd3f5cd1",
+          "cli.py": "252f5bddeb5e126e35e5044df8ff891241d2950d6876e363e5c3bfd680b92677",
+          "composition.py": "1f4503761f3421223a370f74c1670049b5232053221cd646f6d02aee5ab8989a",
+          "corpus.py": "d6fb1c0a52f21dea322bae7798a2742e9e57f12aa3927d3738eafc530aacd117",
+          "evaluation.py": "6066657da097104a6a0a8472ad051ded9d63db7210c608a86eaefda9dd9bb9e9",
+          "features.py": "1808217460fb3e681b5304d001694fca84819cb3cae52d730812d98f7d589e46",
+          "generator.py": "c598b216fc6c25dcf58689f2f04e57837af0710a1ba0c482a0470424143a6544",
+          "motifs.py": "a766bd2f4c6c60bd3d4eb6e1627843888b75df7c4d0d97af7cff90a9b79ec926",
+          "note_models.py": "0881cf454795169c59636f961ebb96a6c5372add8df8e0190c504d478780e54f",
+          "pipeline.py": "fbdce8ca78a075cce53a683d3e3db9424d2ab662aa61f8c436a11d90e5ec2268",
+          "pitch.py": "3a150ff5622c80d63851c6f756b759e154b454e53a46f1e8de18053c95436e8b",
+          "schema.py": "7f58ff94a76acdf1075810914499c6c744741322a711ceec80b57e651738105e",
+          "storage.py": "8e1e539366ea37e4bb55366f950901cae9a671ebdef24dcd8f5468e590acc905",
+          "transcription.py": "ac7475a488389af1459fd8e1054e638a553cbd1a6f1aba0704139cc7760a2a59",
+          "visualization.py": "651fdff4d238d2fb9bf3db304dda11ace2af69effaf60ca439045ab10401464a",
+          "workspace.py": "ed7affcea2b60fdbd3faf1e39f0caf9e8f29c5c0fe8d0dbe29130a5ecd5dc0c1",
+          "__init__.py": "6d491c3f7d2e436d90ac6ca9b1a220c13dce66abcbca413421d90f80f36f2356"
+        },
+        "note_model": {
+          "name": "heuristic",
+          "runtime": "builtin-v2.1"
+        },
+        "timestamp_convention": "centered F0 frames at sample index k*hop; event spans [start,end)",
+        "model_timestamp_offset_seconds": 0.0,
+        "separation": "none",
+        "correction_revision": null,
+        "correction_base_prediction": null,
+        "playback_only_gain": 1.0
+      }
+    },
+    {
+      "case": "stress_noisy_leakage",
+      "system": "pyin-legacy-segmentation-same-contour",
+      "notes": {
+        "reference_notes": 4,
+        "estimated_notes": 5,
+        "onset_only": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_pitch_offset": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "matches": 0
+        },
+        "onset_mae_seconds": null,
+        "offset_mae_seconds": null,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "overlap": 0.0
+        }
+      }
+    },
+    {
+      "case": "stress_noisy_leakage",
+      "system": "pyin-frame-rounding-correct-timebase",
+      "notes": {
+        "reference_notes": 4,
+        "estimated_notes": 5,
+        "onset_only": {
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1": 0.888888888888889,
+          "matches": 4
+        },
+        "onset_pitch": {
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1": 0.888888888888889,
+          "matches": 4
+        },
+        "onset_pitch_offset": {
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1": 0.888888888888889,
+          "matches": 4
+        },
+        "onset_mae_seconds": 0.0294784580498866,
+        "offset_mae_seconds": 0.031972789115646244,
+        "tolerances": {
+          "onset_seconds": 0.05,
+          "pitch_cents": 50,
+          "offset_seconds_min": 0.05,
+          "offset_ratio": 0.2
+        },
+        "mir_eval": {
+          "version": "0.8.2",
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1": 0.888888888888889,
+          "overlap": 0.8639657444005271
+        }
+      }
+    },
+    {
+      "case": "stress_noisy_leakage",
+      "system": "torchcrepe",
+      "status": "unavailable",
+      "reason": "Install optional PyTorch and TorchCREPE to select this estimator"
+    }
+  ],
+  "summary": {
+    "original-pyin-and-segmentation": {
+      "cases": 8,
+      "macro_onset_pitch_f1": 0.027529761904761904,
+      "macro_onset_pitch_offset_f1": 0.015625
+    },
+    "pyin-frame-rounding-correct-timebase": {
+      "cases": 8,
+      "macro_onset_pitch_f1": 0.6071535821535822,
+      "macro_onset_pitch_offset_f1": 0.5503968253968254
+    },
+    "pyin-legacy-segmentation-same-contour": {
+      "cases": 8,
+      "macro_onset_pitch_f1": 0.023423423423423424,
+      "macro_onset_pitch_offset_f1": 0.016666666666666666
+    },
+    "pyin-stable-events": {
+      "cases": 8,
+      "macro_onset_pitch_f1": 0.9305555555555556,
+      "macro_onset_pitch_offset_f1": 0.9305555555555556
+    }
+  },
+  "memory_scope": "tracemalloc Python allocations; excludes some native/GPU allocations; not process RSS",
+  "timing_scope": "first run includes imports/JIT; cache hits are marked; no cross-model speed claim"
+}
