@@ -7,9 +7,10 @@ dependencies. There is no cloud upload, voice cloning or generated singing.
 
 ## Open the prepared MHS draft
 
-The updated review server for this session is at **http://127.0.0.1:8773/**, leaving
+The updated review server for this session is at **http://127.0.0.1:8774/**, leaving
 the previous server/browser undisturbed. Choose MHS Chorus, select **Pending human
-annotator**, then **Edit / compare reference**. It opens **0.500–6.500 original source
+annotator** in the reference toolbar, then **Load** (or expand its library versions
+and click the human reference). It opens **0.500–6.500 original source
 seconds**, with 11 unreviewed model-assisted notes. The reference ID remains
 `137e4f16e5b3425d91367adc0169eaf3`; no MHS annotation, correction or attestation was
 written during development. The selected analysis/reference are kept in the local
@@ -18,7 +19,7 @@ URL so a refresh reloads the saved edition. Unsaved edits require an explicit sa
 To start your own server after this session:
 
 ```powershell
-.\.venv\Scripts\python.exe main.py serve --output outputs --port 8773
+.\.venv\Scripts\python.exe main.py serve --output outputs --port 8774
 ```
 
 An older Python server must be restarted before using updated assets/routes; it
@@ -27,9 +28,9 @@ does not hot-reload backend code. The new session server above already has them.
 For any new excerpt, follow this sequence:
 
 1. Choose a 5–12-second passage with edges in rests. Set loop bounds or drag the
-   **Select time range** tool across the pitch grid.
+   **Time range** tool across the pitch grid.
 2. Use **Play range** and listen before making judgments about the model.
-3. Enter your name in **Reference setup, review & revisions**. Start a **New blank
+3. Enter your name in **Inspector → History / revisions**. Start a **New blank
    reference** or **Seed draft**. Seeding copies raw predictions and records their
    identity; it never creates a reviewed reference.
 4. Inspect the waveform, continuous F0 and note rectangles together. Use the piano
@@ -58,11 +59,11 @@ whole excerpt, assign a human F0 truth contour or mark the reference reviewed.
 | Move | Drag a note body; selected notes move as a group. |
 | Resize | Drag its left/right edge. Boundaries stop at neighbours and source/excerpt limits. |
 | Adjust pitch | Drag vertically; **−1 / +1** transpose the selection. |
-| Fine pitch | Turn off **Semitone moves**, or hold Alt during a drag. |
+| Fine pitch | Turn off **Move by semitones** in Listen → Settings, or hold Alt during a drag. |
 | Add | **Draw notes** tool: click for a short note, or drag its duration. Double-click empty grid in Select mode also adds a note. |
-| Split | Put the playhead inside a note, then **Split at playhead**. |
-| Merge | Select adjacent compatible notes, then **Merge selection**. Targets must be within one semitone; the duration-weighted center stays fractional. |
-| Delete | Delete/Backspace or **Delete selection**. |
+| Split | Put the playhead inside a note, then **Split**. |
+| Merge | Select adjacent compatible notes, then **Merge**. Targets must be within one semitone; the duration-weighted center stays fractional. |
+| Delete | Delete/Backspace or **Del**. |
 | Cancel a gesture | Escape before releasing. No annotation change or history entry is committed. |
 | Undo / redo | Ctrl+Z / Ctrl+Shift+Z (or Ctrl+Y), or the toolbar buttons. |
 
@@ -88,27 +89,33 @@ identify review flags/uncertainty, not known errors. A raw model line can be sel
 for listening even in a blank reference; its inspector is read-only and it is not
 copied into human annotations merely by selection or audition.
 
-## Piano, vocal and Both
+## Contextual piano and vocal audition
 
-Choose **Click auditions**:
+**Auto / By clicked target** is the ordinary editing default, with **On click**
+enabled. Click any editable working/reference note or a raw model event to hear
+that event's original vocal segment. Click a piano key to hear a clean piano-like
+reference at that exact key pitch, including black keys. Keyboard clicks **always**
+play piano in every mode; they never search the recording for a matching singer
+note. The status line identifies the audio being played.
 
-- **Piano reference:** a local additive piano-like tone at the selected symbolic
-  pitch. A4 is 440 Hz; every visible semitone, including black keys, is available.
-- **Original vocal:** the original recording at the event's source onset/offset,
-  with adjustable pre-roll/post-roll (defaults 60/80 ms).
-- **Both together:** that same original vocal segment plus a reference tone at the
-  symbolic target. There is one vocal media source, not two copies of the recording.
+The deliberate note overrides remain:
 
-**Audition note** always plays the selection using that mode. **Audition on click**
-optionally makes note selection play it immediately; it defaults off. Clicking a
-piano key always auditions: in Vocal/Both mode it chooses a selected associated
-note first, then another matching note when available. If none exists, it explicitly
-falls back to piano. The status line says which source is playing. Selecting a raw
-prediction allows its source segment to be auditioned without creating a reference.
+- **Piano override:** local reference at the selected symbolic pitch.
+- **Vocal override:** original audio at the event's source onset/offset.
+- **Both override:** the same original vocal plus its symbolic piano target, with
+  one vocal media source.
+
+**Audition note** uses Auto/override for the selection. Turn off **On click** for
+silent selection. Volume sliders are independent. Listen → **Settings…** holds
+pre/post-roll (defaults 60/80 ms), optional piano drag-preview, fine-pitch settings
+and neighbouring reference tones. Changing the audition dropdown affects the next
+click and does not interrupt current playback. Clicking a key or auditioning a
+note deliberately replaces the previous audition; **Play**/Space always controls
+the full original recording.
 
 **Hear −1 / Hear +1** audition neighbouring semitones without editing a note.
 **Vocal → piano A/B** plays the recorded segment, then the reference tone.
-**Piano drag preview** optionally sounds proposed target pitches during a vertical
+**Piano preview while dragging** optionally sounds proposed target pitches during a vertical
 drag. Piano and vocal volumes are independent. The main **Play** button/Space
 always controls original recording playback regardless of audition mode.
 
@@ -121,10 +128,14 @@ is a listening aid, not proof of an annotation. No microphone is required.
 - Drag the playhead handle or click the ruler/waveform to seek.
 - **Note loop** and **Phrase loop** use selected source events, including pre/post
   roll. Phrase membership is the stored annotation/rest heuristic, not lyric truth.
-- **Select time range**, loop bounds and **Play range** provide custom loops.
+- **Time range**, loop bounds and **Play range** provide custom loops.
 - Ctrl+wheel zooms time at the pointer; Alt+wheel zooms pitch. Plain wheel scrolls
-  pitch; Shift+wheel scrolls time. Middle-button drag pans both axes. **Fit** returns
-  to the reference excerpt, selection or complete source.
+  pitch; Shift+wheel scrolls time. Middle-button drag pans both axes.
+- **Fit excerpt** shows the active reference bounds (or working loop range).
+  **Fit song** shows the entire source. View → **More…** contains **Fit selected
+  notes** and **Reset pitch view**. First reference load fits its excerpt and note
+  pitches; deliberate views are remembered separately for each working/reference
+  edition during the session. Playback does not reset framing.
 - Choose 1×, 0.75× or 0.5× playback. Browser pitch preservation is requested and
   unsupported exposed APIs are handled explicitly. Note timestamps stay in source
   seconds, including at slower speed.
@@ -163,12 +174,50 @@ the original passage. Confirm notes, edit them, or mark unresolved uncertainty.
 Model agreement/disagreement is not ground truth. Working mode stores review
 flags on notes; only independent reference regions supply evaluation masks.
 
-Open **Reference setup, review & revisions** to restore a saved edition. Restoration
+Open **Inspector → History / revisions** to restore a saved edition. Restoration
 appends a new revision and keeps earlier files intact. Reference restoration clears
 listening attestation and remains in the current assigned split. Published dataset
 editions stay read-only. Working corrections and references have separate histories,
 and stale saves/restores are rejected. Backup saved JSON/history and original audio;
 undo/redo covers the current unsaved session, not browser closure.
+
+## Workspace and recording library
+
+Transport, View, Edit and Listen controls are grouped above the piano roll. The
+review toolbar consistently holds reference selection, exports, **Save reference
+revision** (or **Save correction revision**) and **Finish review…**. The contextual
+right inspector keeps pitch, onset, offset, duration and confidence beside the roll.
+Use **?** for shortcuts or **Maximize** to hide the sidebar and page navigation.
+
+The bottom **Inspector** starts collapsed. Its **Review queue**, **History /
+revisions** and **Advanced / research** tabs share one scroll surface. Drag its top
+handle (or focus it and use Up/Down) to resize; close it to recover editor space.
+Comparison, manifests, alternative overlays, exact tables, metadata and provenance
+remain accessible in Advanced / research. Opening tabs/resizing does not stop audio.
+
+The library groups analyses by actual source content SHA-256, without moving,
+deleting or merging any files. Expand a recording to choose a model run, its
+working correction or an independent human reference. Different source hashes stay
+separate even when names match. Search names/artists/models/datasets or filter
+artist, combined F0/note model and source category. Research recordings are hidden
+by the default **My recordings** filter; choose Research datasets or All to inspect.
+
+Corpus checkboxes are separate from opening a recording. Selection starts empty.
+**Select all**, **Deselect all** and **Invert** apply across filters to eligible
+recordings; **Select filtered** / **Deselect filtered** apply only to visible
+matches. Category checkboxes show partial selection. Counts distinguish unique
+recordings from named songs (artist + song metadata); missing song names use hashes.
+One explicitly chosen saved working analysis per recording enters a corpus;
+browsing another run does not silently change that choice. Human references are
+never folded into it. Selection and per-mode framing are session state; note
+editions persist only through their existing Save action.
+
+Vocadito/published dataset provenance is classified separately. Research inclusion
+requires the visible **Allow research in corpus** opt-in and an explicit boolean
+API flag; the backend also checks other stored model editions of the same source.
+Turning it off removes research selections. An opted-in mixed/research profile has
+a warning and source counts; it is not a single-artist conclusion. No automatic
+research import or destructive duplicate consolidation occurs.
 
 ## Optional shifted-vocal preview: investigated, deferred
 
@@ -197,12 +246,15 @@ speaker-muted Chromium with one worker, and a disposable synthetic fixture serve
 on port 8772. No test edits the MHS reference or main correction store. The fixture
 uses actual synthetic WAV decoding/pYIN plus a clearly labeled alternative stub
 for disagreement tests; it is not a second-model accuracy demonstration or human
-ground truth. Browser output/audio measurements are archived in
-[editor validation](editor/browser-validation.json) and
-[audio checks](editor/audio-measurements.json). Scientific evaluation regression is
-reported in [evaluation-regression.json](editor/evaluation-regression.json).
+ground truth. Additional library fixtures use distinct synthetic source hashes and
+clearly labeled cloned contract events to test selection and dataset separation.
+They are not real Vocadito clips. Current results and measurements are in
+[UX validation](UX_VALIDATION.md), [browser results](ux/browser-validation.json),
+[audio checks](ux/audio-measurements.json) and
+[evaluation regression](ux/evaluation-regression.json). The earlier
+[editor milestone](EDITOR_VALIDATION.md) remains historical evidence.
 
-Screenshots at [1366×768](editor/fixture-1366x768.png) and
-[1920×1080](editor/fixture-1920x1080.png) show the disposable fixture. Private MHS
-screenshots stay under git-ignored `outputs/editor/`. See
-[EDITOR_VALIDATION.md](EDITOR_VALIDATION.md) for exact results and limitations.
+Real MHS screenshots are local-only under git-ignored `outputs/ux/`; the read-only
+capture checks its original revision, all 11 visible events, .500–6.500 framing,
+paused audio and unchecked attestation at both sizes. Fixture screenshots in
+`docs/ux/` contain no user audio or annotations.

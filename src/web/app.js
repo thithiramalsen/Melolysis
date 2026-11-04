@@ -1,9 +1,10 @@
 "use strict";
 const $ = id => document.getElementById(id);
-const state = {library: [], selected: new Set(), id: null, report: null, notes: [], checked: new Set(),
+const state = {library: [], recordings:[], selected: new Set(), id: null, report: null, notes: [], checked: new Set(),
   alternative: null, profile: null, exercise: null, recording: null, reference:null};
 const copy = value => JSON.parse(JSON.stringify(value));
 let pianoEditor=null;
+let recordingLibrary=null;
 function element(tag, text, cls) {const e=document.createElement(tag); if(text!==undefined)e.textContent=text; if(cls)e.className=cls; return e;}
 function status(text, error=false) {$('status').textContent=text; $('status').classList.toggle('error',error);}
 async function api(path, data) {
@@ -16,20 +17,11 @@ document.querySelectorAll('.tab').forEach(e=>e.onclick=()=>tab(e.dataset.tab));
 function config() {return {estimator:$('estimator').value,fmin:+$('fmin').value,fmax:+$('fmax').value,
   confidence:+$('confidence').value,min_note_seconds:+$('minnote').value,transition_seconds:+$('hold').value,input_kind:$('kind').value};}
 async function refresh() {
-  const previous=state.library.length; state.library=(await api('state')).analyses;
-  if(!previous)state.library.filter(r=>!r.metadata.tags?.includes('practice-attempt')).forEach(r=>state.selected.add(r.id));
-  renderLibrary(); status(`${state.library.length} analyses in your local library. Inputs and corrections are stored separately.`);
+  const result=await api('state');state.library=result.analyses;state.recordings=result.recordings||[];
+  recordingLibrary?.refreshFilters();renderLibrary();status(`${state.recordings.length} recordings · ${state.library.length} preserved analysis versions · corpus inclusion is explicit`);
 }
 function renderLibrary() {
-  $('library').replaceChildren();
-  const search=$('library-search').value.toLowerCase();
-  for(const r of state.library.filter(r=>`${r.metadata.song} ${r.estimator} ${r.model.name}`.toLowerCase().includes(search))) {
-    const row=element('div',undefined,'recording'+(r.id===state.id?' current':''));const check=element('input');check.type='checkbox';check.checked=state.selected.has(r.id);
-    check.onchange=()=>check.checked?state.selected.add(r.id):state.selected.delete(r.id);
-    const button=element('button',r.metadata.song||r.audio.source_path.split(/[\\/]/).pop());
-    button.append(element('small',`${r.audio.duration.toFixed(1)} s · ${r.notes} notes · ${r.estimator||'F0'} → ${r.model.name}${r.correction_revision?' · corrected':''}`));
-    button.onclick=()=>run(()=>load(r.id));row.append(check,button);$('library').append(row);
-  }
+  recordingLibrary?.render();
 }
 async function importAudio(file, attempt=false) {
   status(`Importing ${file.name}…`);
@@ -38,7 +30,7 @@ async function importAudio(file, attempt=false) {
   status(`Analyzing ${file.name} with ${$('estimator').value}. CPU inference may take a few minutes…`);
   const result=await api('analyze',{upload_id:upload.upload_id,config:config(),metadata:{song:file.name,
     artist:$('artist').value,section:attempt?'practice':$('section').value,tags:attempt?['practice-attempt']:[]}});
-  if(!attempt)state.selected.add(result.id);await refresh();await load(result.id);
+  if(!attempt)state.selected.add(result.report.audio.content_sha256);await refresh();await load(result.id);
   if(attempt && state.exercise) {
     const feedback=await api('attempt',{id:result.id,exercise:state.exercise});$('feedback').textContent=JSON.stringify(feedback,null,2);tab('compose');
     status('Attempt recorded and transcribed. Constraint feedback is available; review the notes for transcription errors.');
@@ -48,11 +40,12 @@ async function importAudio(file, attempt=false) {
 $('files').onchange=()=>run(async()=>{for(const file of $('files').files)await importAudio(file);$('files').value='';});
 $('attemptfile').onchange=()=>run(async()=>{if($('attemptfile').files[0])await importAudio($('attemptfile').files[0],true);});
 $('refresh').onclick=()=>run(refresh);
-$('library-search').oninput=renderLibrary;
 async function load(id) {
-  if(pianoEditor?.dirty&&!confirm('Discard unsaved edits before changing recordings?'))return;
+  if(pianoEditor?.dirty&&!confirm('Discard unsaved edits before changing recordings?'))return false;
+  pianoEditor?.stashView();
   pianoEditor?.audition.stop();
-  state.id=id;state.report=await api('report?id='+encodeURIComponent(id));state.notes=copy(state.report.notes);state.checked.clear();state.alternative=null;state.reference=null;
+  const token=(state.loadToken||0)+1;state.loadToken=token;const report=await api('report?id='+encodeURIComponent(id));if(state.loadToken!==token)return false;
+  state.id=id;state.report=report;state.notes=copy(state.report.notes);state.checked.clear();state.alternative=null;state.reference=null;
   const r=state.report;$('title').textContent=r.metadata.song||r.audio.source_path.split(/[\\/]/).pop();
   $('sourceinfo').textContent=`${r.audio.duration.toFixed(3)} s · source ${r.audio.original_sample_rate} Hz / ${r.audio.channels} channels · ${r.raw_pitch.model} → ${r.provenance.note_model.name} · ${r.provenance.correction_revision?'human revision active':'model prediction; review before interpretation'}`;
   $('audio').src='/api/source-audio?id='+encodeURIComponent(id);$('loopstart').value=0;$('loopend').value=r.audio.duration;$('loop').checked=false;$('viewstart').value=0;
@@ -62,8 +55,8 @@ async function load(id) {
     const a=element('a',label,'download');a.href='/api/download?id='+id+'&type='+type;a.dataset.exportType=type;a.dataset.workingHref=a.href;$('exports').append(a);
   }
   $('provenance').textContent=JSON.stringify({provenance:r.provenance,warnings:r.warnings,flags:r.processed_pitch.flags},null,2);
-  await refreshReferences();referenceModeStatus();renderMetadata();renderNotes();renderLibrary();draw();tab('review');status('Audio, contour and note events are aligned in source seconds.');
   pianoEditor?.loaded();
+  await refreshReferences();if(state.loadToken!==token)return false;referenceModeStatus();renderMetadata();renderNotes();renderLibrary();draw();tab('review');status('Audio, contour and note events are aligned in source seconds.');return true;
 }
 function renderMetadata() {
   $('metadata').replaceChildren();for(const key of ['artist','song','section','tempo','key','mode','language','genre','tags']) {
@@ -92,7 +85,7 @@ function renderNotes() {
 }
 // All note-edit commands share MelodyEditor / MelodyEdits. Save keeps the existing API.
 $('save').onclick=()=>run(async()=>{if(!state.id)return;if(state.reference){await saveReference();return;}state.report=await api('correct',{id:state.id,notes:state.notes,base_revision:state.report.provenance.correction_revision??null});state.notes=copy(state.report.notes);pianoEditor?.resetHistory();renderNotes();draw();await refresh();await pianoEditor?.revisions();status('Correction revision saved. Raw predictions and earlier revisions are preserved.');});
-$('raw').onclick=()=>{if(state.report){$('provenance').textContent=JSON.stringify({predicted_notes:state.report.predicted_notes,provenance:state.report.provenance},null,2);$('provenance').parentElement.open=true;$('provenance').scrollIntoView({behavior:'smooth'});}};
+$('raw').onclick=()=>{if(state.report){pianoEditor?.openPanel('research');$('provenance').textContent=JSON.stringify({predicted_notes:state.report.predicted_notes,provenance:state.report.provenance},null,2);$('provenance').parentElement.open=true;$('provenance').scrollIntoView({behavior:'smooth'});}};
 $('alternative').onchange=()=>run(async()=>{state.alternative=$('alternative').value?await api('report?id='+$('alternative').value):null;draw();});
 ['viewstart','viewlength'].forEach(id=>$(id).onchange=draw);
 let geometry=null;
@@ -131,7 +124,7 @@ function evidenceButton(label,hash,start,end) {const b=element('button',label,'e
 function distribution(container,weights) {
   for(const [key,value] of Object.entries(weights).sort((a,b)=>+a[0]- +b[0])){const row=element('div',undefined,'barrow');const p=element('progress');p.max=1;p.value=value;row.append(element('span',key+' st'),p,element('span',(value*100).toFixed(1)+'%'));container.append(row);}
 }
-$('profile').onclick=()=>run(async()=>{if(!state.selected.size)throw new Error('Select at least one recording.');status('Building a recording-balanced profile…');state.profile=await api('profile',{ids:[...state.selected],artist:$('artist').value});renderProfile();renderExercises();tab('style');status('Style profile ready. Evidence and limited sample sizes are visible in every conclusion.');});
+$('profile').onclick=()=>run(async()=>{if(!state.selected.size)throw new Error('Select at least one recording.');status('Building a recording-balanced profile…');state.profile=await api('profile',{ids:recordingLibrary.corpusIds(),artist:$('artist').value,allow_research:recordingLibrary.allowedResearch()});renderProfile();renderExercises();tab('style');status(state.profile.corpus_scope?.research_opt_in?'Explicit research corpus · dataset recordings included':'Style profile ready. Evidence and limited sample sizes are visible in every conclusion.');});
 function renderProfile(){const p=state.profile,root=$('stylecontent');root.replaceChildren();const stats=element('div',undefined,'statgrid');for(const [v,label] of [[p.songs,`songs / ${p.recordings} recordings`],[p.phrases,'rest-delimited phrases'],[p.notes,'note events']]){const e=element('div',undefined,'stat');e.append(element('strong',v),element('span',label));stats.append(e);}root.append(stats);
   const intervals=element('div',undefined,'card');intervals.append(element('h3','Measured property · within-phrase interval distribution'),element('p','Recordings are averaged within each song; songs contribute equal weight. Transposition is normalized through relative intervals.','muted'));distribution(intervals,p.interval_weights);root.append(intervals);
   for(const c of p.conclusions){const card=element('div',undefined,'card');card.append(element('span','MEASURED MUSICAL PROPERTY','eyebrow'),element('h3',c.description),element('p',`${(c.equal_song_mean*100).toFixed(1)}% · ${c.support_songs} songs · ${c.support_recordings} recordings · ${c.support_notes} notes`));
@@ -147,7 +140,7 @@ for(const [i,name] of ['C','C♯','D','E♭','E','F','F♯','G','A♭','A','B♭
 $('generate').onclick=()=>run(async()=>{
   status('Searching for distinct scale- and range-constrained candidates…');
   const c={tonic:+$('tonic').value,scale:$('scale').value,tempo:+$('tempo').value,low:+$('low').value,high:+$('high').value,bars:+$('bars').value,density:+$('density').value,contour:$('contour').value,repetition:+$('repetition').value,section:$('section').value,subjective_direction:$('direction').value,syllables:$('syllables').value?+$('syllables').value:null,time_signature:$('timesig').value.split('/').map(Number),stress_notes:$('stress').value.split(',').filter(s=>s.trim()).map(Number),chords:JSON.parse($('chords').value),seed:+$('seed').value,candidates:3};
-  const result=await api('compose',{ids:[...state.selected],artist:$('artist').value,config:c});$('candidates').replaceChildren();
+  const result=await api('compose',{ids:recordingLibrary.corpusIds(),artist:$('artist').value,allow_research:recordingLibrary.allowedResearch(),config:c});$('candidates').replaceChildren();
   result.candidates.forEach((candidate,i)=>{const card=element('div',undefined,'card');const resemblance=candidate.source_similarity.status==='assessed'?(candidate.source_similarity.similarity*100).toFixed(0)+'%':'not assessed';card.append(element('h3',`Candidate ${i+1}`),element('p',`Largest leap ${candidate.assessment.largest_leap_semitones} st · ${candidate.assessment.breath_gaps} breath gaps · maximum source resemblance ${resemblance}`,'muted'));
     if(candidate.source_similarity.status!=='assessed')card.append(element('p','Source resemblance was not assessed: fewer than six comparable notes.','muted'));
     const canvas=element('canvas');card.append(canvas);const a=element('a','Download original MIDI reference','download');a.href=`/api/candidate?id=${result.id}&index=${i}`;card.append(a);
@@ -213,19 +206,19 @@ function referenceModeStatus(){
 }
 function enterReference(r){
   if(r.audio.content_sha256!==state.report.audio.content_sha256)throw Error('Reference belongs to another source recording.');
-  state.reference=r;state.notes=copy(r.notes);state.checked.clear();
+  pianoEditor?.stashView();state.reference=r;state.notes=copy(r.notes);state.checked.clear();
   $('reference-list').value=r.id;
   $('reference-annotator').value=r.annotator;$('reference-reviewer').value=r.review.reviewer||'';
   $('reference-split').value=r.split;$('reference-group').value=r.song_group;
   $('reference-reviewed').checked=r.review.status==='reviewed'&&r.origin.kind!=='published_human_dataset';$('reference-regions').value=JSON.stringify(r.regions,null,2);
   $('loopstart').value=r.excerpt.start;$('loopend').value=r.excerpt.end;
   $('viewstart').value=r.excerpt.start;$('viewlength').value=Math.max(1,r.excerpt.end-r.excerpt.start);
-  $('reference-tools').open=false;pianoEditor?.modeChanged();referenceModeStatus();renderNotes();draw();
+  pianoEditor?.modeChanged();referenceModeStatus();renderNotes();draw();
 }
 async function createReference(seed){
   if(!state.id)throw new Error('Choose a recording first.');
   if(pianoEditor?.dirty&&!confirm('Discard unsaved edits before starting a separate reference? Cancel to keep editing.'))return;
-  const annotator=$('reference-annotator').value.trim();if(!annotator){$('reference-tools').open=true;$('reference-annotator').focus();throw new Error('Enter your annotator name in Reference setup, then create a blank or model-assisted draft.');}
+  const annotator=$('reference-annotator').value.trim();if(!annotator){pianoEditor.openPanel('history');$('reference-annotator').focus();throw new Error('Enter your annotator name in History / revisions, then create a blank or model-assisted draft.');}
   const r=await api('reference-create',{id:state.id,start:+$('loopstart').value,end:+$('loopend').value,
     annotator,split:$('reference-split').value,song_group:$('reference-group').value||state.report.audio.content_sha256,seed});
   enterReference(r);await refreshReferences();status('Independent reference DRAFT created. Listen, correct notes, mark uncertainty and explicitly review before evaluation.');
@@ -233,11 +226,14 @@ async function createReference(seed){
 $('reference-blank').onclick=()=>run(()=>createReference(false));
 $('reference-seed').onclick=()=>run(()=>createReference(true));
 $('reference-load').onclick=()=>run(async()=>{
-  if(pianoEditor?.dirty&&!confirm('Discard unsaved edits and load the saved reference?'))return;
-  if(!$('reference-list').value)throw new Error('Select a reference edition first.');
-  enterReference(await api('reference?reference_id='+$('reference-list').value));status('Reference and raw prediction are aligned in original source seconds.');
+  await openReference($('reference-list').value);
 });
-$('reference-working').onclick=()=>{if(!state.report)return;if(pianoEditor?.dirty&&!confirm('Discard unsaved reference edits and return to working corrections?'))return;state.reference=null;state.notes=copy(state.report.notes);state.checked.clear();pianoEditor?.modeChanged();referenceModeStatus();renderNotes();draw();status('Working corrections restored. Saved reference editions remain separate.');};
+async function openReference(identifier){
+  if(pianoEditor?.dirty&&!confirm('Discard unsaved edits and load the saved reference?'))return;
+  if(!identifier)throw new Error('Select a reference edition first.');
+  enterReference(await api('reference?reference_id='+identifier));status('Reference and raw prediction are aligned in original source seconds.');
+}
+$('reference-working').onclick=()=>{if(!state.report)return;if(pianoEditor?.dirty&&!confirm('Discard unsaved reference edits and return to working corrections?'))return;pianoEditor?.stashView();state.reference=null;state.notes=copy(state.report.notes);state.checked.clear();pianoEditor?.modeChanged();referenceModeStatus();renderNotes();draw();status('Working corrections restored. Saved reference editions remain separate.');};
 $('reference-region').onclick=()=>run(async()=>{
   if(!state.reference)throw new Error('Create or load an editable reference first.');
   remember();
@@ -264,5 +260,6 @@ $('reference-export').onclick=()=>run(async()=>{
   status('Reviewed manifest saved at outputs/real-validation/reviewed.manifest.json. Exact annotation revisions and checksums are frozen.');
 });
 pianoEditor=new window.MelodyEditor({state,$,api,status,run,renderNotes,referenceModeStatus,enterReference});
+recordingLibrary=new window.RecordingLibrary({state,$,api,status,run,load,openReference});
 window.addEventListener('beforeunload',event=>{if(pianoEditor.dirty){event.preventDefault();event.returnValue='';}});
 run(async()=>{await refresh();const params=new URLSearchParams(location.search),id=params.get('analysis'),ref=params.get('reference');if(id&&state.library.some(r=>r.id===id)){await load(id);if(ref)enterReference(await api('reference?reference_id='+encodeURIComponent(ref)));}});

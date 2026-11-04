@@ -1,7 +1,7 @@
 /* One original-vocal media element and one local reference-tone bus. No vocal synthesis. */
 class VocalAudition {
   constructor(audio,notify){
-    this.audio=audio;this.notify=notify;this.mode='piano';this.pianoVolume=.25;this.vocalVolume=.8;
+    this.audio=audio;this.notify=notify;this.mode='auto';this.pianoVolume=.25;this.vocalVolume=.8;
     this.context=null;this.segment=null;this.nodes=[];this.token=0;this.lastTone=null;this.startedTones=0;
     this.pitchPreservation=('preservesPitch' in audio)||('webkitPreservesPitch' in audio);
     if('preservesPitch' in audio)audio.preservesPitch=true;
@@ -59,6 +59,7 @@ class VocalAudition {
     });
   }
   async note(note,{pre=.06,post=.08,loop=false,mode=this.mode}={}){
+    if(mode==='auto')mode='vocal';
     if(mode==='piano'){await this.piano(note.pitch);return;}
     await this.ensure();this.cancelSegment();this.audio.pause();const token=this.token;
     const [start,end]=MelodyEdits.segment(note,pre,post,this.audio.duration);
@@ -74,13 +75,7 @@ class VocalAudition {
     if(now>=s.note.end){this.stopTone();return;}
     this.tone(s.note.pitch,Math.max(.02,(s.note.end-Math.max(now,s.note.start))/rate),Math.max(0,(s.note.start-now)/rate));
   }
-  async keyboard(pitch,selected,notes,options){
-    if(this.mode==='piano'){await this.piano(pitch);return;}
-    const matches=notes.filter(n=>Math.round(n.pitch)===Math.round(pitch));
-    const note=matches.find(n=>selected.has(n.id))||matches[0];
-    if(note)await this.note(note,options);
-    else {await this.piano(pitch);this.notify(`No vocal note at ${MelodyEdits.pitchName(pitch)} · piano reference fallback (original vocal unchanged)`);}
-  }
+  async keyboard(pitch){await this.piano(pitch);}
   async full(){await this.ensure();this.cancelSegment();if(this.audio.paused){await this.audio.play();this.notify('Complete original recording · vocal bus only');}else this.audio.pause();}
   async range(start,end,loop=false){
     await this.ensure();this.cancelSegment();this.audio.pause();const token=this.token;

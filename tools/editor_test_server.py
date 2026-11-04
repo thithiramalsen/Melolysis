@@ -32,6 +32,17 @@ def fixture():
     directory=workspace/'analyses'/r['audio']['content_sha256']/other['prediction_id'];directory.mkdir(parents=True)
     other['report_path']=str((directory/'report.json').resolve());write_json(directory/'report.json',other)
     for name in ('playback.wav','notes.csv','notes.mid'):shutil.copyfile(Path(r['report_path']).parent/name,directory/name)
+    # Distinct source hashes exercise corpus operations; cloned symbolic events are UI
+    # contract fixtures only. They are never ground truth or model benchmarks.
+    for index,(name,dataset) in enumerate([('SECOND PERSONAL FIXTURE',None),('THIRD PERSONAL FIXTURE',None),('SIMULATED VOCADITO UI FIXTURE','vocadito')],1):
+        sample=root/(name+'.wav');sf.write(sample,np.column_stack([stereo*.8**index,stereo*.6**index]),44100)
+        clone=json.loads(json.dumps(r));clone['audio']['source_path']=str(sample.resolve());clone['audio']['content_sha256']=content_hash(sample)
+        clone['metadata'].update(song=name,artist='Fixture artist '+str(index))
+        clone['provenance']['note_model']={'name':'DISPOSABLE-LIBRARY-STUB-not-inference'}
+        if dataset:clone['metadata']['dataset']=dataset
+        dest=workspace/'analyses'/clone['audio']['content_sha256']/clone['prediction_id'];dest.mkdir(parents=True)
+        clone['report_path']=str((dest/'report.json').resolve());write_json(dest/'report.json',clone)
+        for file in ('playback.wav','notes.csv','notes.mid'):shutil.copyfile(Path(r['report_path']).parent/file,dest/file)
     app=Workspace(workspace)
     identifier=next(i for i,p in app.catalog().items() if str(p.resolve())==r['report_path'])
     ref=app.references.create(r,.1,r['audio']['duration']-.1,'SYNTHETIC UI FIXTURE — NOT HUMAN LABELS',

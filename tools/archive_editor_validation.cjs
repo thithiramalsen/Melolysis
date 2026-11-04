@@ -16,7 +16,9 @@ if(tests.length!==results.stats.expected||tests.some(t=>t.status!=='passed'))thr
 const sha=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 const files=['src/web/editor-core.js','src/web/editor.js','src/web/audition.js','src/web/app.js','src/web/index.html','src/web/style.css',
   'src/references.py','src/storage.py','src/workspace.py','tests/browser/editor.spec.cjs','package-lock.json'];
-const output='docs/editor';fs.mkdirSync(output,{recursive:true});
+const contextual=process.argv.includes('--contextual');
+if(contextual)files.push('src/library.py','src/web/library.js','tests/test_library.py','tools/editor_test_server.py');
+const output=contextual?'docs/ux':'docs/editor';fs.mkdirSync(output,{recursive:true});
 fs.writeFileSync(path.join(output,'browser-validation.json'),JSON.stringify({date:'2026-11-04',runner:'@playwright/test 1.64.1',
   node:process.version,stats:results.stats,tests,source_sha256:Object.fromEntries(files.map(p=>[p,sha(p)])),
   scope:'Headless Chromium, speakers muted; one worker; disposable synthetic audio and references only; no user annotations created/reviewed',
@@ -24,5 +26,5 @@ fs.writeFileSync(path.join(output,'browser-validation.json'),JSON.stringify({dat
 fs.writeFileSync(path.join(output,'audio-measurements.json'),JSON.stringify({fft_size:8192,measurements:audio,
   interpretation:'Frequency bins have finite resolution. RMS after muting tests bus output, not just UI volume values. Mute tests keep vocal transport running. These are routing tests, not real-vocal transcription accuracy.'},null,2));
 for(const size of ['1366x768','1920x1080'])fs.copyFileSync(`.cache/editor-tests/editor-${size}.png`,path.join(output,`fixture-${size}.png`));
-fs.copyFileSync('.cache/editor/evaluation-regression.json',path.join(output,'evaluation-regression.json'));
+fs.copyFileSync(contextual?'.cache/ux/evaluation-regression.json':'.cache/editor/evaluation-regression.json',path.join(output,'evaluation-regression.json'));
 console.log(`Archived ${tests.length} passing browser checks and ${audio.length} actual signal/transport measurements.`);

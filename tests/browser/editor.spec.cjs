@@ -9,6 +9,8 @@ async function post(request,route,data){const response=await request.post(base+'
 async function select(page,id,modifiers){await block(page,id).click({modifiers:modifiers||[]});}
 async function gesture(page,from,to,button='left'){await page.mouse.move(from.x,from.y);await page.mouse.down({button});await page.mouse.move(to.x,to.y,{steps:8});await page.mouse.up({button});}
 async function drag(page,id,dx,dy,edge){const target=edge?block(page,id).locator('.note-edge.'+edge):block(page,id);const b=await target.boundingBox();await gesture(page,{x:b.x+b.width/2,y:b.y+b.height/2},{x:b.x+b.width/2+dx,y:b.y+b.height/2+dy});}
+async function panel(page,tab){if(await page.locator('#bottom-inspector').evaluate(e=>e.hidden))await page.locator('#bottom-toggle').click();await page.locator('#tab-'+tab).click();}
+async function loopNote(page){await page.locator('#loop-settings>summary').click();await page.locator('#loopselected').click();}
 async function saved(page){await page.locator('#save').click();await expect(page.locator('#status')).toContainText(/revision saved/i);}
 async function signal(page,bus){return page.evaluate(bus=>{
   const a=pianoEditor.audition,meter=bus==='piano'?a.pianoMeter:a.vocalMeter;
@@ -30,6 +32,7 @@ test.beforeEach(async({page,request})=>{
   await expect(page.locator('#mode-badge')).toContainText('UNREVIEWED');
   await expect(page.locator('.note-block')).toHaveCount(edition.notes.length);
   await expect.poll(()=>page.locator('#audio').evaluate(a=>a.readyState)).toBeGreaterThanOrEqual(2);
+  expect(await page.locator('#audition-mode').inputValue()).toBe('auto');expect(await page.locator('#auto-audition').isChecked()).toBe(true);await page.locator('#auto-audition').uncheck();
 });
 test.afterEach(async()=>{expect(hash(fixture.audio_path)).toBe(fixture.audio_sha256);expect(hash(fixture.prediction_path)).toBe(fixture.prediction_sha256);});
 
@@ -91,7 +94,7 @@ test('pitch keyboard stays aligned after time/pitch zoom and middle pan',async({
 test('saved reference edits survive refresh; revision restore appends an unreviewed revision',async({page,request})=>{
   const before=await notes(page),ref=await page.evaluate(()=>({id:state.reference.id,revision:state.reference.revision}));
   await select(page,before[0].id);await page.locator('#pitch-up').click();await saved(page);const edited=await notes(page);await page.reload();await expect(page.locator('#mode-badge')).toContainText('UNREVIEWED');expect(await notes(page)).toEqual(edited);
-  await page.locator('#reference-tools>summary').click();await expect(page.locator(`#revision-list option[value="${ref.revision}"]`)).toHaveCount(1);await page.locator('#revision-list').selectOption(ref.revision);await page.locator('#restore-revision').click();await expect(page.locator('#status')).toContainText('Restored as a new revision');expect(await notes(page)).toEqual(before);
+  await panel(page,'history');await expect(page.locator(`#revision-list option[value="${ref.revision}"]`)).toHaveCount(1);await page.locator('#revision-list').selectOption(ref.revision);await page.locator('#restore-revision').click();await expect(page.locator('#status')).toContainText('Restored as a new revision');expect(await notes(page)).toEqual(before);
   const revisions=await (await request.get(base+'/api/reference-history?reference_id='+ref.id)).json();expect(revisions.length).toBeGreaterThan(3);expect(revisions[0].review.status).toBe('draft');expect(revisions[0].restored_from_revision).toBe(ref.revision);expect(revisions.some(r=>r.revision===ref.revision)).toBe(true);
 });
 test('working corrections and reference histories stay independent',async({page,request})=>{
@@ -103,7 +106,7 @@ test('working corrections and reference histories stay independent',async({page,
   const history=await (await request.get(base+'/api/correction-history?id='+fixture.analysis)).json();expect(history.length).toBeGreaterThan(0);expect(history[0].notes).toEqual(corrected);
 });
 test('review queue uses measurable disagreement, never verifies references automatically',async({page})=>{
-  await page.locator('#review-tools>summary').click();await expect(page.locator('#review-count')).toContainText('1 alternatives');await expect(page.locator('.review-item').first()).toBeVisible();
+  await panel(page,'review');await expect(page.locator('#review-count')).toContainText('1 alternatives');await expect(page.locator('.review-item').first()).toBeVisible();
   expect(await page.locator('#review-queue').innerText()).toContain('Disagreement');await page.locator('.review-item').first().click();await page.locator('#confirm-note').click();
   expect((await notes(page)).some(n=>n.flags.includes('review_confirmed'))).toBe(true);expect(await page.locator('#reference-reviewed').isChecked()).toBe(false);
   await page.locator('#undo').click();expect((await notes(page)).some(n=>n.flags.includes('review_confirmed'))).toBe(false);
@@ -115,7 +118,7 @@ test('piano keys generate measured A4 and A sharp frequencies without starting v
 test('vocal segment audition uses edited source boundaries with preroll/postroll and loop',async({page},info)=>{
   let n=(await notes(page))[0];await select(page,n.id);await page.locator('#inspect-start').fill(String(n.start+.01));await page.locator('#inspect-start').press('Tab');await saved(page);await page.reload();await expect(page.locator('#mode-badge')).toContainText('UNREVIEWED');n=(await notes(page))[0];await select(page,n.id);await page.locator('#audition-mode').selectOption('vocal');await page.locator('#audition-selected').click();await page.waitForTimeout(180);
   const s=await signal(page,'vocal');expect(s.segment.start).toBeCloseTo(Math.max(0,n.start-.06),8);expect(s.segment.end).toBeCloseTo(n.end+.08,8);expect(s.rms).toBeGreaterThan(.005);expect(Math.abs(s.peak_hz-440)).toBeLessThan(5);
-  await page.locator('#stop').click();await page.locator('#loopselected').click();await page.waitForTimeout(1100);const loop=await page.evaluate(()=>({time:document.querySelector('#audio').currentTime,paused:document.querySelector('#audio').paused,segment:pianoEditor.audition.segment}));
+  await page.locator('#stop').click();await loopNote(page);await page.waitForTimeout(1100);const loop=await page.evaluate(()=>({time:document.querySelector('#audio').currentTime,paused:document.querySelector('#audio').paused,segment:pianoEditor.audition.segment}));
   expect(loop.paused).toBe(false);expect(loop.segment.loop).toBe(true);expect(loop.time).toBeGreaterThanOrEqual(loop.segment.start);expect(loop.time).toBeLessThan(loop.segment.end+.07);await page.locator('#stop').click();await info.attach('measured-vocal-audio',{body:JSON.stringify(s),contentType:'application/json'});
 });
 test('Both mode has one vocal source, simultaneous audible buses and independent volumes',async({page},info)=>{
@@ -130,8 +133,8 @@ test('slow playback preserves source timestamps and requested pitch, with synchr
   const cursor=await page.evaluate(()=>({actual:parseFloat(document.querySelector('#playhead').style.left),expected:pianoEditor.x(document.querySelector('#audio').currentTime),preserves:document.querySelector('#audio').preservesPitch}));expect(cursor.preserves).toBe(true);expect(Math.abs(cursor.actual-cursor.expected)).toBeLessThan(8);
   await page.locator('#stop').click();await page.locator('#speed').selectOption('.75');await page.locator('#audition-selected').click();await page.waitForTimeout(300);const threeQuarter=await signal(page,'vocal');expect(Math.abs(threeQuarter.peak_hz-440)).toBeLessThan(6);expect(threeQuarter.speed).toBe(.75);expect(await notes(page)).toEqual(before);await page.locator('#stop').click();await info.attach('slow-vocal-measurement',{body:JSON.stringify({half:s,threeQuarter}),contentType:'application/json'});
 });
-test('Vocal keyboard fallback is explicit and Space plays complete original audio in Piano mode',async({page})=>{
-  await page.locator('#audition-mode').selectOption('vocal');await page.locator('.piano-key[data-pitch="70"]').click();await expect(page.locator('#audition-status')).toContainText('piano reference fallback');
+test('Keyboard stays piano in Vocal override and Space plays complete original audio in Piano mode',async({page})=>{
+  await page.locator('#audition-mode').selectOption('vocal');await page.locator('.piano-key[data-pitch="70"]').click();await expect(page.locator('#audition-status')).toContainText('Piano reference');
   await page.locator('#audition-mode').selectOption('piano');await page.locator('#roll-viewport').focus();await page.keyboard.press('Space');await expect.poll(()=>page.locator('#audio').evaluate(a=>a.paused)).toBe(false);await expect(page.locator('#audition-status')).toContainText('Complete original');await page.keyboard.press('Space');expect(await page.locator('#audio').evaluate(a=>a.paused)).toBe(true);
 });
 test('Escape cancels a drag without symbolic changes or an extra history step',async({page})=>{
@@ -144,18 +147,18 @@ test('A/B plays original vocal then reference, with no vocal pitch-shift claim',
   await expect(page.locator('#audition-status')).toContainText('Piano reference',{timeout:3000});await page.waitForTimeout(220);const a=await signal(page,'piano');expect(a.last_tone.frequency).toBeCloseTo(440*2**((n.pitch-69)/12),6);expect(a.rms).toBeGreaterThan(.001);expect(Math.abs(a.peak_hz-a.last_tone.frequency)).toBeLessThan(3);expect(await page.locator('#audio').evaluate(a=>a.paused)).toBe(true);await info.attach('A-B-sequence',{body:JSON.stringify(a),contentType:'application/json'});
 });
 test('working revision restore appends a correction and review attestation clears on note edits',async({page,request})=>{
-  await page.locator('#reference-tools>summary').click();await page.locator('#reference-reviewed').check();const initial=await notes(page);await select(page,initial[0].id);await page.locator('#pitch-up').click();expect(await page.locator('#reference-reviewed').isChecked()).toBe(false);await page.locator('#undo').click();
+  await panel(page,'history');await page.locator('#reference-reviewed').check();const initial=await notes(page);await select(page,initial[0].id);await page.locator('#pitch-up').click();expect(await page.locator('#reference-reviewed').isChecked()).toBe(false);await page.locator('#undo').click();
   // No fabricated listening attestation is saved, even on this disposable fixture.
   await saved(page);await page.locator('#reference-working').click();const old=await notes(page);await select(page,old[0].id);await page.locator('#pitch-up').click();await saved(page);
   const one=await page.evaluate(()=>state.report.provenance.correction_revision),first=await notes(page);await page.locator('#pitch-up').click();await saved(page);
-  if(!await page.locator('#reference-tools').evaluate(e=>e.open))await page.locator('#reference-tools>summary').click();await page.locator('#revision-list').selectOption(one);await page.locator('#restore-revision').click();await expect(page.locator('#status')).toContainText('Restored as a new revision');expect(await notes(page)).toEqual(first);
+  await panel(page,'history');await page.locator('#revision-list').selectOption(one);await page.locator('#restore-revision').click();await expect(page.locator('#status')).toContainText('Restored as a new revision');expect(await notes(page)).toEqual(first);
   const rows=await (await request.get(base+'/api/correction-history?id='+fixture.analysis)).json();expect(rows[0].revision).not.toBe(one);
 });
 test('range tool and missing-note queue windows remain source-aligned without inventing labels',async({page})=>{
   const before=await notes(page);await page.locator('#edit-tool').selectOption('range');const pos=await page.evaluate(()=>{const r=pianoEditor.roll.getBoundingClientRect();return {a:{x:r.x+pianoEditor.x(.4),y:r.y+pianoEditor.y(76)},b:{x:r.x+pianoEditor.x(1.1),y:r.y+pianoEditor.y(76)}};});
   await gesture(page,pos.a,pos.b);expect(+await page.locator('#loopstart').inputValue()).toBeCloseTo(.4,2);expect(+await page.locator('#loopend').inputValue()).toBeCloseTo(1.1,2);expect(await notes(page)).toEqual(before);
   // Deleting a fixture event produces an alternative-only review window, never an automatic replacement.
-  await page.locator('#edit-tool').selectOption('select');await select(page,before[0].id);await page.locator('#delete').click();await page.locator('#review-tools>summary').click();await expect(page.locator('#review-queue')).toContainText('Possible missing event');expect((await notes(page)).length).toBe(before.length-1);
+  await page.locator('#edit-tool').selectOption('select');await select(page,before[0].id);await page.locator('#delete').click();await panel(page,'review');await expect(page.locator('#review-queue')).toContainText('Possible missing event');expect((await notes(page)).length).toBe(before.length-1);
 });
 test('review suggestions are confined to a short reference excerpt',async({page,request})=>{
   const ref=await post(request,'reference-create',{id:fixture.analysis,start:1.8,end:2.7,
@@ -168,6 +171,73 @@ test('raw predicted notes can be auditioned without populating a blank human ref
     annotator:'SYNTHETIC BLANK REFERENCE TEST — NOT HUMAN LABELS',split:'development',song_group:'disposable-editor-fixture',seed:false});
   await page.goto(`/?analysis=${fixture.analysis}&reference=${ref.id}`);await expect(page.locator('#mode-badge')).toContainText('UNREVIEWED');await expect(page.locator('.note-block')).toHaveCount(0);
   const p=await page.evaluate(()=>{const n=state.report.predicted_notes[0],r=pianoEditor.roll.getBoundingClientRect();return {id:n.id,x:r.x+pianoEditor.x((n.start+n.end)/2),y:r.y+pianoEditor.y(n.pitch)};});
-  await page.mouse.click(p.x,p.y);await expect(page.locator('#selection-summary')).toContainText('Raw model prediction');expect(await page.locator('#inspect-pitch').isDisabled()).toBe(true);
+  await page.mouse.click(p.x,p.y);await expect(page.locator('#selection-summary')).toContainText('Raw prediction');expect(await page.locator('#inspect-pitch').isDisabled()).toBe(true);
+  await expect.poll(()=>page.evaluate(()=>pianoEditor.audition.segment?.note.id)).toBe(p.id);
   await page.locator('#audition-mode').selectOption('vocal');await page.locator('#audition-selected').click();await page.waitForTimeout(150);expect((await signal(page,'vocal')).segment.note.id).toBe(p.id);expect(await notes(page)).toEqual([]);await page.locator('#stop').click();
+});
+const runtimeErrors=new WeakMap();
+test.beforeEach(async({page})=>{const errors=[];runtimeErrors.set(page,errors);page.on('pageerror',e=>errors.push(e.message));});
+test.afterEach(async({page})=>{expect(runtimeErrors.get(page)).toEqual([]);});
+
+test('Auto routes annotation clicks to original vocal and every keyboard override to clean piano',async({page},info)=>{
+  const before=await notes(page),n=before[0];await page.locator('#auto-audition').check();await select(page,n.id);await page.waitForTimeout(170);
+  const voice=await signal(page,'vocal');expect(voice.segment.note.id).toBe(n.id);expect(voice.segment.mode).toBe('vocal');expect(voice.segment.start).toBeCloseTo(Math.max(0,n.start-.06),8);expect(voice.rms).toBeGreaterThan(.005);expect(voice.last_tone).toBeNull();
+  const measured=[];for(const mode of ['auto','piano','vocal','both']){
+    await page.locator('#stop').click();const time=await page.locator('#audio').evaluate(a=>a.currentTime);await page.locator('#audition-mode').selectOption(mode);await page.locator('.piano-key[data-pitch="69"]').click();await page.waitForTimeout(160);
+    const s=await signal(page,'piano');expect(s.segment).toBeNull();expect(s.last_tone.frequency).toBe(440);expect(Math.abs(s.peak_hz-440)).toBeLessThan(3);expect(s.rms).toBeGreaterThan(.001);expect(await page.locator('#audio').evaluate(a=>a.paused)).toBe(true);expect(await page.locator('#audio').evaluate(a=>a.currentTime)).toBeCloseTo(time,6);measured.push({mode,...s});
+  }
+  expect(await notes(page)).toEqual(before);expect(await page.evaluate(()=>pianoEditor.dirty)).toBe(false);await info.attach('contextual-click-audio',{body:JSON.stringify({voice,keyboard:measured}),contentType:'application/json'});
+});
+
+test('Audition on click can be disabled; manual note overrides preserve their separate routes',async({page},info)=>{
+  const n=(await notes(page))[0];await select(page,n.id);expect(await page.locator('#audio').evaluate(a=>a.paused)).toBe(true);expect(await page.evaluate(()=>pianoEditor.audition.context)).toBeNull();
+  await page.locator('#auto-audition').check();const measurements=[];
+  for(const mode of ['piano','vocal','both']){await page.locator('#stop').click();await page.locator('#audition-mode').selectOption(mode);await select(page,n.id);await page.waitForTimeout(150);const p=await signal(page,'piano'),v=await signal(page,'vocal');
+    expect(await page.locator('#audio').evaluate(a=>a.paused)).toBe(mode==='piano');if(mode!=='piano'){expect(v.segment.note.id).toBe(n.id);expect(v.segment.mode).toBe(mode);expect(v.rms).toBeGreaterThan(.005);}if(mode!=='vocal')expect(p.rms).toBeGreaterThan(.001);else expect(p.rms).toBeLessThan(.0001);measurements.push({mode,piano:p,vocal:v});}
+  await page.locator('#stop').click();await info.attach('manual-click-overrides',{body:JSON.stringify(measurements),contentType:'application/json'});
+});
+
+test('vertical drag previews proposed piano pitch before commit and supports undo',async({page},info)=>{
+  await page.locator('#audition-settings>summary').click();await page.locator('#drag-audition').check();const before=await notes(page),n=before[0],b=await block(page,n.id).boundingBox(),g=await page.evaluate(()=>pianoEditor.geometry());
+  await page.mouse.move(b.x+b.width/2,b.y+b.height/2);await page.mouse.down();await page.mouse.move(b.x+b.width/2,b.y+b.height/2-g.row,{steps:3});await page.waitForTimeout(55);
+  expect(await notes(page)).toEqual(before);const preview=await signal(page,'piano');expect(preview.last_tone.pitch).toBeCloseTo(n.pitch+1,6);expect(preview.last_tone.frequency).toBeCloseTo(440*2**((n.pitch+1-69)/12),6);expect(preview.rms).toBeGreaterThan(.0001);expect(await page.locator('#pitch-label').innerText()).toContain('Hz');expect(await page.locator('#audio').evaluate(a=>a.paused)).toBe(true);
+  await page.mouse.up();expect((await notes(page))[0].pitch).toBeCloseTo(n.pitch+1,6);await page.locator('#undo').click();expect(await notes(page)).toEqual(before);await info.attach('drag-preview-signal',{body:JSON.stringify(preview),contentType:'application/json'});
+});
+
+test('reference framing fits excerpt and pitch events; mode-specific deliberate views survive switching',async({page})=>{
+  const initial=await page.evaluate(()=>({...pianoEditor.view})),ref=await page.evaluate(()=>({id:state.reference.id,...state.reference.excerpt}));expect(initial.start).toBeCloseTo(ref.start,8);expect(initial.length).toBeCloseTo(ref.end-ref.start,8);
+  const boxes=await page.locator('.note-block').evaluateAll(es=>es.map(e=>e.getBoundingClientRect().toJSON())),roll=await page.locator('#roll-viewport').boundingBox();for(const b of boxes){expect(b.y).toBeGreaterThan(roll.y+87);expect(b.y+b.height).toBeLessThan(roll.y+roll.height-21);expect(b.x+b.width).toBeGreaterThan(roll.x+68);expect(b.x).toBeLessThan(roll.x+roll.width);}
+  await page.locator('#zoom-in').click();const custom=await page.evaluate(()=>({...pianoEditor.view}));await page.locator('#reference-working').click();await page.locator('#fit-song').click();const working=await page.evaluate(()=>({...pianoEditor.view}));await page.locator('#reference-list').selectOption(ref.id);await page.locator('#reference-load').click();await expect.poll(()=>page.evaluate(()=>state.reference?.id)).toBe(ref.id);expect(await page.evaluate(()=>({...pianoEditor.view}))).toEqual(custom);
+  await page.locator('#reference-working').click();expect(await page.evaluate(()=>({...pianoEditor.view}))).toEqual(working);await page.locator('#reference-list').selectOption(ref.id);await page.locator('#reference-load').click();await expect.poll(()=>page.evaluate(()=>state.reference?.id)).toBe(ref.id);await page.locator('#fit-view').click();expect(await page.evaluate(()=>pianoEditor.view.start)).toBeCloseTo(ref.start,8);
+  const n=(await notes(page))[1];await select(page,n.id);await page.locator('details').filter({has:page.locator('#fit-selected')}).locator('summary').click();await page.locator('#fit-selected').click();expect(await page.evaluate(()=>pianoEditor.view.length)).toBeCloseTo(n.end-n.start+.3,6);
+});
+
+test('collapsed resizable inspector and maximize preserve notes, viewport and continuous playback',async({page})=>{
+  expect(await page.locator('#bottom-inspector').evaluate(e=>e.hidden)).toBe(true);const before=await notes(page),view=await page.evaluate(()=>({...pianoEditor.view}));await select(page,before[0].id);await page.locator('#loop').check();await page.locator('#audition-selected').click();
+  for(const tab of ['review','history','research']){await panel(page,tab);await expect(page.locator('#tab-'+tab)).toHaveAttribute('aria-selected','true');expect((await page.locator('#roll-viewport').boundingBox()).height).toBeGreaterThan(180);expect(await page.locator('#audio').evaluate(a=>a.paused)).toBe(false);expect(await page.evaluate(()=>({...pianoEditor.view}))).toEqual(view);}
+  await page.locator('#bottom-resize').focus();await page.keyboard.press('ArrowDown');await page.locator('#bottom-close').click();await page.locator('#maximize-editor').click();expect(await page.locator('body').getAttribute('class')).toContain('editor-maximized');expect(await page.locator('#audio').evaluate(a=>a.paused)).toBe(false);await page.locator('#maximize-editor').click();expect(await notes(page)).toEqual(before);await page.locator('#stop').click();
+  await page.locator('#shortcut-button').click();await expect(page.locator('#shortcut-help')).toBeVisible();await page.locator('#shortcut-close').click();
+});
+
+test('unique-recording bulk scope, filtered actions and tri-state groups never discard edits or stop playback',async({page})=>{
+  expect(await page.evaluate(()=>state.recordings.length)).toBe(4);expect(await page.evaluate(()=>state.library.length)).toBe(5);expect(await page.evaluate(()=>state.selected.size)).toBe(0);await expect(page.locator('.recording-group')).toHaveCount(3);
+  const n=(await notes(page))[0];await select(page,n.id);await page.locator('#pitch-up').click();const edited=await notes(page),id=await page.evaluate(()=>state.id);await page.locator('#loop').check();await page.locator('#audition-selected').click();
+  await page.locator('#corpus-all').click();await expect(page.locator('#corpus-count')).toHaveText('3 recordings · 3 songs selected');expect((await page.evaluate(()=>recordingLibrary.corpusIds())).length).toBe(3);await page.locator('#corpus-invert').click();expect(await page.evaluate(()=>state.selected.size)).toBe(0);
+  await page.locator('.recording-heading input').first().check();expect(await page.getByRole('checkbox',{name:'Include visible personal recordings'}).evaluate(e=>e.indeterminate)).toBe(true);await page.locator('#library-search').fill('SECOND PERSONAL');await page.locator('#corpus-select-filtered').click();expect(await page.evaluate(()=>state.selected.size)).toBe(2);await page.locator('#corpus-deselect-filtered').click();expect(await page.evaluate(()=>state.selected.size)).toBe(1);await page.locator('#corpus-none').click();expect(await page.evaluate(()=>state.selected.size)).toBe(0);
+  expect(await notes(page)).toEqual(edited);expect(await page.evaluate(()=>state.id)).toBe(id);expect(await page.evaluate(()=>pianoEditor.dirty)).toBe(true);expect(await page.locator('#audio').evaluate(a=>a.paused)).toBe(false);await page.locator('#stop').click();
+});
+
+test('model variants and references remain discoverable under their source; search and model filters work',async({page})=>{
+  const hash=await page.evaluate(()=>state.report.audio.content_sha256),g=page.locator(`.recording-group[data-source-hash="${hash}"]`);await g.locator('.versions-toggle').click();await expect(g.locator('.analysis-version')).toHaveCount(2);expect(await g.locator('.human-version').count()).toBeGreaterThan(0);
+  const model=await page.locator('#library-model option').filter({hasText:'DISPOSABLE-ALTERNATIVE-STUB-not-inference'}).getAttribute('value');await page.locator('#library-model').selectOption(model);await expect(page.locator('.recording-group')).toHaveCount(1);await page.locator('#library-model').selectOption('');await page.locator('#library-artist').selectOption('Fixture artist 1');await expect(page.locator('.recording-group')).toHaveCount(1);await page.locator('#library-artist').selectOption('');await page.locator('#library-category').selectOption('research');await expect(page.locator('.recording-group')).toHaveCount(1);await expect(page.locator('.recording-title')).toContainText('SIMULATED VOCADITO');expect(await page.locator('.recording-heading input').isDisabled()).toBe(true);
+});
+
+test('Vocadito source policy requires explicit UI and API opt-in even when all recordings are selected',async({page,request})=>{
+  await page.locator('#library-category').selectOption('all');await page.locator('#corpus-all').click();expect(await page.evaluate(()=>[...state.selected].every(hash=>state.recordings.find(g=>g.source_hash===hash).category==='personal'))).toBe(true);
+  const id=await page.evaluate(()=>state.recordings.find(g=>g.category==='research').preferred_analysis),blocked=await request.post(base+'/api/profile',{data:{ids:[id],artist:'DO NOT MIX'},headers:{Origin:base}});expect(blocked.status()).toBe(400);expect((await blocked.json()).error).toContain('Research recordings');
+  await page.locator('#allow-research-corpus').check();await page.locator('#corpus-all').click();expect(await page.evaluate(()=>state.selected.size)).toBe(4);const allowed=await post(request,'profile',{ids:[id],artist:'EXPLICIT SYNTHETIC RESEARCH CONTRACT',allow_research:true});expect(allowed.corpus_scope.research_opt_in).toBe(true);expect(allowed.warnings.join(' ')).toContain('Explicit research corpus');await page.locator('#allow-research-corpus').uncheck();expect(await page.evaluate(()=>state.selected.size)).toBe(3);
+});
+
+test('changing audition mode and corpus selection does not interrupt whole-song playback',async({page})=>{
+  await page.locator('#play').click();await page.waitForTimeout(100);const old=await page.locator('#audio').evaluate(a=>a.currentTime);await page.locator('#audition-mode').selectOption('piano');await page.locator('#corpus-all').click();await page.locator('#corpus-none').click();await page.waitForTimeout(80);expect(await page.locator('#audio').evaluate(a=>a.paused)).toBe(false);expect(await page.locator('#audio').evaluate(a=>a.currentTime)).toBeGreaterThan(old);expect(await page.evaluate(()=>pianoEditor.audition.segment)).toBeNull();await page.locator('#stop').click();
 });

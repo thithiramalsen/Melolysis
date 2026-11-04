@@ -3,6 +3,7 @@ class MelodyEditor {
   constructor(hooks){
     this.h=hooks;this.s=hooks.state;this.$=hooks.$;this.M=MelodyEdits;this.history=new this.M.History();
     this.view={start:0,length:15,low:48,span:24};this.gesture=null;this.dirty=false;this.alternatives=[];this.queueKey='';this.lastPreviewPitch=null;
+    this.viewCache=new Map();this.viewKey=null;this.inspectorTab='review';
     this.roll=this.$('roll-viewport');this.canvas=this.$('timeline');
     this.audition=new VocalAudition(this.$('audio'),text=>{this.$('audition-status').textContent=text;this.$('audition-status').title=text;this.$('audio-timing').textContent=JSON.stringify(this.audition.timing(),null,2);});
     this.install();new ResizeObserver(()=>{cancelAnimationFrame(this.resizeFrame);this.resizeFrame=requestAnimationFrame(()=>this.render());}).observe(this.roll);
@@ -32,13 +33,32 @@ class MelodyEditor {
   updateURL(){if(!this.s.id)return;const u=new URL(location.href);u.searchParams.set('analysis',this.s.id);if(this.s.reference)u.searchParams.set('reference',this.s.reference.id);else u.searchParams.delete('reference');history.replaceState(null,'',u);}
   loaded(){
     this.audition.stop();this.resetHistory();this.alternatives=[];this.customRange=null;this.predictionSelection=null;
-    this.view.start=+this.$('viewstart').value||0;this.view.length=Math.min(15,this.s.report.audio.duration);
-    this.fitPitch();this.syncView();this.updateURL();this.render();this.h.run(()=>this.compareModels());this.h.run(()=>this.revisions());
+    this.activateView();this.updateURL();this.render();this.h.run(()=>this.compareModels());this.h.run(()=>this.revisions());
   }
-  modeChanged(){this.audition.stop();this.resetHistory();this.customRange=null;this.predictionSelection=null;this.view.start=+this.$('viewstart').value;this.view.length=+this.$('viewlength').value;this.fitPitch();this.syncView();this.updateURL();this.render();this.h.run(()=>this.revisions());}
-  fitPitch(){const ns=this.s.notes.filter(n=>n.end>=this.view.start&&n.start<=this.view.start+this.view.length);if(!ns.length)return;
+  modeChanged(){this.audition.stop();this.resetHistory();this.customRange=null;this.predictionSelection=null;this.activateView();this.updateURL();this.render();this.h.run(()=>this.revisions());}
+  stashView(){if(this.viewKey)this.viewCache.set(this.viewKey,{...this.view});}
+  activateView(){const key=this.s.report.audio.content_sha256+'/'+(this.s.reference?.id||'working');
+    if(this.viewKey===key){this.syncView();return;}
+    this.viewKey=key;const saved=this.viewCache.get(key);
+    if(saved)this.view={...saved};else {const b=this.s.reference?this.bounds():[0,Math.min(15,this.s.report.audio.duration)];this.view.start=b[0];this.view.length=b[1]-b[0];this.fitPitch();}
+    this.syncView();
+  }
+  fitPitch(){const inside=n=>n.end>=this.view.start&&n.start<=this.view.start+this.view.length;
+    const primary=this.s.notes.filter(inside),other=[...this.s.report.predicted_notes,...(this.s.alternative?.predicted_notes||[])].filter(inside);
+    const p=primary.map(n=>n.pitch),ns=[...primary,...other.filter(n=>!p.length||n.pitch>=Math.min(...p)-12&&n.pitch<=Math.max(...p)+12)];if(!ns.length)return;
     const ps=ns.map(n=>n.pitch);this.view.span=this.M.clamp(Math.ceil(Math.max(...ps)-Math.min(...ps))+7,12,48);this.view.low=this.M.clamp((Math.max(...ps)+Math.min(...ps)-this.view.span)/2,-.5,127.5-this.view.span);}
-  fit(){if(!this.s.report)return;const b=this.s.reference?this.bounds():this.selected().length?[Math.min(...this.selected().map(n=>n.start))-.2,Math.max(...this.selected().map(n=>n.end))+.2]:[0,this.s.report.audio.duration];this.view.start=Math.max(0,b[0]);this.view.length=Math.min(this.s.report.audio.duration,b[1])-this.view.start;this.fitPitch();this.syncView();this.render();}
+  fit(kind='excerpt'){if(!this.s.report)return;let b;
+    if(kind==='song')b=[0,this.s.report.audio.duration];
+    else if(kind==='selected'){const ns=this.selected();if(!ns.length)throw Error('Select notes before fitting the selection.');b=[Math.max(0,Math.min(...ns.map(n=>n.start))-.15),Math.min(this.s.report.audio.duration,Math.max(...ns.map(n=>n.end))+.15)];}
+    else b=this.s.reference?this.bounds():[+this.$('loopstart').value,+this.$('loopend').value];
+    if(!(b[1]>b[0]))b=[0,Math.min(15,this.s.report.audio.duration)];this.view.start=b[0];this.view.length=b[1]-b[0];this.fitPitch();this.syncView();this.render();
+  }
+  openPanel(tab=this.inspectorTab){this.inspectorTab=tab;this.$('bottom-inspector').hidden=false;this.$('bottom-toggle').setAttribute('aria-expanded','true');
+    for(const [name,id] of [['review','review-tools'],['history','reference-tools'],['research','research-tools']]){this.$(id).hidden=name!==tab;this.$('tab-'+name).setAttribute('aria-selected',name===tab);}
+    requestAnimationFrame(()=>this.render());
+  }
+  closePanel(){this.$('bottom-inspector').hidden=true;this.$('bottom-toggle').setAttribute('aria-expanded','false');requestAnimationFrame(()=>this.render());}
+  zoomPitch(factor){const center=this.view.low+this.view.span/2;this.view.span=this.M.clamp(this.view.span*factor,4,60);this.view.low=center-this.view.span/2;this.syncView();this.render();}
   syncView(){if(!this.s.report)return;this.view.length=this.M.clamp(this.view.length,Math.min(.05,this.s.report.audio.duration),this.s.report.audio.duration);this.view.start=this.M.clamp(this.view.start,0,Math.max(0,this.s.report.audio.duration-this.view.length));this.view.span=this.M.clamp(this.view.span,4,60);this.view.low=this.M.clamp(this.view.low,-.5,127.5-this.view.span);this.$('viewstart').value=this.view.start;this.$('viewlength').value=this.view.length;}
   geometry(){const width=this.roll.clientWidth,height=this.roll.clientHeight,left=68,top=88,bottom=height-22;return {width,height,left,top,bottom,row:(bottom-top)/this.view.span};}
   x(t){const g=this.geometry();return g.left+(t-this.view.start)/this.view.length*(g.width-g.left);}
@@ -64,14 +84,21 @@ class MelodyEditor {
     act('audition-selected',()=>this.auditionSelected());
     for(const [id,dp] of [['audition-below',-1],['audition-above',1]])act(id,()=>{const n=this.selectionNote();if(!n)throw Error('Select a note first.');return this.audition.piano(this.M.clamp(n.pitch+dp,0,127));});
     act('audition-ab',async()=>{const n=this.selectionNote();if(!n)throw Error('Select a note first.');await this.audition.note(n,{...this.options(),mode:'vocal'});if(this.audition.segment)this.audition.segment.thenPiano=n.pitch;});
-    $('audition-mode').onchange=()=>{this.audition.stop();this.audition.mode=$('audition-mode').value;$('audition-status').textContent=`Click audition mode: ${$('audition-mode').selectedOptions[0].text}. The Play button always plays original audio.`;};
+    $('audition-mode').onchange=()=>{this.audition.mode=$('audition-mode').value;$('audition-status').textContent=`Next note: ${$('audition-mode').selectedOptions[0].text}. Keyboard keys always play piano; current playback is unchanged.`;};
     for(const id of ['piano-volume','vocal-volume'])$(id).oninput=()=>this.audition.setVolumes(+$('piano-volume').value,+$('vocal-volume').value);
     $('speed').onchange=()=>this.h.run(()=>{try{this.audition.speed(+$('speed').value);this.h.status(`Playback ${$('speed').value}× · browser pitch preservation requested · annotations retain original source seconds`);}catch(e){$('speed').value='1';throw e;}});
-    act('zoom-in',()=>this.zoomTime(.7));act('zoom-out',()=>this.zoomTime(1/.7));act('fit-view',()=>this.fit());
+    act('zoom-in',()=>this.zoomTime(.7));act('zoom-out',()=>this.zoomTime(1/.7));act('fit-view',()=>this.fit('excerpt'));act('fit-song',()=>this.fit('song'));act('fit-selected',()=>this.fit('selected'));act('reset-pitch',()=>{this.fitPitch();this.syncView();this.render();});act('pitch-zoom-in',()=>this.zoomPitch(.8));act('pitch-zoom-out',()=>this.zoomPitch(1.25));
     for(const id of ['viewstart','viewlength'])$(id).oninput=()=>{this.view.start=+$('viewstart').value;this.view.length=+$('viewlength').value;this.syncView();this.render();};
     act('mark-uncertain',()=>this.markUncertain());act('confirm-note',()=>{if(!this.s.checked.size)throw Error('Select a note or a review item.');this.commit(this.s.notes.map(n=>this.s.checked.has(n.id)?{...n,flags:[...new Set([...(n.flags||[]),'review_confirmed'])]}:n));});
     act('refresh-review',()=>this.compareModels());act('restore-revision',()=>this.restoreRevision());
-    act('finish-review',()=>{$('reference-tools').open=true;if(!this.s.reference){this.h.status('Choose an excerpt and start a reference draft before verifying it.');$('reference-annotator').focus();}else{$('reference-reviewer').focus();this.h.status('Listen to the whole excerpt, enter your name, and explicitly attest before saving a verified reference.');}});
+    act('finish-review',()=>{this.openPanel('history');if(!this.s.reference){this.h.status('Choose an excerpt and start a reference draft before verifying it.');$('reference-annotator').focus();}else{$('reference-reviewer').focus();this.h.status('Listen to the whole excerpt, enter your name, and explicitly attest before saving a verified reference.');}});
+    act('bottom-toggle',()=>this.$('bottom-inspector').hidden?this.openPanel():this.closePanel());act('bottom-close',()=>this.closePanel());
+    for(const button of document.querySelectorAll('[data-inspector-tab]'))button.onclick=()=>this.openPanel(button.dataset.inspectorTab);
+    act('maximize-editor',()=>{const maximized=document.body.classList.toggle('editor-maximized');$('maximize-editor').textContent=maximized?'Restore layout':'Maximize';requestAnimationFrame(()=>this.render());});
+    act('shortcut-button',()=>$('shortcut-help').showModal());act('shortcut-close',()=>$('shortcut-help').close());
+    let resize=null;const handle=$('bottom-resize');handle.onpointerdown=e=>{e.preventDefault();resize={y:e.clientY,height:$('bottom-inspector').getBoundingClientRect().height};handle.setPointerCapture(e.pointerId);};handle.onpointermove=e=>{if(!resize)return;const height=this.M.clamp(resize.height+resize.y-e.clientY,120,Math.min(330,innerHeight*.4));$('bottom-inspector').style.setProperty('--bottom-height',height+'px');handle.setAttribute('aria-valuenow',Math.round(height));};handle.onpointerup=()=>resize=null;handle.onpointercancel=()=>resize=null;
+    handle.onkeydown=e=>{if(!['ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();const height=this.M.clamp($('bottom-inspector').getBoundingClientRect().height+(e.key==='ArrowUp'?20:-20),120,Math.min(330,innerHeight*.4));$('bottom-inspector').style.setProperty('--bottom-height',height+'px');};
+    document.addEventListener('pointerdown',e=>{for(const menu of document.querySelectorAll('.popover[open]'))if(!menu.contains(e.target))menu.open=false;});
     for(const key of ['pitch','start','end'])$(`inspect-${key}`).onchange=()=>this.h.run(()=>{const ns=this.M.clone(this.s.notes),n=ns.find(n=>this.s.checked.has(n.id));if(!n)return;n[key]=+$(`inspect-${key}`).value;n.duration=n.end-n.start;n.flags=[...new Set([...(n.flags||[]),'human_corrected'])];this.commit(ns);});
     this.roll.addEventListener('pointerdown',e=>this.h.run(()=>this.down(e)));
     this.roll.addEventListener('pointermove',e=>this.h.run(()=>this.movePointer(e)));
@@ -80,6 +107,7 @@ class MelodyEditor {
     this.roll.addEventListener('dblclick',e=>this.h.run(()=>{if(e.target.closest('.note-block,.piano-key')||this.readonly()||this.$('edit-tool').value!=='select')return;const p=this.point(e),g=this.geometry();if(p.x<g.left||p.y<g.top)return;const t=this.time(p.x),pitch=this.$('pitch-snap').checked?Math.round(this.pitch(p.y)):this.pitch(p.y);this.commit(this.M.add(this.s.notes,t,Math.min(t+.25,this.bounds()[1]),pitch,this.bounds(),crypto.randomUUID()));}));
     this.roll.addEventListener('wheel',e=>{if(!this.s.report)return;e.preventDefault();const p=this.point(e);if(e.ctrlKey)this.zoomTime(Math.exp(e.deltaY*.002),p.x);else if(e.altKey){const anchor=this.pitch(p.y),g=this.geometry(),ratio=(g.bottom-p.y)/(g.bottom-g.top);this.view.span=this.M.clamp(this.view.span*Math.exp(e.deltaY*.002),4,60);this.view.low=anchor-ratio*this.view.span;this.syncView();this.render();}else {if(e.shiftKey)this.view.start+=e.deltaY/600*this.view.length;else this.view.low-=e.deltaY/this.geometry().row*.3;this.syncView();this.render();}}, {passive:false});
     document.addEventListener('keydown',e=>{
+      if(e.defaultPrevented||e.target.closest('dialog'))return;
       if(e.key==='Escape'){this.cancelGesture();return;}
       if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||this.$('review').classList.contains('hidden'))return;
       if(e.code==='Space'){e.preventDefault();this.h.run(()=>this.audition.full());}
@@ -95,7 +123,6 @@ class MelodyEditor {
       if(!check.ok){const error=await check.json();throw Error(error.error||'Original source audio could not be validated. Reanalyze before annotation.');}
       if(this.s.id!==id)return;$('audio').src='/api/audio?id='+encodeURIComponent(id);this.h.status('Browser cannot decode the original format. Using the existing mono/resampled playback copy with unchanged source seconds.',true);
     }));
-    document.querySelectorAll('#editor-bottom>details').forEach(d=>d.addEventListener('toggle',()=>requestAnimationFrame(()=>this.render())));
   }
   zoomTime(factor,anchorX){if(!this.s.report)return;const g=this.geometry(),x=anchorX??(g.left+g.width)/2,t=this.time(x);this.view.length=this.M.clamp(this.view.length*factor,.05,this.s.report.audio.duration);this.view.start=t-(x-g.left)/(g.width-g.left)*this.view.length;this.syncView();this.render();}
   down(e){
@@ -183,7 +210,7 @@ class MelodyEditor {
   render(){if(!this.s.report)return;this.syncView();this.paint();this.renderNotes(this.s.notes);this.inspector();this.renderQueue();this.renderRegions();this.tick();
     this.$('undo').disabled=this.readonly()||!this.history.undo.length;this.$('redo').disabled=this.readonly()||!this.history.redo.length;
     this.$('mode-badge').textContent=this.s.reference?`${this.s.reference.origin.kind==='published_human_dataset'?'Published reference':this.dirty||this.s.reference.review.status!=='reviewed'?'UNREVIEWED reference draft':'Reviewed reference'}${this.dirty?' · unsaved':''}`:`Working corrections${this.dirty?' · unsaved':''}`;
-    this.$('guide').textContent=this.s.reference?`${this.bounds()[0].toFixed(3)}–${this.bounds()[1].toFixed(3)} source seconds · ${this.s.reference.origin.kind==='model_assisted_draft'?'Model-assisted labels require your listening and correction.':'Inspect the edition by ear.'} Finish review requires your explicit attestation.`:'Choose 5–12 source seconds → listen → blank or model-assisted draft → visual correction → uncertainty → listen again → attest & save.';
+    this.$('guide').textContent=this.s.reference?`${this.bounds()[0].toFixed(3)}–${this.bounds()[1].toFixed(3)} source seconds · ${this.s.notes.length} reference notes · ${this.s.reference.review.status==='reviewed'&&!this.dirty?'saved reviewed edition':'human listening and review required'}`:'Auto: click a note to hear the singer; click a piano key for a clean pitch. Save working corrections or create an independent reference.';
     this.$('view-readout').textContent=`${this.view.start.toFixed(2)}–${(this.view.start+this.view.length).toFixed(2)} s · ${this.view.span.toFixed(1)} semitones`;
   }
   paint(){
@@ -208,7 +235,7 @@ class MelodyEditor {
   renderKeyboard(){const g=this.geometry(),parent=this.$('piano-keys');parent.replaceChildren();
     for(let p=Math.max(0,Math.ceil(this.view.low-.5));p<=Math.min(127,Math.floor(this.view.low+this.view.span+.5));p++){
       const button=document.createElement('button');button.type='button';button.className='piano-key'+([1,3,6,8,10].includes(p%12)?' black':'');button.dataset.pitch=p;button.textContent=this.M.pitchName(p);button.setAttribute('aria-label',`Piano ${this.M.pitchName(p)} · ${this.M.hz(p).toFixed(2)} Hz`);button.title=button.getAttribute('aria-label');button.style.top=(this.y(p)-g.top-g.row/2)+'px';button.style.height=g.row+'px';
-      button.onclick=()=>this.h.run(async()=>{this.pitchReadout(p);const ns=this.predictionSelection?[this.predictionSelection,...this.s.notes]:this.s.notes,ids=this.predictionSelection?new Set([this.predictionSelection.id]):this.s.checked;await this.audition.keyboard(p,ids,ns,this.options(this.$('loop').checked));});parent.append(button);
+      button.onclick=()=>this.h.run(async()=>{this.pitchReadout(p);await this.audition.keyboard(p);});parent.append(button);
     }
   }
   renderNotes(ns,preview=false){const g=this.geometry(),layer=this.$('note-layer');layer.replaceChildren();
@@ -221,7 +248,7 @@ class MelodyEditor {
       block.onclick=e=>{if(e.detail===0){this.select(n.id,e.shiftKey);if(this.$('auto-audition').checked)this.h.run(()=>this.audition.note(n,this.options(this.$('loop').checked)));}};layer.append(block);
     }
   }
-  inspector(){const ns=this.selected(),n=this.selectionNote(),rawOnly=!ns.length&&!!this.predictionSelection;this.$('selection-summary').textContent=rawOnly?'Raw model prediction · listen only; reference labels stay separate':ns.length?`${ns.length} selected · drag body to move, edges to resize`:'Shift-click / Shift-drag to multi-select. Draw tool adds notes.';
+  inspector(){const ns=this.selected(),n=this.selectionNote(),rawOnly=!ns.length&&!!this.predictionSelection;this.$('selection-summary').textContent=rawOnly?'Raw prediction · read only':ns.length?`${ns.length} selected`:'Click a note · Shift-click for a group';
     for(const key of ['pitch','start','end']){const input=this.$('inspect-'+key);if(document.activeElement!==input)input.value=n?n[key]:'';input.disabled=!n||rawOnly||this.readonly();}
     if(n){this.pitchReadout(n.pitch);this.$('inspect-duration').textContent=`Duration ${(n.end-n.start).toFixed(6)} s · phrase ${n.phrase}`;
       this.$('inspect-confidence').textContent=n.flags?.includes('confidence_unavailable')?'Note-model confidence unavailable. F0 confidence is separate.':`Estimator confidence ${n.confidence.toFixed(3)} · not a correctness probability`;

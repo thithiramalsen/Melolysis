@@ -22,6 +22,7 @@ from .storage import key_for, latest_correction, correction_history, save_correc
 from .transcription import assign_phrases
 from .references import ReferenceStore
 from .real_metrics import score_reference
+from .library import recording_groups,validate_corpus_sources
 
 log = logging.getLogger(__name__)
 STATIC = Path(__file__).parent / "web"
@@ -127,7 +128,14 @@ class Workspace:
             if action in {"profile", "compose", "exercises"}:
                 reports = [self.get_report(i)[1] for i in data["ids"]]
                 reference = [self.get_report(i)[1] for i in data.get("reference_ids", [])]
+                source_context=[json.loads(p.read_text(encoding='utf-8')) for p in self.catalog().values()]
+                refs=self.references.list()
+                reports,scope=validate_corpus_sources(reports,refs,data.get('allow_research',False),source_context)
+                reference,reference_scope=validate_corpus_sources(reference,refs,data.get('allow_research',False),source_context)
                 profile = profile_artist(reports, data.get("artist", "Selected recordings"), reference)
+                profile['corpus_scope']=scope
+                if scope['research_opt_in'] or reference_scope['research_opt_in']:
+                    profile['warnings'].append('Explicit research corpus: includes dataset recordings; do not interpret this as a single artist-specific corpus.')
                 exercises = songwriting_exercises(profile)
                 profile["exercises"] = exercises
                 if action != "compose":
@@ -184,7 +192,9 @@ def make_handler(workspace):
                             "model": r["provenance"]["note_model"], "notes": len(r["notes"]),
                             'estimator':r['raw_pitch']['model'],'prediction_id':r['prediction_id'],
                             "correction_revision": r["provenance"].get("correction_revision")})
-                    return self.send(200, {"analyses": rows})
+                    refs=workspace.references.list()
+                    return self.send(200, {"analyses": rows,'recordings':recording_groups(rows,refs),
+                        'selection_policy':'Unique source hashes; no automatic inclusion; research datasets require explicit corpus opt-in'})
                 if parsed.path == "/api/report":
                     return self.send(200, workspace.get_report(query["id"])[1])
                 if parsed.path=='/api/references':
@@ -218,7 +228,7 @@ def make_handler(workspace):
                         raise ValueError("Invalid candidate")
                     return self.send_file(workspace.root/"compositions"/identifier/f"candidate-{index}.mid", attachment=True)
                 files = {"/": "index.html", "/app.js": "app.js", "/style.css": "style.css",
-                    '/editor-core.js':'editor-core.js','/editor.js':'editor.js','/audition.js':'audition.js'}
+                    '/editor-core.js':'editor-core.js','/editor.js':'editor.js','/audition.js':'audition.js','/library.js':'library.js'}
                 if parsed.path in files:
                     path = STATIC/files[parsed.path]
                     return self.send(200, path.read_bytes(), mimetypes.guess_type(path)[0] or "text/plain")

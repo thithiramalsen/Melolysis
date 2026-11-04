@@ -1,0 +1,382 @@
+{
+  "date": "2026-11-04",
+  "runner": "@playwright/test 1.64.1",
+  "node": "v24.14.0",
+  "stats": {
+    "startTime": "2026-11-04T11:09:13.718Z",
+    "duration": 121106.227,
+    "expected": 58,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "name": "draft, full source audio, bounded layout and distinct prediction layers",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1395
+    },
+    {
+      "name": "direct move commits only on release, preserves fractional pitch and correct note identity",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1396
+    },
+    {
+      "name": "resize clamps neighbours and source bounds, with undo/redo",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1670
+    },
+    {
+      "name": "split, compatible merge, delete, drawing and undo/redo use the same edit history",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 2471
+    },
+    {
+      "name": "multi-selection moves two notes and region uncertainty has undo/redo",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1571
+    },
+    {
+      "name": "pitch keyboard stays aligned after time/pitch zoom and middle pan",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1590
+    },
+    {
+      "name": "saved reference edits survive refresh; revision restore appends an unreviewed revision",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1884
+    },
+    {
+      "name": "working corrections and reference histories stay independent",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1881
+    },
+    {
+      "name": "review queue uses measurable disagreement, never verifies references automatically",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1344
+    },
+    {
+      "name": "piano keys generate measured A4 and A sharp frequencies without starting vocal audio",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1455
+    },
+    {
+      "name": "vocal segment audition uses edited source boundaries with preroll/postroll and loop",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 3224
+    },
+    {
+      "name": "Both mode has one vocal source, simultaneous audible buses and independent volumes",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 2053
+    },
+    {
+      "name": "slow playback preserves source timestamps and requested pitch, with synchronized playhead",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 2031
+    },
+    {
+      "name": "Keyboard stays piano in Vocal override and Space plays complete original audio in Piano mode",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1054
+    },
+    {
+      "name": "Escape cancels a drag without symbolic changes or an extra history step",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1112
+    },
+    {
+      "name": "A/B plays original vocal then reference, with no vocal pitch-shift claim",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 2073
+    },
+    {
+      "name": "working revision restore appends a correction and review attestation clears on note edits",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 2748
+    },
+    {
+      "name": "range tool and missing-note queue windows remain source-aligned without inventing labels",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1551
+    },
+    {
+      "name": "review suggestions are confined to a short reference excerpt",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1259
+    },
+    {
+      "name": "raw predicted notes can be auditioned without populating a blank human reference",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1611
+    },
+    {
+      "name": "Auto routes annotation clicks to original vocal and every keyboard override to clean piano",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 2783
+    },
+    {
+      "name": "Audition on click can be disabled; manual note overrides preserve their separate routes",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 2335
+    },
+    {
+      "name": "vertical drag previews proposed piano pitch before commit and supports undo",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1457
+    },
+    {
+      "name": "reference framing fits excerpt and pitch events; mode-specific deliberate views survive switching",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 2010
+    },
+    {
+      "name": "collapsed resizable inspector and maximize preserve notes, viewport and continuous playback",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 2339
+    },
+    {
+      "name": "unique-recording bulk scope, filtered actions and tri-state groups never discard edits or stop playback",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1938
+    },
+    {
+      "name": "model variants and references remain discoverable under their source; search and model filters work",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1211
+    },
+    {
+      "name": "Vocadito source policy requires explicit UI and API opt-in even when all recordings are selected",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1230
+    },
+    {
+      "name": "changing audition mode and corpus selection does not interrupt whole-song playback",
+      "viewport": "1366x768",
+      "status": "passed",
+      "duration_ms": 1505
+    },
+    {
+      "name": "draft, full source audio, bounded layout and distinct prediction layers",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1310
+    },
+    {
+      "name": "direct move commits only on release, preserves fractional pitch and correct note identity",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1489
+    },
+    {
+      "name": "resize clamps neighbours and source bounds, with undo/redo",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1855
+    },
+    {
+      "name": "split, compatible merge, delete, drawing and undo/redo use the same edit history",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 2741
+    },
+    {
+      "name": "multi-selection moves two notes and region uncertainty has undo/redo",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1741
+    },
+    {
+      "name": "pitch keyboard stays aligned after time/pitch zoom and middle pan",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1810
+    },
+    {
+      "name": "saved reference edits survive refresh; revision restore appends an unreviewed revision",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1865
+    },
+    {
+      "name": "working corrections and reference histories stay independent",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1685
+    },
+    {
+      "name": "review queue uses measurable disagreement, never verifies references automatically",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1138
+    },
+    {
+      "name": "piano keys generate measured A4 and A sharp frequencies without starting vocal audio",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1283
+    },
+    {
+      "name": "vocal segment audition uses edited source boundaries with preroll/postroll and loop",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 3126
+    },
+    {
+      "name": "Both mode has one vocal source, simultaneous audible buses and independent volumes",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 2091
+    },
+    {
+      "name": "slow playback preserves source timestamps and requested pitch, with synchronized playhead",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 2253
+    },
+    {
+      "name": "Keyboard stays piano in Vocal override and Space plays complete original audio in Piano mode",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1186
+    },
+    {
+      "name": "Escape cancels a drag without symbolic changes or an extra history step",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1177
+    },
+    {
+      "name": "A/B plays original vocal then reference, with no vocal pitch-shift claim",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 2123
+    },
+    {
+      "name": "working revision restore appends a correction and review attestation clears on note edits",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 3123
+    },
+    {
+      "name": "range tool and missing-note queue windows remain source-aligned without inventing labels",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1792
+    },
+    {
+      "name": "review suggestions are confined to a short reference excerpt",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1522
+    },
+    {
+      "name": "raw predicted notes can be auditioned without populating a blank human reference",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1815
+    },
+    {
+      "name": "Auto routes annotation clicks to original vocal and every keyboard override to clean piano",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 3119
+    },
+    {
+      "name": "Audition on click can be disabled; manual note overrides preserve their separate routes",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 2456
+    },
+    {
+      "name": "vertical drag previews proposed piano pitch before commit and supports undo",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1541
+    },
+    {
+      "name": "reference framing fits excerpt and pitch events; mode-specific deliberate views survive switching",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 2217
+    },
+    {
+      "name": "collapsed resizable inspector and maximize preserve notes, viewport and continuous playback",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 2656
+    },
+    {
+      "name": "unique-recording bulk scope, filtered actions and tri-state groups never discard edits or stop playback",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 2296
+    },
+    {
+      "name": "model variants and references remain discoverable under their source; search and model filters work",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1340
+    },
+    {
+      "name": "Vocadito source policy requires explicit UI and API opt-in even when all recordings are selected",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1564
+    },
+    {
+      "name": "changing audition mode and corpus selection does not interrupt whole-song playback",
+      "viewport": "1920x1080",
+      "status": "passed",
+      "duration_ms": 1588
+    }
+  ],
+  "source_sha256": {
+    "src/web/editor-core.js": "50089cdc49250ea75b40776fa4f81f34115a63b1e5f7502a3fde9a37a32b7253",
+    "src/web/editor.js": "598e0acaafe6aa09c203cf86bb8e70a4b6f77eb07d4b397da48aac35f06eb44a",
+    "src/web/audition.js": "cb2b5697a766aa02347430b5318eed746fa8a116aa592ac4105f7418719ce19a",
+    "src/web/app.js": "9c94e8a627704b2fde262f3d840743a95be0034d10a54840ab0f2230edd613e2",
+    "src/web/index.html": "dde4cbcb1c7b014cd35f4d2dd22d4b889596279241da936117532e9d4360c3cb",
+    "src/web/style.css": "4145be5e203c56d17529afe5b5510157a9bd87cae8092c9135354c914d748948",
+    "src/references.py": "fb0a65e15df1c93af81da5c38db52f48cb78808283b0cf91a37fd9b41b0fb707",
+    "src/storage.py": "e75b9edf4041fdcca58342e8e1f91b5e0a0a734c97fdc01f387f59ad0d00088f",
+    "src/workspace.py": "6a8e8c1db1a8f6274acb9ab7d62c19ec067390390e7d6dd4903197626dc08c87",
+    "tests/browser/editor.spec.cjs": "bbdadf1efe3a036ac5af84e5af063cffa827b825ff67631e597990d4ba7af646",
+    "package-lock.json": "a10d8a155612d0ef1c5fc467c7234e28b2d1363ee79f84afc323a223ac846734",
+    "src/library.py": "093d2f7128e19339c44437f94dd96ab998d7c4f7d12c9671159b928fc532c67a",
+    "src/web/library.js": "92748c6e4352c0304695bd9645395fae4b1e1b69e129cca2527be762c2002edc",
+    "tests/test_library.py": "017a788ed5916b3d21e409a89ef70d8281cb25c212f52e60d341496bc6eeda02",
+    "tools/editor_test_server.py": "9f9c7033e9e11676a2ec1202155b9947b94346e2dbf8a4823def184a06e2fd62"
+  },
+  "scope": "Headless Chromium, speakers muted; one worker; disposable synthetic audio and references only; no user annotations created/reviewed",
+  "limitation": "Actual oscillator and decoded media signals measured internally; no acoustic output/device-latency or perceptual singing-quality validation"
+}

@@ -1,5 +1,8 @@
 # Annotation editor validation — 2026-11-04
 
+Historical editor milestone. The current contextual-audition/library cleanup and
+its new checks are recorded in [UX_VALIDATION.md](UX_VALIDATION.md).
+
 The DAW-style editor and dual audition are implemented in the existing workspace.
 No transcription model, generator or archived benchmark result changed. The user
 still supplies human musical judgments; no MHS labels were fabricated or verified.

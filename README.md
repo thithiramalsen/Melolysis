@@ -18,7 +18,10 @@ See the [real-vocal results](docs/REAL_VOCAL_VALIDATION.md),
 
 The integrated [visual annotation editor](docs/ANNOTATION_EDITOR.md) now supports
 direct note dragging/resizing, a pitch-aligned piano keyboard, original-vocal and
-piano/Both audition, loops, slow playback, undo/redo and independent revision restore.
+contextual piano/vocal audition, loops, slow playback, undo/redo and independent
+revision restore. Recording-level grouping, scoped corpus selection and a collapsed
+tabbed inspector keep the main editor clear. [Current UX validation](docs/UX_VALIDATION.md)
+records browser/audio checks and source-integrity regression.
 [Browser and audio validation](docs/EDITOR_VALIDATION.md) records the tested scope.
 
 ## Quick start — Windows PowerShell
@@ -64,17 +67,22 @@ requirements are preferable when using a different Python or OS.
 ## Review and correct
 
 1. Import one or several recordings, or analyze existing paths using the CLI.
+   Model runs are grouped by source hash. Corpus checkboxes and bulk actions select
+   unique recordings independently from the opened editor. Research/Vocadito is
+   separate and excluded from artist corpora unless explicitly enabled.
 2. Select a recording. Inspect its waveform, raw expressive F0, symbolic notes,
    phrase boundaries, confidence and review flags on the same source-second axis.
 3. Click note blocks, drag their bodies to change pitch/timing, and drag edges to
    resize. Shift-click/drag selects a group. Use Draw, Split, Merge and Delete;
    Ctrl+Z / Ctrl+Shift+Z undo/redo unsaved notes and uncertainty regions.
-4. Choose Piano reference, Original vocal or Both audition; optionally audition on
-   note click. Piano keys include all visible semitones. Use independent volumes,
-   pre/post roll, note/phrase loops and 0.5×/0.75× pitch-preserving playback.
+4. Leave **Auto / By clicked target** selected: notes play the original vocal and
+   piano keys always play clean reference pitches. Piano/Vocal/Both are deliberate
+   note overrides. Turn off **On click** for silent selection. Listen → Settings
+   contains pre/post-roll and drag preview; Range contains note/phrase loops.
+   Use independent volumes and 0.5×/0.75× pitch-preserving playback.
 5. Inspect the review queue, then save an immutable revision. Restoring history
    appends a new revision. Exact table fields and research controls remain under
-   **Advanced table & research**. Raw predictions remain separate.
+   **Inspector → Advanced / research**. Raw predictions remain separate.
 
 Prediction files, original recordings and manual editions are separate. Selecting
 another model never deletes corrections; a correction stays attached to the input
@@ -85,7 +93,7 @@ error; select/export the lead melody in your DAW before importing it.
 ### Create a human reference
 
 Normal working corrections and evaluation references have separate histories.
-Use the reference toolbar and **Reference setup, review & revisions**; select source-time loop bounds,
+Use the reference toolbar and **Inspector → History / revisions**; select source-time loop bounds,
 enter your name and choose a blank reference or a clearly marked model-seeded draft.
 Edit pitch/onset/offset and phrase fields; add, split, merge or delete events. Label
 ambiguous spans using **Uncertain** with a reason. Green bars show the reference;
