@@ -90,6 +90,16 @@ class ReferenceStore:
             raise ValueError('Reference identity mismatch')
         return validate_reference(value)
 
+    def history(self, identifier):
+        return sorted([self.load(identifier,p.stem) for p in self.path(identifier).glob('*.json')
+            if p.stem!='latest'],key=lambda r:r.get('saved_at',r.get('created_at','')),reverse=True)
+
+    def restore(self, identifier, revision, base_revision):
+        current=self.load(identifier);old=self.load(identifier,revision)
+        # Reinstating old labels never reinstates a listening attestation or split.
+        return self.save(identifier,old['notes'],old.get('regions',[]),current['annotator'],
+            base_revision=base_revision,restored_from_revision=revision)
+
     def check_split(self, value):
         if value['split']=='unassigned':
             return
@@ -137,7 +147,7 @@ class ReferenceStore:
         return self._append(value)
 
     def save(self, identifier, notes, regions, annotator, reviewer='', reviewed=False, attestation=False,
-             base_revision=None,split=None,song_group=None):
+             base_revision=None,split=None,song_group=None,restored_from_revision=None):
         previous=self.load(identifier)
         if base_revision is not None and previous['revision']!=base_revision:
             raise ValueError('Reference changed since it was loaded; reload before saving')
@@ -154,6 +164,9 @@ class ReferenceStore:
             'review':{'status':'reviewed' if reviewed else 'draft','reviewer':reviewer.strip(),
                       'attestation':bool(attestation),'reviewed_at':now() if reviewed else None,
                       'second_person_review':bool(reviewed and reviewer.strip()!=annotator.strip())}}
+        value.pop('restored_from_revision',None)
+        if restored_from_revision:
+            value['restored_from_revision']=restored_from_revision
         return self._append(value)
 
     def import_published(self, value):

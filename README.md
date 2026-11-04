@@ -16,6 +16,11 @@ See [measured evaluation and limitations](docs/EVALUATION.md),
 See the [real-vocal results](docs/REAL_VOCAL_VALIDATION.md),
 [model environment setup](docs/MODEL_SETUP.md) and [human annotation protocol](docs/ANNOTATION_PROTOCOL.md).
 
+The integrated [visual annotation editor](docs/ANNOTATION_EDITOR.md) now supports
+direct note dragging/resizing, a pitch-aligned piano keyboard, original-vocal and
+piano/Both audition, loops, slow playback, undo/redo and independent revision restore.
+[Browser and audio validation](docs/EDITOR_VALIDATION.md) records the tested scope.
+
 ## Quick start — Windows PowerShell
 
 The existing project venv works with Python 3.14.3. For a fresh core installation,
@@ -61,12 +66,15 @@ requirements are preferable when using a different Python or OS.
 1. Import one or several recordings, or analyze existing paths using the CLI.
 2. Select a recording. Inspect its waveform, raw expressive F0, symbolic notes,
    phrase boundaries, confidence and review flags on the same source-second axis.
-3. Set a view window; click the timeline to seek. Select note rows and choose
-   **Loop selected notes** to focus on a region.
-4. Edit start/end/pitch fields; add, split at the playhead, merge or delete notes.
-   Undo is available for unsaved edits. Save creates an immutable correction revision.
-5. Inspect raw predictions independently. Alternative analyses of the same audio
-   can be overlaid. MIDI, CSV and JSON exports reflect the active human edition.
+3. Click note blocks, drag their bodies to change pitch/timing, and drag edges to
+   resize. Shift-click/drag selects a group. Use Draw, Split, Merge and Delete;
+   Ctrl+Z / Ctrl+Shift+Z undo/redo unsaved notes and uncertainty regions.
+4. Choose Piano reference, Original vocal or Both audition; optionally audition on
+   note click. Piano keys include all visible semitones. Use independent volumes,
+   pre/post roll, note/phrase loops and 0.5×/0.75× pitch-preserving playback.
+5. Inspect the review queue, then save an immutable revision. Restoring history
+   appends a new revision. Exact table fields and research controls remain under
+   **Advanced table & research**. Raw predictions remain separate.
 
 Prediction files, original recordings and manual editions are separate. Selecting
 another model never deletes corrections; a correction stays attached to the input
@@ -77,11 +85,13 @@ error; select/export the lead melody in your DAW before importing it.
 ### Create a human reference
 
 Normal working corrections and evaluation references have separate histories.
-Open **Independent human reference annotations**, select source-time loop bounds,
+Use the reference toolbar and **Reference setup, review & revisions**; select source-time loop bounds,
 enter your name and choose a blank reference or a clearly marked model-seeded draft.
 Edit pitch/onset/offset and phrase fields; add, split, merge or delete events. Label
 ambiguous spans using **Uncertain** with a reason. Green bars show the reference;
 red bars show raw predictions. Download saved reference JSON for backup.
+In reference mode the header exports the **saved reference JSON**. Working-mode
+MIDI/CSV/report exports remain separate; switch to Working mode to access them.
 
 For the supplied **MHS Chorus.wav**, a draft is ready at **0.500–6.500 source
 seconds**, with **11 predicted events** requiring review. Select that recording,
@@ -100,8 +110,10 @@ for your recording until independently corrected F0 labels are supplied.
 The interface supports microphone recording into local PCM WAV, but browser/device
 permission and end-to-end microphone capture were not tested. Recording does not
 upload audio to a remote service. Use the file-import alternative if a microphone
-is unavailable. Playback reference audio is a mono/resampled copy; only its
-playback level is reduced if float input exceeds full scale. Source audio stays intact.
+is unavailable. Editor playback streams the original audio and channels after a
+source-hash check. Unsupported browser codecs explicitly fall back to the existing
+mono/resampled playback copy. Source audio stays intact. Browser latency and
+time-stretch sound quality require listening on your own device.
 
 ## Build an artist corpus
 
@@ -230,6 +242,20 @@ The older `evaluate` command accepts legacy manifests and does not enforce the
 new human-review/split gates. Both score raw predictions, never active corrections.
 Optional neural models/weights and their licenses are documented in
 [MODEL_COMPARISON.md](docs/MODEL_COMPARISON.md).
+
+Optional browser regression tests (Node/Chromium are not production requirements):
+
+```powershell
+npm ci --ignore-scripts
+$env:PLAYWRIGHT_BROWSERS_PATH="$PWD\.cache\ms-playwright"
+npx playwright install chromium
+npm run test:editor
+npm run test:browser
+```
+
+These use disposable synthetic fixtures, headless Chromium and muted speaker
+output while measuring actual Web Audio/decoded media signals. They do not create
+human annotations or establish real-singing perceptual audio quality.
 
 ## Storage, compatibility and remaining limits
 

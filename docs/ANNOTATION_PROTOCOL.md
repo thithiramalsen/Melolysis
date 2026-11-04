@@ -11,7 +11,7 @@ with uncertainty recorded explicitly. A model-assisted draft is not ground truth
    Set **Loop from/to** to the original source times; do not subtract the excerpt
    start from note timestamps.
 2. Open **Independent human reference annotations**. Enter your name and choose
-   **New blank reference**, or explicitly choose **Seed draft from predictions**.
+   **New blank reference**, or explicitly choose **Seed draft**.
    Seeding records the model identity and leaves the annotation unreviewed.
 3. Assign a song/singer group and a development or heldout split before evaluation.
    The same recording or group cannot occur in both. Use separate songs/singers
@@ -49,17 +49,21 @@ they do not replace independently corrected continuous F0 annotations.
 
 1. In reference mode, green bars are the reference edition and red bars are the
    immutable raw prediction. The audio, waveform and F0 retain source time.
-2. Edit onset, offset, fractional MIDI pitch and phrase membership in the table.
-   Add missing notes, split at the playhead, merge fragments and delete false
-   events. Loop selected notes to inspect their attacks and transitions.
+2. Drag note bodies to adjust timing/pitch, and drag edges to resize. Use Draw for
+   missing notes, split at the playhead, merge compatible fragments and delete
+   false events. Fractional pitch and exact source timing remain available in the
+   inspector/advanced table. Use note/phrase loops and piano/original-vocal audition
+   to inspect attacks and transitions. A reference tone is a listening aid, not truth.
 3. For an uncertain region, set loop bounds, choose **Uncertain**, enter a reason
-   and use **Label loop region**. Other region types document vibrato, glissandi,
+   and use **Mark selected range uncertain** in the inspector (or **Label loop region**
+   in the advanced setup). Other region types document vibrato, glissandi,
    grace notes, repeated attacks, breaths, leakage and known melismas. Region JSON
    can be edited to correct or remove a label.
 4. Save a draft whenever needed. Reference revisions are stored separately from
    normal corrections and model predictions. Earlier saved revisions remain intact.
    Save before changing recording/editor mode; unsaved edits are not automatically
-   promoted or considered annotations.
+   promoted or considered annotations. Visual edits and region changes share
+   undo/redo. Restoring a saved reference appends a draft and clears attestation.
 5. Listen to the **whole excerpt**, then verify every pitch, onset, offset, pause
    and uncertain region. Enter the reviewer's name and tick the listening/review
    attestation before saving a reviewed revision. Editing notes/regions clears

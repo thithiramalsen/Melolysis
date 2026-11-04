@@ -58,3 +58,6 @@ generated_melody.mid
 
 # Analysis cache, imported recordings, correction history and generated explorations.
 outputs/
+node_modules/
+test-results/
+playwright-report/

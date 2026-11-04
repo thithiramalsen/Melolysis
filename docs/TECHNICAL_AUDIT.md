@@ -131,3 +131,29 @@ boundaries and genuine quiet offsets; (4) harmonized, noisy/separated and long a
 (5) artist-level sensitivity on a genuine multi-song corpus. Neither published
 annotation edition is selected to favor a model. Detailed outcomes and limits are
 in [REAL_VOCAL_VALIDATION.md](REAL_VOCAL_VALIDATION.md).
+
+## Visual annotation editor audit — 2026-11-04
+
+Inspected `src/web/app.js`, `index.html`, `style.css`, `workspace.py`, `storage.py`
+and `references.py` before editing. Existing capabilities were aligned canvas
+overlays, audio playback/click-to-seek, table selection/editing, split/merge/delete
+buttons, note-only undo and immutable correction/reference saves. There was no
+note drag/resize, redo, aligned keyboard, dual audition, review queue or
+revision-restore interface. The same state, canvas, media element, source timebase
+and persistence APIs are reused; no parallel editor or annotation store was added.
+
+| Severity | Finding | Response / evidence |
+|---|---|---|
+| High | Table entry was cumbersome; note blocks had no direct manipulation. | Shared pure edit operations, pitch-aligned keyboard/grid, source constraints and pointer commit/cancel. Superseded edit handlers removed. |
+| High | Note-only undo omitted region edits and redo. | Atomic notes/regions/selection history; immutable saved-history restore appends an edition and clears reference attestation. |
+| High | Reference-mode header exports could return working notes instead of the selected reference. | Explicit saved-reference JSON in reference mode; working MIDI/CSV/report exports remain separate and are browser-tested. |
+| High | First A/B prototype showed a reference frequency but a deferred vocal pause stopped its oscillator. | Actual RMS test found silence. Sequence now waits for pause before piano; final tests verify rendered audio rather than UI status alone. |
+| Medium | Playback used only the analysis copy and offered no separate piano/original-vocal listening aid. | Hash-checked original streaming, explicit codec fallback, single vocal source, independent bus gains and target reference tones. |
+| Medium | Initial alternative-only flags included events outside a short reference excerpt. | Excerpt-scoped suggestions with a dedicated regression; no automatic annotation or confidence promotion. |
+
+Final verification: 66 Python tests, 11 JavaScript core tests and 40 actual browser
+checks (20 cases at two viewports). All 64 archived real-vocal event comparisons
+reproduce identically. Original private audio/reference, correction histories,
+benchmark artifacts and generation/transcription algorithms were checked unchanged.
+Measured signals, screenshots, usage and browser/device limits:
+[EDITOR_VALIDATION.md](EDITOR_VALIDATION.md), [ANNOTATION_EDITOR.md](ANNOTATION_EDITOR.md).

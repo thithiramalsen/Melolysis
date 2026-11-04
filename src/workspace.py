@@ -18,7 +18,7 @@ from .motifs import discover_motifs
 from .note_models import attach_frames
 from .pipeline import analyze_file, export_notes, load_report
 from .schema import AnalysisConfig, PitchTrack, notes_from_dicts
-from .storage import key_for, latest_correction, save_correction, write_json
+from .storage import key_for, latest_correction, correction_history, save_correction, write_json,content_hash
 from .transcription import assign_phrases
 from .references import ReferenceStore
 from .real_metrics import score_reference
@@ -78,6 +78,17 @@ class Workspace:
                 return self.references.save(data['reference_id'],data['notes'],data.get('regions',[]),
                     data['annotator'],data.get('reviewer',''),bool(data.get('reviewed',False)),
                     bool(data.get('attestation',False)),data.get('base_revision'),data.get('split'),data.get('song_group'))
+            if action=='reference-restore':
+                return self.references.restore(data['reference_id'],data['revision'],data['base_revision'])
+            if action=='restore-correction':
+                path,r=self.get_report(data['id'])
+                if 'base_revision' in data and data['base_revision']!=r['provenance'].get('correction_revision'):
+                    raise ValueError('Working correction changed since loading; reload before restoring')
+                revisions=correction_history(self.root/'corrections',r['audio']['content_sha256'])
+                old=next((v for v in revisions if v['revision']==data['revision']),None)
+                if old is None: raise ValueError('Unknown correction revision for this source')
+                c=save_correction(self.root/'corrections',r['audio']['content_sha256'],old['notes'],r['prediction_id'])
+                self.update_active(path,r,c);return r
             if action=='reference-score':
                 _,report=self.get_report(data['id'])
                 ref=self.references.load(data['reference_id'])
@@ -98,6 +109,9 @@ class Workspace:
                 return {"id": key_for(str(Path(r["report_path"]).relative_to(self.root))), "report": r}
             if action == "correct":
                 path, r = self.get_report(data["id"])
+                current=latest_correction(self.root/'corrections',r['audio']['content_sha256'])
+                if 'base_revision' in data and data['base_revision']!=(current['revision'] if current else None):
+                    raise ValueError('Working correction changed since loading; reload before saving')
                 notes = notes_from_dicts(data["notes"])
                 if any(n.end > r["audio"]["duration"]+.001 for n in notes):
                     raise ValueError("Notes exceed source duration")
@@ -179,6 +193,16 @@ def make_handler(workspace):
                     return self.send(200,[{k:r[k] for k in ('id','revision','excerpt','review','annotator','origin','split')} for r in refs])
                 if parsed.path=='/api/reference':
                     return self.send(200,workspace.references.load(query['reference_id'],query.get('revision')))
+                if parsed.path=='/api/reference-history':
+                    return self.send(200,workspace.references.history(query['reference_id']))
+                if parsed.path=='/api/correction-history':
+                    _,report=workspace.get_report(query['id'])
+                    return self.send(200,correction_history(workspace.root/'corrections',report['audio']['content_sha256']))
+                if parsed.path=='/api/source-audio':
+                    _,report=workspace.get_report(query['id']);source=Path(report['audio']['source_path'])
+                    if content_hash(source)!=report['audio']['content_sha256']:
+                        raise ValueError('Original audio changed since analysis; reanalyze before annotation')
+                    return self.send_file(source)
                 if parsed.path=='/api/annotation-protocol':
                     return self.send(200,(STATIC.parent.parent/'docs'/'ANNOTATION_PROTOCOL.md').read_text(encoding='utf-8'),'text/plain; charset=utf-8')
                 if parsed.path in {"/api/audio", "/api/download"}:
@@ -193,7 +217,8 @@ def make_handler(workspace):
                     if not re.fullmatch(r"[a-f0-9]{64}", identifier) or not 0 <= index < 8:
                         raise ValueError("Invalid candidate")
                     return self.send_file(workspace.root/"compositions"/identifier/f"candidate-{index}.mid", attachment=True)
-                files = {"/": "index.html", "/app.js": "app.js", "/style.css": "style.css"}
+                files = {"/": "index.html", "/app.js": "app.js", "/style.css": "style.css",
+                    '/editor-core.js':'editor-core.js','/editor.js':'editor.js','/audition.js':'audition.js'}
                 if parsed.path in files:
                     path = STATIC/files[parsed.path]
                     return self.send(200, path.read_bytes(), mimetypes.guess_type(path)[0] or "text/plain")

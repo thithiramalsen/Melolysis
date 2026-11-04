@@ -1,8 +1,9 @@
 "use strict";
 const $ = id => document.getElementById(id);
 const state = {library: [], selected: new Set(), id: null, report: null, notes: [], checked: new Set(),
-  undo: [], alternative: null, profile: null, exercise: null, recording: null, reference:null};
+  alternative: null, profile: null, exercise: null, recording: null, reference:null};
 const copy = value => JSON.parse(JSON.stringify(value));
+let pianoEditor=null;
 function element(tag, text, cls) {const e=document.createElement(tag); if(text!==undefined)e.textContent=text; if(cls)e.className=cls; return e;}
 function status(text, error=false) {$('status').textContent=text; $('status').classList.toggle('error',error);}
 async function api(path, data) {
@@ -21,7 +22,8 @@ async function refresh() {
 }
 function renderLibrary() {
   $('library').replaceChildren();
-  for(const r of state.library) {
+  const search=$('library-search').value.toLowerCase();
+  for(const r of state.library.filter(r=>`${r.metadata.song} ${r.estimator} ${r.model.name}`.toLowerCase().includes(search))) {
     const row=element('div',undefined,'recording'+(r.id===state.id?' current':''));const check=element('input');check.type='checkbox';check.checked=state.selected.has(r.id);
     check.onchange=()=>check.checked?state.selected.add(r.id):state.selected.delete(r.id);
     const button=element('button',r.metadata.song||r.audio.source_path.split(/[\\/]/).pop());
@@ -46,18 +48,22 @@ async function importAudio(file, attempt=false) {
 $('files').onchange=()=>run(async()=>{for(const file of $('files').files)await importAudio(file);$('files').value='';});
 $('attemptfile').onchange=()=>run(async()=>{if($('attemptfile').files[0])await importAudio($('attemptfile').files[0],true);});
 $('refresh').onclick=()=>run(refresh);
+$('library-search').oninput=renderLibrary;
 async function load(id) {
-  state.id=id;state.report=await api('report?id='+encodeURIComponent(id));state.notes=copy(state.report.notes);state.checked.clear();state.undo=[];state.alternative=null;state.reference=null;
+  if(pianoEditor?.dirty&&!confirm('Discard unsaved edits before changing recordings?'))return;
+  pianoEditor?.audition.stop();
+  state.id=id;state.report=await api('report?id='+encodeURIComponent(id));state.notes=copy(state.report.notes);state.checked.clear();state.alternative=null;state.reference=null;
   const r=state.report;$('title').textContent=r.metadata.song||r.audio.source_path.split(/[\\/]/).pop();
   $('sourceinfo').textContent=`${r.audio.duration.toFixed(3)} s · source ${r.audio.original_sample_rate} Hz / ${r.audio.channels} channels · ${r.raw_pitch.model} → ${r.provenance.note_model.name} · ${r.provenance.correction_revision?'human revision active':'model prediction; review before interpretation'}`;
-  $('audio').src='/api/audio?id='+encodeURIComponent(id);$('loopstart').value=0;$('loopend').value=r.audio.duration;$('loop').checked=false;$('viewstart').value=0;
+  $('audio').src='/api/source-audio?id='+encodeURIComponent(id);$('loopstart').value=0;$('loopend').value=r.audio.duration;$('loop').checked=false;$('viewstart').value=0;
   $('alternative').replaceChildren(new Option('None',''));
   state.library.filter(other=>other.id!==id && other.audio.content_sha256===r.audio.content_sha256).forEach(other=>$('alternative').add(new Option((other.estimator||'F0')+' → '+other.model.name+' / '+other.prediction_id.slice(0,8),other.id)));
   $('exports').replaceChildren();for(const [type,label] of [['midi','MIDI'],['csv','CSV'],['json','JSON']]) {
-    const a=element('a',label,'download');a.href='/api/download?id='+id+'&type='+type;$('exports').append(a);
+    const a=element('a',label,'download');a.href='/api/download?id='+id+'&type='+type;a.dataset.exportType=type;a.dataset.workingHref=a.href;$('exports').append(a);
   }
   $('provenance').textContent=JSON.stringify({provenance:r.provenance,warnings:r.warnings,flags:r.processed_pitch.flags},null,2);
   await refreshReferences();referenceModeStatus();renderMetadata();renderNotes();renderLibrary();draw();tab('review');status('Audio, contour and note events are aligned in source seconds.');
+  pianoEditor?.loaded();
 }
 function renderMetadata() {
   $('metadata').replaceChildren();for(const key of ['artist','song','section','tempo','key','mode','language','genre','tags']) {
@@ -68,8 +74,7 @@ $('savemeta').onclick=()=>run(async()=>{
   if(!state.id)return;const metadata={};for(const key of ['artist','song','section','tempo','key','mode','language','genre','tags'])metadata[key]=key==='tags'?$('meta-'+key).value.split(',').map(s=>s.trim()).filter(Boolean):$('meta-'+key).value;
   state.report=await api('metadata',{id:state.id,metadata});await refresh();status('Recording metadata saved.');
 });
-function remember() {state.undo.push(copy(state.notes));if(state.undo.length>50)state.undo.shift();if(state.reference)$('reference-reviewed').checked=false;}
-function edited() {if(state.reference)$('reference-reviewed').checked=false;renderNotes();draw();status(state.reference?'Unsaved reference edits. Save a reference revision to persist them.':'Unsaved note edits. Save a correction revision to persist them.');}
+function remember() {pianoEditor?.remember();}
 function renderNotes() {
   $('notes').replaceChildren();state.notes.forEach((n,i)=>{
     const row=element('tr',undefined,state.checked.has(n.id)?'selected':'');const td=element('td');const check=element('input');check.type='checkbox';check.checked=state.checked.has(n.id);
@@ -83,21 +88,12 @@ function renderNotes() {
     }
     row.append(element('td',n.confidence.toFixed(2)),element('td',n.flags.join(', ')));$('notes').append(row);
   });
+  pianoEditor?.render();
 }
-$('undo').onclick=()=>{if(state.undo.length){state.notes=state.undo.pop();state.checked.clear();edited();}};
-$('add').onclick=()=>{if(!state.report)return;remember();const t=$('audio').currentTime;state.notes.push({id:'manual-'+Date.now(),start:t,end:Math.min(t+.3,state.report.audio.duration),pitch:67,confidence:1,frame_start:0,frame_end:0,phrase:0,flags:['human_corrected']});state.notes.sort((a,b)=>a.start-b.start);edited();};
-$('split').onclick=()=>run(async()=>{const t=$('audio').currentTime;const i=state.notes.findIndex(n=>n.start<t && t<n.end && (!state.checked.size||state.checked.has(n.id)));if(i<0)throw new Error('Place the playhead inside the note you want to split.');remember();const n=state.notes[i];state.notes.splice(i,1,{...n,end:t,duration:t-n.start,flags:['human_corrected']},{...n,id:n.id+'-split-'+Date.now(),start:t,duration:n.end-t,flags:['human_corrected']});edited();});
-$('merge').onclick=()=>run(async()=>{
-  const ns=state.notes.filter(n=>state.checked.has(n.id));if(ns.length<2)throw new Error('Select at least two consecutive notes to merge.');
-  const indices=ns.map(n=>state.notes.indexOf(n));if(Math.max(...indices)-Math.min(...indices)+1!==ns.length)throw new Error('Merge requires consecutive selected notes.');
-  remember();const duration=ns.reduce((s,n)=>s+n.end-n.start,0);const pitch=ns.reduce((s,n)=>s+n.pitch*(n.end-n.start),0)/duration;
-  state.notes.splice(indices[0],ns.length,{...ns[0],end:ns.at(-1).end,pitch,confidence:1,flags:['human_corrected']});state.checked.clear();edited();
-});
-$('delete').onclick=()=>{if(state.checked.size){remember();state.notes=state.notes.filter(n=>!state.checked.has(n.id));state.checked.clear();edited();}};
-$('save').onclick=()=>run(async()=>{if(!state.id)return;if(state.reference){await saveReference();return;}state.report=await api('correct',{id:state.id,notes:state.notes});state.notes=copy(state.report.notes);state.undo=[];renderNotes();draw();await refresh();status('Correction revision saved. Raw predictions and earlier revisions are preserved.');});
+// All note-edit commands share MelodyEditor / MelodyEdits. Save keeps the existing API.
+$('save').onclick=()=>run(async()=>{if(!state.id)return;if(state.reference){await saveReference();return;}state.report=await api('correct',{id:state.id,notes:state.notes,base_revision:state.report.provenance.correction_revision??null});state.notes=copy(state.report.notes);pianoEditor?.resetHistory();renderNotes();draw();await refresh();await pianoEditor?.revisions();status('Correction revision saved. Raw predictions and earlier revisions are preserved.');});
 $('raw').onclick=()=>{if(state.report){$('provenance').textContent=JSON.stringify({predicted_notes:state.report.predicted_notes,provenance:state.report.provenance},null,2);$('provenance').parentElement.open=true;$('provenance').scrollIntoView({behavior:'smooth'});}};
 $('alternative').onchange=()=>run(async()=>{state.alternative=$('alternative').value?await api('report?id='+$('alternative').value):null;draw();});
-$('loopselected').onclick=()=>{const ns=state.notes.filter(n=>state.checked.has(n.id));if(ns.length){$('loopstart').value=Math.min(...ns.map(n=>n.start));$('loopend').value=Math.min(state.report.audio.duration,Math.max(...ns.map(n=>n.end)));$('loop').checked=true;$('audio').currentTime=+$('loopstart').value;}};
 ['viewstart','viewlength'].forEach(id=>$(id).onchange=draw);
 let geometry=null;
 function drawTimeline(canvas,report,notes,playhead=0,windowStart=0,windowLength=null,alternative=null,reference=null) {
@@ -127,10 +123,10 @@ function drawTimeline(canvas,report,notes,playhead=0,windowStart=0,windowLength=
   if(playhead>=start&&playhead<=end){ctx.strokeStyle='#f5f4d8';ctx.beginPath();ctx.moveTo(x(playhead),0);ctx.lineTo(x(playhead),bottom);ctx.stroke();}ctx.restore();
   if(canvas.id==='timeline')geometry={left,width,start,end};
 }
-function draw(){drawTimeline($('timeline'),state.report,state.notes,$('audio').currentTime,+$('viewstart').value,+$('viewlength').value,state.alternative,state.reference);}
-$('timeline').onclick=event=>{if(!geometry)return;const rect=$('timeline').getBoundingClientRect();const t=geometry.start+(event.clientX-rect.left-geometry.left)/(geometry.width-geometry.left-12)*(geometry.end-geometry.start);$('audio').currentTime=Math.max(0,Math.min(state.report.audio.duration,t));draw();};
+function draw(){if(pianoEditor){pianoEditor.render();return;}drawTimeline($('timeline'),state.report,state.notes,$('audio').currentTime,+$('viewstart').value,+$('viewlength').value,state.alternative,state.reference);}
+$('timeline').onclick=event=>{if(pianoEditor||!geometry)return;const rect=$('timeline').getBoundingClientRect();const t=geometry.start+(event.clientX-rect.left-geometry.left)/(geometry.width-geometry.left-12)*(geometry.end-geometry.start);$('audio').currentTime=Math.max(0,Math.min(state.report.audio.duration,t));draw();};
 window.addEventListener('resize',draw);
-function animate(){const audio=$('audio');if(!audio.paused){const begin=+$('loopstart').value,end=+$('loopend').value;if($('loop').checked&&end>begin&&audio.currentTime>=end)audio.currentTime=begin;if(audio.currentTime>+$('viewstart').value + +$('viewlength').value)$('viewstart').value=Math.floor(audio.currentTime);draw();}requestAnimationFrame(animate);}animate();
+function animate(){const audio=$('audio');if(pianoEditor)pianoEditor.tick();else if(!audio.paused){const begin=+$('loopstart').value,end=+$('loopend').value;if($('loop').checked&&end>begin&&audio.currentTime>=end)audio.currentTime=begin;if(audio.currentTime>+$('viewstart').value + +$('viewlength').value)$('viewstart').value=Math.floor(audio.currentTime);draw();}requestAnimationFrame(animate);}animate();
 function evidenceButton(label,hash,start,end) {const b=element('button',label,'evidence');b.onclick=()=>run(async()=>{const r=state.library.find(r=>r.audio.content_sha256===hash);if(!r)throw new Error('Evidence recording is unavailable.');await load(r.id);$('loopstart').value=start;$('loopend').value=end;$('loop').checked=true;$('viewstart').value=Math.max(0,start-.3);$('audio').currentTime=start;await $('audio').play();draw();});return b;}
 function distribution(container,weights) {
   for(const [key,value] of Object.entries(weights).sort((a,b)=>+a[0]- +b[0])){const row=element('div',undefined,'barrow');const p=element('progress');p.max=1;p.value=value;row.append(element('span',key+' st'),p,element('span',(value*100).toFixed(1)+'%'));container.append(row);}
@@ -199,7 +195,7 @@ async function refreshReferences(){
 }
 function referenceModeStatus(){
   const r=state.reference;const published=r?.origin.kind==='published_human_dataset';
-  $('reference-status').textContent=r?`${published?'Published human edition (read-only)':r.review.status==='reviewed'?'Reviewed human reference':'UNREVIEWED DRAFT — not accuracy evidence'} · ${r.excerpt.start.toFixed(3)}–${r.excerpt.end.toFixed(3)} source seconds · ${r.split}. Green bars: reference; red bars: raw prediction.`:'Working corrections mode. Reference revisions are independent from predictions and normal corrections.';
+  $('reference-status').textContent=r?`${published?'Published human edition (read-only)':r.review.status==='reviewed'&&!pianoEditor?.dirty?'Reviewed human reference':'UNREVIEWED DRAFT — not accuracy evidence'} · ${r.excerpt.start.toFixed(3)}–${r.excerpt.end.toFixed(3)} source seconds · ${r.split}. Green bars: reference; red bars: raw prediction.`:'Working corrections mode. Reference revisions are independent from predictions and normal corrections.';
   $('save').textContent=r?'Save reference revision':'Save correction revision';
   for(const id of ['save','add','split','merge','delete','undo','reference-region'])$(id).disabled=!!published;
   $('reference-regions').disabled=!!published;
@@ -208,19 +204,28 @@ function referenceModeStatus(){
   $('reference-group').disabled=!!published;
   $('reference-download').hidden=!r;
   if(r)$('reference-download').href=`/api/reference?reference_id=${r.id}&revision=${r.revision}`;
+  for(const a of $('exports').querySelectorAll('a')){
+    const type=a.dataset.exportType;a.hidden=!!r&&type!=='json';
+    a.href=r?`/api/reference?reference_id=${r.id}&revision=${r.revision}`:a.dataset.workingHref;
+    a.textContent=r?'Saved reference JSON':type==='midi'?'MIDI':type.toUpperCase();
+    if(r)a.download='reference-'+r.id+'.json';else a.removeAttribute('download');
+  }
 }
 function enterReference(r){
-  state.reference=r;state.notes=copy(r.notes);state.checked.clear();state.undo=[];
+  if(r.audio.content_sha256!==state.report.audio.content_sha256)throw Error('Reference belongs to another source recording.');
+  state.reference=r;state.notes=copy(r.notes);state.checked.clear();
+  $('reference-list').value=r.id;
   $('reference-annotator').value=r.annotator;$('reference-reviewer').value=r.review.reviewer||'';
   $('reference-split').value=r.split;$('reference-group').value=r.song_group;
   $('reference-reviewed').checked=r.review.status==='reviewed'&&r.origin.kind!=='published_human_dataset';$('reference-regions').value=JSON.stringify(r.regions,null,2);
   $('loopstart').value=r.excerpt.start;$('loopend').value=r.excerpt.end;
   $('viewstart').value=r.excerpt.start;$('viewlength').value=Math.max(1,r.excerpt.end-r.excerpt.start);
-  $('reference-tools').open=true;referenceModeStatus();renderNotes();draw();
+  $('reference-tools').open=false;pianoEditor?.modeChanged();referenceModeStatus();renderNotes();draw();
 }
 async function createReference(seed){
   if(!state.id)throw new Error('Choose a recording first.');
-  const annotator=$('reference-annotator').value.trim();if(!annotator)throw new Error('Enter the human annotator name before creating a draft.');
+  if(pianoEditor?.dirty&&!confirm('Discard unsaved edits before starting a separate reference? Cancel to keep editing.'))return;
+  const annotator=$('reference-annotator').value.trim();if(!annotator){$('reference-tools').open=true;$('reference-annotator').focus();throw new Error('Enter your annotator name in Reference setup, then create a blank or model-assisted draft.');}
   const r=await api('reference-create',{id:state.id,start:+$('loopstart').value,end:+$('loopend').value,
     annotator,split:$('reference-split').value,song_group:$('reference-group').value||state.report.audio.content_sha256,seed});
   enterReference(r);await refreshReferences();status('Independent reference DRAFT created. Listen, correct notes, mark uncertainty and explicitly review before evaluation.');
@@ -228,17 +233,19 @@ async function createReference(seed){
 $('reference-blank').onclick=()=>run(()=>createReference(false));
 $('reference-seed').onclick=()=>run(()=>createReference(true));
 $('reference-load').onclick=()=>run(async()=>{
+  if(pianoEditor?.dirty&&!confirm('Discard unsaved edits and load the saved reference?'))return;
   if(!$('reference-list').value)throw new Error('Select a reference edition first.');
   enterReference(await api('reference?reference_id='+$('reference-list').value));status('Reference and raw prediction are aligned in original source seconds.');
 });
-$('reference-working').onclick=()=>{if(!state.report)return;state.reference=null;state.notes=copy(state.report.notes);state.checked.clear();state.undo=[];referenceModeStatus();renderNotes();draw();status('Working corrections restored. Saved reference editions remain separate.');};
+$('reference-working').onclick=()=>{if(!state.report)return;if(pianoEditor?.dirty&&!confirm('Discard unsaved reference edits and return to working corrections?'))return;state.reference=null;state.notes=copy(state.report.notes);state.checked.clear();pianoEditor?.modeChanged();referenceModeStatus();renderNotes();draw();status('Working corrections restored. Saved reference editions remain separate.');};
 $('reference-region').onclick=()=>run(async()=>{
   if(!state.reference)throw new Error('Create or load an editable reference first.');
+  remember();
   const regions=JSON.parse($('reference-regions').value);regions.push({kind:$('region-kind').value,
     start:+$('loopstart').value,end:+$('loopend').value,reason:$('region-reason').value});
   state.reference.regions=regions;$('reference-regions').value=JSON.stringify(regions,null,2);$('reference-reviewed').checked=false;draw();status('Region added to unsaved reference. Uncertain intervals require a reason and are excluded with coverage reported.');
 });
-$('reference-regions').onchange=()=>run(async()=>{if(!state.reference)return;state.reference.regions=JSON.parse($('reference-regions').value);$('reference-reviewed').checked=false;draw();});
+$('reference-regions').onchange=()=>run(async()=>{if(!state.reference)return;const regions=JSON.parse($('reference-regions').value);remember();state.reference.regions=regions;$('reference-reviewed').checked=false;draw();});
 async function saveReference(){
   const r=state.reference;const reviewed=$('reference-reviewed').checked;
   const value=await api('reference-save',{reference_id:r.id,base_revision:r.revision,notes:state.notes,
@@ -256,4 +263,6 @@ $('reference-export').onclick=()=>run(async()=>{
   const manifest=await api('reference-manifest',{});$('reference-result').textContent=JSON.stringify(manifest,null,2);
   status('Reviewed manifest saved at outputs/real-validation/reviewed.manifest.json. Exact annotation revisions and checksums are frozen.');
 });
-run(refresh);
+pianoEditor=new window.MelodyEditor({state,$,api,status,run,renderNotes,referenceModeStatus,enterReference});
+window.addEventListener('beforeunload',event=>{if(pianoEditor.dirty){event.preventDefault();event.returnValue='';}});
+run(async()=>{await refresh();const params=new URLSearchParams(location.search),id=params.get('analysis'),ref=params.get('reference');if(id&&state.library.some(r=>r.id===id)){await load(id);if(ref)enterReference(await api('reference?reference_id='+encodeURIComponent(ref)));}});

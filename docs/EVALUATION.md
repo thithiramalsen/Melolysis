@@ -1,5 +1,20 @@
 # Verified results and remaining limitations
 
+## Visual annotation editor — current verification
+
+The integrated piano-roll editor passes **66 Python tests, 11 JavaScript core
+tests, and 40 actual headless browser checks** (20 cases at two screen sizes).
+Checks include real decoded fixture-audio signals, piano frequencies, independent
+volume buses, vocal/Both/A-B audition, loops, slow-playback timestamps, gesture
+commit/cancel, revision restore and data separation. All 64 archived real-vocal
+system/reference records were re-scored with identical event P/R/F1. Existing
+benchmark artifacts and the MHS draft remain unchanged.
+
+[Editor validation and measured signals](EDITOR_VALIDATION.md),
+[usage](ANNOTATION_EDITOR.md). These browser/audio routing tests add no claim of
+improved real-vocal transcription, human annotation, acoustic latency calibration
+or formant-preserving vocal retuning.
+
 ## Phase 2 — real-vocal validation
 
 Completed 2026-11-04: actual pretrained GAME Small and TorchCREPE Tiny inference

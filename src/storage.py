@@ -70,3 +70,14 @@ def latest_correction(root, source_hash):
         raise ValueError("Correction source mismatch")
     notes_from_dicts(value["notes"])
     return value
+
+
+def correction_history(root, source_hash):
+    """Read immutable revisions; restoration always appends a new revision."""
+    values=[]
+    for path in sorted((Path(root)/source_hash).glob('*.json'),reverse=True):
+        value=json.loads(path.read_text(encoding='utf-8'))
+        if value['source_hash']!=source_hash:
+            raise ValueError('Correction source mismatch')
+        notes_from_dicts(value['notes']);values.append(value)
+    return values
