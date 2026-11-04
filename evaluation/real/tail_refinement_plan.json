@@ -1,0 +1,11 @@
+{
+  "development_evidence": {
+    "game_A1_matched_notes":166,"game_A1_late_offsets_over_50ms":66,"game_A1_early_offsets_over_50ms":16,
+    "game_A2_matched_notes":189,"game_A2_late_offsets_over_50ms":73,"game_A2_early_offsets_over_50ms":4
+  },
+  "hypothesis":"Some model note tails include unvoiced, fading recording tails. Trim only with corroborating F0 voicing and energy evidence; do not apply a fitted global time shift.",
+  "candidate_count":1,
+  "parameters":{"min_tail_trim_seconds":0.03,"max_tail_trim_seconds":0.25,"tail_energy_ratio":0.5,"min_voiced_core_seconds":0.06},
+  "heldout_scores_seen_at_declaration":false,
+  "selection":"Report all per-edition and per-recording results. Keep original model output and default pipeline; optional refinement requires heldout evidence."
+}

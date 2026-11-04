@@ -50,6 +50,19 @@ def parser():
     g.add_argument("--output", default="outputs/composition")
     f = sub.add_parser("feedback", help="Compare an analyzed sung attempt with an exercise")
     f.add_argument("report"); f.add_argument("exercise")
+    real=sub.add_parser('real-evaluate',help='Compare actual inference on frozen, reviewed human references')
+    real.add_argument('manifest');real.add_argument('--systems',default='evaluation/real/systems.example.json')
+    real.add_argument('--split',choices=['development','heldout'],default='development')
+    real.add_argument('--output',default='outputs/real-validation')
+    ref=sub.add_parser('reference-create',help='Prepare an independent source-time annotation draft; never auto-review it')
+    ref.add_argument('report');ref.add_argument('--start',type=float,required=True);ref.add_argument('--end',type=float,required=True)
+    ref.add_argument('--annotator',required=True);ref.add_argument('--split',choices=['unassigned','development','heldout'],default='unassigned')
+    ref.add_argument('--group');ref.add_argument('--seed-predictions',action='store_true');ref.add_argument('--output',default='outputs')
+    export=sub.add_parser('reference-manifest',help='Freeze reviewed reference revisions for reproducible evaluation')
+    export.add_argument('--output',default='outputs');export.add_argument('--manifest',default='outputs/real-validation/reviewed.manifest.json')
+    refine=sub.add_parser('refine-notes',help='Create an optional acoustic offset-refined edition, preserving raw model events')
+    refine.add_argument('report');refine.add_argument('--config',help='Bounded acoustic tail settings JSON')
+    refine.add_argument('--output',default='outputs')
     return p
 
 
@@ -142,6 +155,26 @@ def main(argv=None):
             from .corpus import assess_attempt
             from .schema import notes_from_dicts
             print(json.dumps(assess_attempt(notes_from_dicts(read_json(args.report)["notes"]), read_json(args.exercise)), indent=2))
+        elif args.command=='real-evaluate':
+            from .real_evaluation import run_comparison
+            result=run_comparison(args.manifest,args.systems,args.output,args.split)
+            print(json.dumps(result['summary'],indent=2))
+        elif args.command=='reference-create':
+            from .references import ReferenceStore
+            from .pipeline import load_report
+            result=ReferenceStore(Path(args.output)/'references').create(load_report(args.report),args.start,args.end,
+                args.annotator,args.split,args.group,args.seed_predictions)
+            print(f"UNREVIEWED annotation draft {result['id']}: {result['excerpt']['start']}–{result['excerpt']['end']} source seconds. Human review required.")
+        elif args.command=='reference-manifest':
+            from .references import ReferenceStore
+            store=ReferenceStore(Path(args.output)/'references')
+            ids=[r['id'] for r in store.list() if r['review']['status']=='reviewed' and r['split']!='unassigned']
+            if not ids: raise ValueError('No reviewed, split-assigned references')
+            store.export_manifest(args.manifest,ids);print(f'Frozen {len(ids)} reviewed references to {args.manifest}')
+        elif args.command=='refine-notes':
+            from .note_refinement import refine_report
+            result=refine_report(args.report,args.output,read_json(args.config) if args.config else None)
+            print(f"Optional acoustic refinement: {len(result['offset_refinement']['changes'])} offsets changed. Review {result['report_path']}")
         return 0
     except (ValueError, RuntimeError, OSError, KeyError, TypeError) as exc:
         logging.error("%s", exc)

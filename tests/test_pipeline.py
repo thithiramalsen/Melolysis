@@ -156,3 +156,23 @@ class PipelineTests(unittest.TestCase):
         self.assertIn(b'frame_start',body)
         code,_=request('/api/correct',{},origin='https://example.com')
         self.assertEqual(code,403)
+        # Real annotation endpoints, on this synthetic fixture only. No user labels.
+        code,body=request('/api/reference-create',{'id':identifier,'start':0.,'end':report['audio']['duration'],
+            'annotator':'HTTP test fixture','split':'development','seed':True})
+        self.assertEqual(code,200);draft=json.loads(body)
+        self.assertEqual(draft['review']['status'],'draft')
+        _,body=request('/api/reference-score',{'id':identifier,'reference_id':draft['id']})
+        self.assertIn('DRAFT PREVIEW ONLY',json.loads(body)['validation_status'])
+        code,_=request('/api/reference-manifest',{})
+        self.assertEqual(code,400)
+        code,body=request('/api/reference-save',{'reference_id':draft['id'],'base_revision':draft['revision'],
+            'notes':draft['notes'],'regions':[{'kind':'uncertain','start':0.,'end':.1,'reason':'test exclusion'}],
+            'annotator':draft['annotator'],'reviewer':'HTTP test reviewer','reviewed':True,'attestation':True})
+        self.assertEqual(code,200);reviewed=json.loads(body)
+        self.assertNotEqual(reviewed['revision'],draft['revision'])
+        _,body=request('/api/reference?reference_id='+draft['id']+'&revision='+draft['revision'])
+        self.assertEqual(json.loads(body)['review']['status'],'draft')
+        code,body=request('/api/reference-manifest',{})
+        self.assertEqual(code,200);self.assertEqual(json.loads(body)['items'][0]['revision'],reviewed['revision'])
+        code,body=request('/api/annotation-protocol')
+        self.assertEqual(code,200);self.assertIn(b'vibrato',body)

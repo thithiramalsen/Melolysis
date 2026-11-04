@@ -5,7 +5,7 @@ from types import ModuleType
 import unittest
 from unittest.mock import patch
 from src.schema import AnalysisConfig
-from src.note_models import import_midi, transcribe_basic_pitch, model_identity
+from src.note_models import import_midi, transcribe_basic_pitch, transcribe_external, model_identity
 from src.pitch import EstimatorUnavailable
 from tests.test_transcription import track
 
@@ -53,3 +53,23 @@ class ModelContractTests(unittest.TestCase):
     def test_missing_external_paths_actionable(self):
         with self.assertRaises(EstimatorUnavailable):
             model_identity('game')
+
+    def test_game_csv_preserves_fractional_pitch_and_timing(self):
+        # Contract stub only; actual pretrained validation is separately measured.
+        from types import SimpleNamespace
+        from src.audio_processor import ingest
+        import soundfile as sf
+        import numpy as np
+        audio=self.root/'source.wav';sf.write(audio,np.ones(22050)*.1,22050)
+        repo=self.root/'upstream';repo.mkdir();(repo/'infer.py').write_text('# fixture')
+        weights=repo/'model.pt';weights.write_bytes(b'fixture')
+        def run(args,**kwargs):
+            self.assertEqual(args[args.index('--pitch-format')+1],'number')
+            output=Path(args[args.index('--output-dir')+1])
+            (output/'input.csv').write_text('onset,offset,pitch\n0.123,0.789,64.37\n',encoding='utf-8')
+            return SimpleNamespace(stdout='stub',stderr='',returncode=0)
+        import sys
+        with patch('src.note_models.subprocess.run',side_effect=run):
+            ns=transcribe_external('game',audio,track([64]*100),sys.executable,repo,weights,self.root/'work')
+        self.assertEqual((ns[0].start,ns[0].end,ns[0].pitch),(.123,.789,64.37))
+        self.assertIn('confidence_unavailable',ns[0].flags)

@@ -1,5 +1,27 @@
 # Verified results and remaining limitations
 
+## Phase 2 — real-vocal validation
+
+Completed 2026-11-04: actual pretrained GAME Small and TorchCREPE Tiny inference
+on eight Vocadito recordings with two published human editions; four singers
+reserved from local development. **61 tests pass** (14.92 s), no failures/skips.
+Full results, per-excerpt figures, diagnostics and resource measurements:
+[REAL_VOCAL_VALIDATION.md](REAL_VOCAL_VALIDATION.md).
+
+Heldout full note F1 A1/A2: pYIN **0.3875/0.3960**, CREPE Tiny
+**0.2470/0.2904**, GAME **0.3120/0.4537**, optional bounded GAME offset refinement
+**0.3829/0.5333**. The last improves GAME on heldout but does not beat pYIN against
+A1. True melisma/lyric-specific accuracy, GPU behavior, and accuracy on the user's
+private recording remain unvalidated. The private 0.5–6.5 s reference draft needs
+human listening/correction; no agent-created labels were promoted to truth.
+
+Human reference revisions, excerpt/uncertainty labels, aligned comparison and
+formal evaluation gates now exist separately from normal working corrections.
+[Protocol](ANNOTATION_PROTOCOL.md), [setup](MODEL_SETUP.md). The results below
+are the retained **Phase 1 historical record**, not current neural-model status.
+
+## Phase 1 verification (retained)
+
 Verification completed 2026-11-04 on Windows, Python 3.14.3. Exact packages are in
 `requirements-tested.lock.txt`. Only pYIN performed pretrained-free audio inference.
 Neural adapter contract tests are **not** pretrained-model accuracy tests.
@@ -42,7 +64,8 @@ existing MIDI/PNG exports (40 pitch runs). The new pipeline also ran on the real
 33.812-second 44.1-kHz stereo `MHS Chorus.wav`: **59 notes, 16 rest-delimited phrases**.
 The CLI built its one-song profile and exported **three** melody candidates. These
 are successful workflow executions, **not manually verified transcriptions**.
-There are **zero independently annotated real vocal excerpts** in this repository.
+At that Phase 1 checkpoint there were **zero independently annotated real vocal
+excerpts**. Phase 2 imports published references independently of Melolysis.
 
 ## Reproducible synthetic audio comparison
 
@@ -141,7 +164,7 @@ or structural understanding. Expression estimates require long enough reliable
 contours and cannot establish compositional intent. Motif search is bounded and
 labels coincidences as candidate families; truncation is reported.
 
-## Next validation gate
+## Phase 1 next validation gate (historical)
 
 Create a modest, independently corrected set of isolated real vocals covering the
 eight stress categories, multiple recordings, phrase boundaries and uncertain

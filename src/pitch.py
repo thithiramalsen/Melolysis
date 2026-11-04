@@ -46,13 +46,19 @@ class TorchCrepeEstimator:
             device = "cuda" if torch.cuda.is_available() else "cpu"
         if device.startswith("cuda") and not torch.cuda.is_available():
             raise EstimatorUnavailable("CUDA unavailable; select cpu or auto")
+        def deterministic_viterbi(probabilities):
+            # Upstream bins_to_frequency adds random +/-20-cent triangular dither.
+            # Keep the actual decoded bin centers instead of inventing pitch motion.
+            bins,_=torchcrepe.decode.viterbi(probabilities)
+            cents=torchcrepe.CENTS_PER_BIN*bins+1997.3794084376191
+            return bins,torchcrepe.convert.cents_to_frequency(cents)
         with torch.inference_mode():
             f0, periodicity = torchcrepe.predict(torch.as_tensor(audio, dtype=torch.float32).unsqueeze(0), sr,
-                config.hop_length, config.fmin, config.fmax, "full", batch_size=512,
-                device=device, return_periodicity=True, pad=True)
+                config.hop_length, config.fmin, config.fmax, config.pitch_model_capacity, batch_size=config.pitch_batch_size,
+                device=device, return_periodicity=True, pad=True,decoder=deterministic_viterbi)
         f0, c = f0[0].cpu().numpy(), periodicity[0].cpu().numpy()
         return make_track(audio, sr, f0, c >= config.confidence, c, config,
-                          "torchcrepe-full/" + version("torchcrepe"))
+                          'torchcrepe-'+config.pitch_model_capacity+'-viterbi-no-dither/' + version("torchcrepe"))
 
 
 def make_track(y, sr, f0, voiced, confidence, config, model):

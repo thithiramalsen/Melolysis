@@ -29,13 +29,19 @@ class AnalysisConfig:
     model_language: str = ""
     model_boundary_threshold: float = .2
     model_presence_threshold: float = .2
+    pitch_batch_size: int = 128
+    pitch_model_capacity: str = 'full'
 
     def __post_init__(self):
         if not all(isfinite(v) for v in asdict(self).values() if isinstance(v, (int, float))):
             raise ValueError("Configuration numbers must be finite")
         if any(not isinstance(v, int) or isinstance(v, bool) for v in
-               (self.sample_rate, self.hop_length, self.frame_length, self.model_seed)):
+               (self.sample_rate, self.hop_length, self.frame_length, self.model_seed,self.pitch_batch_size)):
             raise ValueError("Sample rate, hop, frame and seed must be integers")
+        if self.pitch_batch_size < 1:
+            raise ValueError('Pitch inference batch size must be positive')
+        if self.pitch_model_capacity not in {'full','tiny'}:
+            raise ValueError('TorchCREPE capacity must be full or tiny')
         if not 0 < self.fmin < self.fmax < self.sample_rate / 2:
             raise ValueError("Require 0 < fmin < fmax < Nyquist")
         if self.sample_rate < 8000 or self.hop_length < 1 or self.frame_length < 32:

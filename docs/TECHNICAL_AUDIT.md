@@ -97,3 +97,37 @@ comparison is incomplete** because no independent labels/checkpoints were provid
 Later-stage algorithmic and UI capabilities are delivered with the scope/limits
 listed in EVALUATION.md. They do not constitute a validated artist model or proof
 of the primary accuracy criterion on real singers.
+
+## Phase 2 follow-through — real-vocal validation, 2026-11-04
+
+Read the prior README, audit, comparison/evaluation reports and relevant pipeline,
+editor, storage, model adapters and tests before changes. All original 38 tests
+passed again; synthetic scores reproduced as 1.0000 / 0.9306. Prior functionality
+was preserved and the generation engine was hash-checked without modification.
+
+| Severity | Evidence / file reference | Phase 2 response |
+|---|---|---|
+| Critical | `docs/EVALUATION.md` Phase 1 had no real-human reference scores; synthetic full F1 near 1 did not measure singing reliability. | Imported checksum-pinned published Vocadito A1/A2 and continuous F0; frozen singer-disjoint development/heldout comparison. Real heldout full F1 is 0.2470–0.5333 across systems/editions, not near synthetic accuracy. |
+| High | `src/storage.py` working corrections lacked independent annotation origin, excerpt convention, review state, uncertainty masks and evaluation splits. | Separate `src/references.py` revision store, explicit attestation, source-sample bounds, review gates, grouped leakage checks, immutable reviewed manifest. Predictions/corrections remain intact. |
+| High | `src/note_models.py` GAME MIDI bridge quantized continuous model note centers, conflating import convenience with evaluation data. | Actual official pretrained inference in isolated Python 3.12; float CSV preserves source onsets, offsets and fractional pitches. Unknown correctness confidence remains explicit. |
+| High | `src/transcription.py` synthetic success masked missed real short notes/re-attacks and merged transitions. Development pYIN has 204 notes vs A1 300/A2 250. | Recorded event errors and subsets; rejected a 40-ms segmentation candidate whose full F1 worsened for both editions. Defaults preserved rather than overfitting one singer. |
+| High | `src/real_metrics.py` downstream sensitivity shows nontrivial interval/motif/phrase/style changes from transcription errors. | Timestamped reference-vs-predicted feature comparisons; artist-style claims remain exploratory and generator unchanged. |
+| Medium | GAME development matched-note offsets frequently late (A1 66 >50-ms late versus 16 early; A2 73 late versus 4 early). | Optional bounded unvoiced + fading-energy tail refinement, frozen before heldout scoring. Heldout GAME full F1 0.3120→0.3829 A1 / 0.4537→0.5333 A2, with onsets/pitches/count unchanged. pYIN remains slightly better on A1. |
+| Medium | Installed torchcrepe 0.0.24 `convert.bins_to_frequency` adds random triangular ±20-cent dither after Viterbi. | `src/pitch.py` preserves Viterbi bin centers deterministically; version/capacity recorded. Native 16-kHz timing retained. Tiny measured on eight recordings, Full smoke-tested once. |
+| Medium | Initial comparison convenience JSON was overwritten by the next experiment; original inference reports survived but initial resource summary was lost. | `src/real_evaluation.py` now archives unique immutable run results and per-job performance; final primary comparison rerun with actual inference forced. Derived models pin the exact parent in the current comparison, with no old-parent/model fallback. |
+| Medium | Phase 1 allocation peaks were not whole-process memory; optional adapters had no real inference. | CPU two-thread subprocess comparisons now sample concurrent process-tree RSS including GAME children; exact logs, model failures, versions, hashes and resource scope retained. |
+| High | `src/web/app.js` browser fixture exposed displayed pitch edits not always reaching saved state, clip-end rounding beyond source duration, and merge quantization of fractional labels. | Live input synchronization, exact loop bounds and nonquantizing merge; verified saved pitch 64.37, merge 64.183011, split/delete/undo and independent draft saves. Editing/undo clears review attestation. |
+
+The model environment was checked against official upstream documentation/weights,
+license restrictions and available hardware before installation. Core Python 3.14 /
+NumPy 2 stayed intact; neural inference uses isolated Python 3.12 / NumPy 1.26 / CPU
+torch 2.8. No source audio was uploaded. All three primary systems succeeded on
+eight public recordings and the private MHS recording; private inference has no
+accuracy claim. See [MODEL_SETUP.md](MODEL_SETUP.md) for reproducibility/resources.
+
+Remaining priority order: (1) human/second-review MHS excerpt and lyric-labeled
+melismas; (2) new heldout singers/songs for further tuning; (3) voicing/short-event
+boundaries and genuine quiet offsets; (4) harmonized, noisy/separated and long audio;
+(5) artist-level sensitivity on a genuine multi-song corpus. Neither published
+annotation edition is selected to favor a model. Detailed outcomes and limits are
+in [REAL_VOCAL_VALIDATION.md](REAL_VOCAL_VALIDATION.md).

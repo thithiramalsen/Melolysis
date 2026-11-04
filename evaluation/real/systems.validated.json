@@ -1,0 +1,44 @@
+{
+  "paths_relative_to": "repository_root",
+  "systems": [
+    {
+      "id": "pyin-baseline",
+      "python": ".cache/model-env/Scripts/python.exe",
+      "config": {
+        "estimator": "pyin",
+        "device": "cpu"
+      },
+      "force_inference": true
+    },
+    {
+      "id": "torchcrepe-tiny-events",
+      "python": ".cache/model-env/Scripts/python.exe",
+      "config": {
+        "estimator": "torchcrepe",
+        "device": "cpu",
+        "pitch_batch_size": 128,
+        "pitch_model_capacity": "tiny"
+      },
+      "force_inference": true
+    },
+    {
+      "id": "game-small",
+      "python": ".cache/model-env/Scripts/python.exe",
+      "note_model": "game",
+      "model_python": ".cache/model-env/Scripts/python.exe",
+      "model_repo": ".cache/models/GAME",
+      "weights": ".cache/research/GAME-1.0-small/GAME-1.0-small/model.pt",
+      "config": {
+        "estimator": "pyin",
+        "device": "cpu",
+        "model_seed": 0
+      },
+      "force_inference": true
+    },
+    {
+      "id": "game-tail-refined",
+      "python": ".cache/model-env/Scripts/python.exe",
+      "refine_from": "game-small"
+    }
+  ]
+}

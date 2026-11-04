@@ -1,0 +1,15 @@
+{
+  "archived_runs": {
+    "development": {
+      "run_id": "20261104T070621723204Z-ea18eff2",
+      "sha256": "5a41c226d31aca0f5f3231a68af058e422257aa43dbc8df8b98cba36bb0e93dd"
+    },
+    "heldout": {
+      "run_id": "20261104T070907417528Z-772910f9",
+      "sha256": "a890b3854176bae48d6e7e935b08ce503a1fdec2e47f89bd0ebe0b03118d8b6a"
+    }
+  },
+  "dataset_attribution": "Bittner, Pasalo, Bosch, Meseguer Brocal and Rubinstein (2021), vocadito v3, DOI 10.5281/zenodo.5578807, CC-BY-4.0",
+  "figures": "Derived displays of published labels/audio waveform and actual model predictions; same first 12 seconds in each comparison",
+  "melolysis_human_annotations_authored": 0
+}

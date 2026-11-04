@@ -1,2 +1,3 @@
 -r requirements.txt
 mir_eval>=0.8.2,<0.9
+psutil>=7,<8

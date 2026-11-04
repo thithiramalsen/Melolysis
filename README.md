@@ -6,11 +6,15 @@ An inspectable vocal-melody analysis and songwriting application. The workflow i
 or generated singing.
 
 This overhaul fixes the original loss of rests, frame-based note fragmentation and
-missing timestamps. pYIN is the measured CPU baseline. GAME/SOME/Basic Pitch and
-TorchCREPE integrations are optional and have **not** been accuracy-validated here.
-Real-vocal accuracy still requires independently corrected reference excerpts.
+missing timestamps. Phase 2 measured actual pretrained GAME Small and TorchCREPE
+Tiny inference against two published human annotation editions of eight Vocadito
+recordings, with four singers held out from local development. Accuracy remains
+limited and annotation-dependent; synthetic scores do not predict real note F1.
+pYIN remains the default CPU baseline. SOME/Basic Pitch remain unvalidated.
 See [measured evaluation and limitations](docs/EVALUATION.md),
 [technical audit](docs/TECHNICAL_AUDIT.md), and [model assessment](docs/MODEL_COMPARISON.md).
+See the [real-vocal results](docs/REAL_VOCAL_VALIDATION.md),
+[model environment setup](docs/MODEL_SETUP.md) and [human annotation protocol](docs/ANNOTATION_PROTOCOL.md).
 
 ## Quick start — Windows PowerShell
 
@@ -69,6 +73,29 @@ another model never deletes corrections; a correction stays attached to the inpu
 content hash. Rechecking a correction against a substantially different prediction
 is a human task. Imported polyphonic MIDI is rejected with an explicit overlap
 error; select/export the lead melody in your DAW before importing it.
+
+### Create a human reference
+
+Normal working corrections and evaluation references have separate histories.
+Open **Independent human reference annotations**, select source-time loop bounds,
+enter your name and choose a blank reference or a clearly marked model-seeded draft.
+Edit pitch/onset/offset and phrase fields; add, split, merge or delete events. Label
+ambiguous spans using **Uncertain** with a reason. Green bars show the reference;
+red bars show raw predictions. Download saved reference JSON for backup.
+
+For the supplied **MHS Chorus.wav**, a draft is ready at **0.500–6.500 source
+seconds**, with **11 predicted events** requiring review. Select that recording,
+choose the **Pending human annotator** edition, and click **Edit / compare reference**.
+Listen and correct every event using the protocol. Enter your annotator/reviewer
+names, tick the explicit listening attestation only after review, and save.
+The draft has not been scored as validated accuracy and contains no fabricated
+human labels. A second independent reviewer is preferable. The eight public
+recordings have published musician annotations, not new reviews by this agent.
+
+**Export reviewed manifest** freezes reference revisions and content checksums.
+Draft previews are visibly labeled; formal `real-evaluate` rejects drafts. A note
+editor alone supplies no expressive F0 truth, so frame metrics remain unavailable
+for your recording until independently corrected F0 labels are supplied.
 
 The interface supports microphone recording into local PCM WAV, but browser/device
 permission and end-to-end microphone capture were not tested. Recording does not
@@ -180,6 +207,11 @@ Extract one exercise object from `artist-profile.json` into exercise.json.
 .\.venv\Scripts\python.exe main.py benchmark --output outputs/benchmark --estimators pyin torchcrepe
 .\.venv\Scripts\python.exe main.py benchmark --suite stress --output outputs/stress --estimators pyin torchcrepe
 .\.venv\Scripts\python.exe main.py evaluate evaluation/my-reference-manifest.json --output outputs/evaluation
+# Phase 2: strict reviewed references, grouped splits, real pretrained inference.
+.\.venv\Scripts\python.exe tools/import_vocadito.py
+.\.venv\Scripts\python.exe main.py real-evaluate outputs/real-validation/vocadito.manifest.json --systems evaluation/real/systems.validated.json --split development
+.\.venv\Scripts\python.exe main.py real-evaluate outputs/real-validation/vocadito.manifest.json --systems evaluation/real/systems.validated.json --split heldout
+.\.venv\Scripts\python.exe tools/report_real_validation.py
 ```
 
 Benchmarks perform actual F0 inference on deterministic synthetic harmonic audio
@@ -190,10 +222,13 @@ Comparisons include original compressed-time segmentation, frame rounding with a
 correct timebase, and improved events. `mir_eval` validates onset/pitch/offset scores;
 frame and timing metrics use source-aligned conventions.
 
-Use the templates in `evaluation/` to add independently annotated real excerpts.
-They illustrate a format and do **not** annotate the bundled recordings. Evaluation
-always scores raw predicted notes, not saved human corrections. Optional neural
-models/weights and their licenses/install instructions are documented in
+Install/download the isolated models and optional public dataset using
+[MODEL_SETUP.md](docs/MODEL_SETUP.md) before running the Phase 2 commands. For your
+own reviews, use `reference-manifest --output outputs --manifest path.json`, then
+`real-evaluate path.json --systems ... --split development` (or heldout).
+The older `evaluate` command accepts legacy manifests and does not enforce the
+new human-review/split gates. Both score raw predictions, never active corrections.
+Optional neural models/weights and their licenses are documented in
 [MODEL_COMPARISON.md](docs/MODEL_COMPARISON.md).
 
 ## Storage, compatibility and remaining limits
@@ -211,8 +246,8 @@ remain available. `midi_conversion` durations are now **seconds**, with start/en
 fields. Its default 512-hop compatibility convention must match the supplied F0.
 The new pipeline does not use the old Markov chain as its composer.
 
-Remaining priorities: independently labeled real vocals; measured GAME/TorchCREPE
-comparisons; robust short ornaments/repeated syllables; polyphonic lead selection;
+Remaining priorities: human review of your own recording; larger independent
+real-vocal evaluation; robust short ornaments/repeated syllables; polyphonic lead selection;
 validated slides and octave ambiguity; richer beat/harmony/lyric modelling; broader
 browser/device/OS coverage. F0 inference is chunked, but decoding still loads the
 recording in memory. External model processes cold-load per uncached clip. Motif

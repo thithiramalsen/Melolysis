@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 
 def analyze_file(path, output_root="outputs", config=AnalysisConfig(), metadata=None,
                  note_model="heuristic", model_python=None, model_repo=None, weights=None,
-                 imported_midi=None, timestamp_offset=0., beat_grid=None, chords=None):
+                 imported_midi=None, timestamp_offset=0., beat_grid=None, chords=None,use_cache=True):
     start = time.perf_counter()
     root = Path(output_root)
     cache = StageCache(root / "cache")
@@ -35,10 +35,10 @@ def analyze_file(path, output_root="outputs", config=AnalysisConfig(), metadata=
         except PackageNotFoundError as exc:
             raise EstimatorUnavailable("Install optional PyTorch and TorchCREPE to select this estimator") from exc
     pitch_keys = ("estimator", "sample_rate", "hop_length", "frame_length", "fmin", "fmax",
-                  "chunk_seconds", "context_seconds", "channel", "device")
+                  "chunk_seconds", "context_seconds", "channel", "device",'pitch_batch_size','pitch_model_capacity')
     identity = {"source": audio.content_sha256, "config": {k: asdict(config)[k] for k in pitch_keys}, "packages": packages,
         'code': {k:code_hashes[k] for k in ('audio_processor.py','pitch.py','schema.py')}}
-    pitch_data = cache.get("pitch", identity)
+    pitch_data = cache.get("pitch", identity) if use_cache else None
     pitch_hit = pitch_data is not None
     if pitch_data is None:
         log.info("Estimating %s: %s", config.estimator, path)
@@ -53,7 +53,7 @@ def analyze_file(path, output_root="outputs", config=AnalysisConfig(), metadata=
         model = model_identity(note_model, model_python, model_repo, weights)
     note_identity = {"pitch": identity, "segmentation_config": asdict(config), "model": model, "offset_seconds": timestamp_offset,
         'code': {k:code_hashes[k] for k in ('transcription.py','note_models.py','pipeline.py')}}
-    rows = cache.get("notes", note_identity)
+    rows = cache.get("notes", note_identity) if use_cache else None
     note_hit = rows is not None
     if rows is None:
         if imported_midi:

@@ -20,6 +20,8 @@ from .pipeline import analyze_file, export_notes, load_report
 from .schema import AnalysisConfig, PitchTrack, notes_from_dicts
 from .storage import key_for, latest_correction, save_correction, write_json
 from .transcription import assign_phrases
+from .references import ReferenceStore
+from .real_metrics import score_reference
 
 log = logging.getLogger(__name__)
 STATIC = Path(__file__).parent / "web"
@@ -30,10 +32,12 @@ class Workspace:
         self.root = Path(root).resolve()
         self.root.mkdir(parents=True, exist_ok=True)
         self.lock = RLock()
+        self.references = ReferenceStore(self.root/'references')
 
     def catalog(self):
-        return {key_for(str(p.relative_to(self.root))): p
-                for p in sorted((self.root/"analyses").glob("*/*/report.json"))}
+        paths=list((self.root/'analyses').glob('*/*/report.json'))
+        paths+=list((self.root/'real-validation'/'models').glob('*/analyses/*/*/report.json'))
+        return {key_for(str(p.relative_to(self.root))):p for p in sorted(paths)}
 
     def get_report(self, report_id):
         with self.lock:
@@ -66,6 +70,25 @@ class Workspace:
 
     def dispatch(self, action, data):
         with self.lock:
+            if action=='reference-create':
+                _,report=self.get_report(data['id'])
+                return self.references.create(report,data['start'],data['end'],data['annotator'],
+                    data.get('split','unassigned'),data.get('song_group'),bool(data.get('seed',False)))
+            if action=='reference-save':
+                return self.references.save(data['reference_id'],data['notes'],data.get('regions',[]),
+                    data['annotator'],data.get('reviewer',''),bool(data.get('reviewed',False)),
+                    bool(data.get('attestation',False)),data.get('base_revision'),data.get('split'),data.get('song_group'))
+            if action=='reference-score':
+                _,report=self.get_report(data['id'])
+                ref=self.references.load(data['reference_id'])
+                score=score_reference(ref,report,require_review=ref['review']['status']=='reviewed')
+                score['validation_status']='reviewed_reference_comparison' if ref['review']['status']=='reviewed' else 'DRAFT PREVIEW ONLY — not validated accuracy'
+                return score
+            if action=='reference-manifest':
+                ids=[r['id'] for r in self.references.list() if r['review']['status']=='reviewed' and r['split']!='unassigned']
+                if not ids:
+                    raise ValueError('No reviewed, split-assigned human references are ready for evaluation')
+                return self.references.export_manifest(self.root/'real-validation'/'reviewed.manifest.json',ids)
             if action == "analyze":
                 source_id = data["upload_id"]
                 if not re.fullmatch(r"[a-f0-9]{64}\.(wav|mp3|flac|m4a|ogg|aac)", source_id):
@@ -145,10 +168,19 @@ def make_handler(workspace):
                         _, r = workspace.get_report(identifier)
                         rows.append({"id": identifier, "metadata": r["metadata"], "audio": r["audio"],
                             "model": r["provenance"]["note_model"], "notes": len(r["notes"]),
+                            'estimator':r['raw_pitch']['model'],'prediction_id':r['prediction_id'],
                             "correction_revision": r["provenance"].get("correction_revision")})
                     return self.send(200, {"analyses": rows})
                 if parsed.path == "/api/report":
                     return self.send(200, workspace.get_report(query["id"])[1])
+                if parsed.path=='/api/references':
+                    _,report=workspace.get_report(query['id'])
+                    refs=workspace.references.list(report['audio']['content_sha256'])
+                    return self.send(200,[{k:r[k] for k in ('id','revision','excerpt','review','annotator','origin','split')} for r in refs])
+                if parsed.path=='/api/reference':
+                    return self.send(200,workspace.references.load(query['reference_id'],query.get('revision')))
+                if parsed.path=='/api/annotation-protocol':
+                    return self.send(200,(STATIC.parent.parent/'docs'/'ANNOTATION_PROTOCOL.md').read_text(encoding='utf-8'),'text/plain; charset=utf-8')
                 if parsed.path in {"/api/audio", "/api/download"}:
                     path, _ = workspace.get_report(query["id"])
                     kind = query.get("type", "json")

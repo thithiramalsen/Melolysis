@@ -1,0 +1,6 @@
+{
+  "systems": [
+    {"id":"game-small","python":".cache/model-env/Scripts/python.exe","note_model":"game","model_python":".cache/model-env/Scripts/python.exe","model_repo":".cache/models/GAME","weights":".cache/research/GAME-1.0-small/GAME-1.0-small/model.pt","config":{"estimator":"pyin","device":"cpu","model_seed":0}},
+    {"id":"game-tail-refined","python":".cache/model-env/Scripts/python.exe","refine_from":"game-small"}
+  ]
+}

@@ -1,7 +1,7 @@
 "use strict";
 const $ = id => document.getElementById(id);
 const state = {library: [], selected: new Set(), id: null, report: null, notes: [], checked: new Set(),
-  undo: [], alternative: null, profile: null, exercise: null, recording: null};
+  undo: [], alternative: null, profile: null, exercise: null, recording: null, reference:null};
 const copy = value => JSON.parse(JSON.stringify(value));
 function element(tag, text, cls) {const e=document.createElement(tag); if(text!==undefined)e.textContent=text; if(cls)e.className=cls; return e;}
 function status(text, error=false) {$('status').textContent=text; $('status').classList.toggle('error',error);}
@@ -25,7 +25,7 @@ function renderLibrary() {
     const row=element('div',undefined,'recording'+(r.id===state.id?' current':''));const check=element('input');check.type='checkbox';check.checked=state.selected.has(r.id);
     check.onchange=()=>check.checked?state.selected.add(r.id):state.selected.delete(r.id);
     const button=element('button',r.metadata.song||r.audio.source_path.split(/[\\/]/).pop());
-    button.append(element('small',`${r.audio.duration.toFixed(1)} s · ${r.notes} notes · ${r.model.name}${r.correction_revision?' · corrected':''}`));
+    button.append(element('small',`${r.audio.duration.toFixed(1)} s · ${r.notes} notes · ${r.estimator||'F0'} → ${r.model.name}${r.correction_revision?' · corrected':''}`));
     button.onclick=()=>run(()=>load(r.id));row.append(check,button);$('library').append(row);
   }
 }
@@ -47,17 +47,17 @@ $('files').onchange=()=>run(async()=>{for(const file of $('files').files)await i
 $('attemptfile').onchange=()=>run(async()=>{if($('attemptfile').files[0])await importAudio($('attemptfile').files[0],true);});
 $('refresh').onclick=()=>run(refresh);
 async function load(id) {
-  state.id=id;state.report=await api('report?id='+encodeURIComponent(id));state.notes=copy(state.report.notes);state.checked.clear();state.undo=[];state.alternative=null;
+  state.id=id;state.report=await api('report?id='+encodeURIComponent(id));state.notes=copy(state.report.notes);state.checked.clear();state.undo=[];state.alternative=null;state.reference=null;
   const r=state.report;$('title').textContent=r.metadata.song||r.audio.source_path.split(/[\\/]/).pop();
   $('sourceinfo').textContent=`${r.audio.duration.toFixed(3)} s · source ${r.audio.original_sample_rate} Hz / ${r.audio.channels} channels · ${r.raw_pitch.model} → ${r.provenance.note_model.name} · ${r.provenance.correction_revision?'human revision active':'model prediction; review before interpretation'}`;
-  $('audio').src='/api/audio?id='+encodeURIComponent(id);$('loopend').value=r.audio.duration.toFixed(2);$('viewstart').value=0;
+  $('audio').src='/api/audio?id='+encodeURIComponent(id);$('loopstart').value=0;$('loopend').value=r.audio.duration;$('loop').checked=false;$('viewstart').value=0;
   $('alternative').replaceChildren(new Option('None',''));
-  state.library.filter(other=>other.id!==id && other.audio.content_sha256===r.audio.content_sha256).forEach(other=>$('alternative').add(new Option(other.model.name+' / '+other.model.runtime,other.id)));
+  state.library.filter(other=>other.id!==id && other.audio.content_sha256===r.audio.content_sha256).forEach(other=>$('alternative').add(new Option((other.estimator||'F0')+' → '+other.model.name+' / '+other.prediction_id.slice(0,8),other.id)));
   $('exports').replaceChildren();for(const [type,label] of [['midi','MIDI'],['csv','CSV'],['json','JSON']]) {
     const a=element('a',label,'download');a.href='/api/download?id='+id+'&type='+type;$('exports').append(a);
   }
   $('provenance').textContent=JSON.stringify({provenance:r.provenance,warnings:r.warnings,flags:r.processed_pitch.flags},null,2);
-  renderMetadata();renderNotes();renderLibrary();draw();tab('review');status('Audio, contour and note events are aligned in source seconds.');
+  await refreshReferences();referenceModeStatus();renderMetadata();renderNotes();renderLibrary();draw();tab('review');status('Audio, contour and note events are aligned in source seconds.');
 }
 function renderMetadata() {
   $('metadata').replaceChildren();for(const key of ['artist','song','section','tempo','key','mode','language','genre','tags']) {
@@ -68,15 +68,18 @@ $('savemeta').onclick=()=>run(async()=>{
   if(!state.id)return;const metadata={};for(const key of ['artist','song','section','tempo','key','mode','language','genre','tags'])metadata[key]=key==='tags'?$('meta-'+key).value.split(',').map(s=>s.trim()).filter(Boolean):$('meta-'+key).value;
   state.report=await api('metadata',{id:state.id,metadata});await refresh();status('Recording metadata saved.');
 });
-function remember() {state.undo.push(copy(state.notes));if(state.undo.length>50)state.undo.shift();}
-function edited() {renderNotes();draw();status('Unsaved note edits. Save a correction revision to persist them.');}
+function remember() {state.undo.push(copy(state.notes));if(state.undo.length>50)state.undo.shift();if(state.reference)$('reference-reviewed').checked=false;}
+function edited() {if(state.reference)$('reference-reviewed').checked=false;renderNotes();draw();status(state.reference?'Unsaved reference edits. Save a reference revision to persist them.':'Unsaved note edits. Save a correction revision to persist them.');}
 function renderNotes() {
   $('notes').replaceChildren();state.notes.forEach((n,i)=>{
     const row=element('tr',undefined,state.checked.has(n.id)?'selected':'');const td=element('td');const check=element('input');check.type='checkbox';check.checked=state.checked.has(n.id);
     check.onchange=()=>{check.checked?state.checked.add(n.id):state.checked.delete(n.id);row.classList.toggle('selected',check.checked);draw();};td.append(check);row.append(td,element('td',i+1));
-    for(const key of ['start','end','pitch']) {
-      const cell=element('td');const input=element('input');input.type='number';input.step=key==='pitch'?1:.01;input.value=+n[key].toFixed(3);input.setAttribute('aria-label',`Note ${i+1} ${key}`);
-      input.onchange=()=>{remember();n[key]=+input.value;n.duration=n.end-n.start;n.confidence=1;n.flags=['human_corrected'];draw();status('Unsaved edit. Boundaries and overlaps will be validated on save.');};cell.append(input);row.append(cell);
+    for(const key of ['start','end','pitch','phrase']) {
+      const cell=element('td');const input=element('input');input.type='number';input.step=key==='phrase'?1:.001;input.value=+n[key].toFixed(6);input.setAttribute('aria-label',`Note ${i+1} ${key}`);
+      input.disabled=state.reference?.origin.kind==='published_human_dataset';
+      let changing=false;
+      const update=()=>{if(!changing){remember();changing=true;}n[key]=+input.value;n.duration=n.end-n.start;n.confidence=1;n.flags=['human_corrected'];draw();status('Unsaved edit. Boundaries and overlaps will be validated on save.');};
+      input.oninput=update;input.onchange=()=>{update();changing=false;};cell.append(input);row.append(cell);
     }
     row.append(element('td',n.confidence.toFixed(2)),element('td',n.flags.join(', ')));$('notes').append(row);
   });
@@ -87,17 +90,17 @@ $('split').onclick=()=>run(async()=>{const t=$('audio').currentTime;const i=stat
 $('merge').onclick=()=>run(async()=>{
   const ns=state.notes.filter(n=>state.checked.has(n.id));if(ns.length<2)throw new Error('Select at least two consecutive notes to merge.');
   const indices=ns.map(n=>state.notes.indexOf(n));if(Math.max(...indices)-Math.min(...indices)+1!==ns.length)throw new Error('Merge requires consecutive selected notes.');
-  remember();const duration=ns.reduce((s,n)=>s+n.end-n.start,0);const pitch=Math.round(ns.reduce((s,n)=>s+n.pitch*(n.end-n.start),0)/duration);
+  remember();const duration=ns.reduce((s,n)=>s+n.end-n.start,0);const pitch=ns.reduce((s,n)=>s+n.pitch*(n.end-n.start),0)/duration;
   state.notes.splice(indices[0],ns.length,{...ns[0],end:ns.at(-1).end,pitch,confidence:1,flags:['human_corrected']});state.checked.clear();edited();
 });
 $('delete').onclick=()=>{if(state.checked.size){remember();state.notes=state.notes.filter(n=>!state.checked.has(n.id));state.checked.clear();edited();}};
-$('save').onclick=()=>run(async()=>{if(!state.id)return;state.report=await api('correct',{id:state.id,notes:state.notes});state.notes=copy(state.report.notes);state.undo=[];renderNotes();draw();await refresh();status('Correction revision saved. Raw predictions and earlier revisions are preserved.');});
+$('save').onclick=()=>run(async()=>{if(!state.id)return;if(state.reference){await saveReference();return;}state.report=await api('correct',{id:state.id,notes:state.notes});state.notes=copy(state.report.notes);state.undo=[];renderNotes();draw();await refresh();status('Correction revision saved. Raw predictions and earlier revisions are preserved.');});
 $('raw').onclick=()=>{if(state.report){$('provenance').textContent=JSON.stringify({predicted_notes:state.report.predicted_notes,provenance:state.report.provenance},null,2);$('provenance').parentElement.open=true;$('provenance').scrollIntoView({behavior:'smooth'});}};
 $('alternative').onchange=()=>run(async()=>{state.alternative=$('alternative').value?await api('report?id='+$('alternative').value):null;draw();});
-$('loopselected').onclick=()=>{const ns=state.notes.filter(n=>state.checked.has(n.id));if(ns.length){$('loopstart').value=Math.min(...ns.map(n=>n.start)).toFixed(3);$('loopend').value=Math.max(...ns.map(n=>n.end)).toFixed(3);$('loop').checked=true;$('audio').currentTime=+$('loopstart').value;}};
+$('loopselected').onclick=()=>{const ns=state.notes.filter(n=>state.checked.has(n.id));if(ns.length){$('loopstart').value=Math.min(...ns.map(n=>n.start));$('loopend').value=Math.min(state.report.audio.duration,Math.max(...ns.map(n=>n.end)));$('loop').checked=true;$('audio').currentTime=+$('loopstart').value;}};
 ['viewstart','viewlength'].forEach(id=>$(id).onchange=draw);
 let geometry=null;
-function drawTimeline(canvas,report,notes,playhead=0,windowStart=0,windowLength=null,alternative=null) {
+function drawTimeline(canvas,report,notes,playhead=0,windowStart=0,windowLength=null,alternative=null,reference=null) {
   if(!report||!canvas.clientWidth)return;
   const dpr=window.devicePixelRatio||1;const width=canvas.clientWidth,height=canvas.id==='timeline'?380:180;canvas.width=width*dpr;canvas.height=height*dpr;
   const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);ctx.clearRect(0,0,width,height);
@@ -112,7 +115,10 @@ function drawTimeline(canvas,report,notes,playhead=0,windowStart=0,windowLength=
     const w=report.waveform;ctx.strokeStyle='#617876';for(let i=0;i<w.min.length;i++){const t=i*w.hop_seconds;if(t<start||t>end)continue;ctx.beginPath();ctx.moveTo(x(t),43-w.max[i]*32);ctx.lineTo(x(t),43-w.min[i]*32);ctx.stroke();}
   }
   function drawNotes(ns,color) {for(const n of ns){if(n.end<start||n.start>end)continue;ctx.fillStyle=color||(state.checked.has(n.id)?'#d1e4aa':n.flags.length||n.confidence<.6?'#d9a16b':'#65aac2');ctx.globalAlpha=color?.55:.65;ctx.fillRect(x(n.start),y(n.pitch)-5,Math.max(2,x(n.end)-x(n.start)),10);ctx.globalAlpha=1;}}
-  if(alternative)drawNotes(alternative.predicted_notes,'#adb3b0');drawNotes(notes);
+  if(alternative)drawNotes(alternative.predicted_notes,'#adb3b0');
+  if(reference){drawNotes(report.predicted_notes,'#e28373');drawNotes(notes,'#93d6a6');
+    for(const region of reference.regions||[]){if(region.kind==='uncertain'){ctx.fillStyle='#e2bd7040';ctx.fillRect(x(region.start),top,x(region.end)-x(region.start),bottom-top);}}
+  }else drawNotes(notes);
   if(report.raw_pitch && canvas.id==='timeline') {
     for(const [track,color] of [[alternative?.raw_pitch,'#879792'],[report.raw_pitch,'#c1dc82']]){if(!track)continue;ctx.strokeStyle=color;ctx.lineWidth=1.4;ctx.beginPath();let active=false;
     for(let i=0;i<track.times.length;i++){const t=track.times[i],f=track.f0_hz[i];if(t<start||t>end||!f){active=false;continue;}const p=69+12*Math.log2(f/440);if(!active)ctx.moveTo(x(t),y(p));else ctx.lineTo(x(t),y(p));active=true;}ctx.stroke();}
@@ -121,7 +127,7 @@ function drawTimeline(canvas,report,notes,playhead=0,windowStart=0,windowLength=
   if(playhead>=start&&playhead<=end){ctx.strokeStyle='#f5f4d8';ctx.beginPath();ctx.moveTo(x(playhead),0);ctx.lineTo(x(playhead),bottom);ctx.stroke();}ctx.restore();
   if(canvas.id==='timeline')geometry={left,width,start,end};
 }
-function draw(){drawTimeline($('timeline'),state.report,state.notes,$('audio').currentTime,+$('viewstart').value,+$('viewlength').value,state.alternative);}
+function draw(){drawTimeline($('timeline'),state.report,state.notes,$('audio').currentTime,+$('viewstart').value,+$('viewlength').value,state.alternative,state.reference);}
 $('timeline').onclick=event=>{if(!geometry)return;const rect=$('timeline').getBoundingClientRect();const t=geometry.start+(event.clientX-rect.left-geometry.left)/(geometry.width-geometry.left-12)*(geometry.end-geometry.start);$('audio').currentTime=Math.max(0,Math.min(state.report.audio.duration,t));draw();};
 window.addEventListener('resize',draw);
 function animate(){const audio=$('audio');if(!audio.paused){const begin=+$('loopstart').value,end=+$('loopend').value;if($('loop').checked&&end>begin&&audio.currentTime>=end)audio.currentTime=begin;if(audio.currentTime>+$('viewstart').value + +$('viewlength').value)$('viewstart').value=Math.floor(audio.currentTime);draw();}requestAnimationFrame(animate);}animate();
@@ -182,5 +188,72 @@ $('recheck').onclick=()=>run(async()=>{
   if(!state.id||!state.exercise)throw new Error('Select an analyzed attempt and a songwriting exercise first.');
   const result=await api('attempt',{id:state.id,exercise:state.exercise});
   $('feedback').textContent=JSON.stringify(result,null,2);status('Feedback refreshed from the saved note edition. Save any corrections before rechecking.');
+});
+async function refreshReferences(){
+  $('reference-list').replaceChildren(new Option('Select an annotation',''));
+  if(!state.id)return;
+  const refs=await api('references?id='+state.id);
+  for(const r of refs){const edition=r.origin.edition?' / '+r.origin.edition:'';
+    $('reference-list').add(new Option(`${r.annotator}${edition} · ${r.excerpt.start.toFixed(2)}–${r.excerpt.end.toFixed(2)} s · ${r.review.status} · ${r.split}`,r.id));}
+  if(state.reference)$('reference-list').value=state.reference.id;
+}
+function referenceModeStatus(){
+  const r=state.reference;const published=r?.origin.kind==='published_human_dataset';
+  $('reference-status').textContent=r?`${published?'Published human edition (read-only)':r.review.status==='reviewed'?'Reviewed human reference':'UNREVIEWED DRAFT — not accuracy evidence'} · ${r.excerpt.start.toFixed(3)}–${r.excerpt.end.toFixed(3)} source seconds · ${r.split}. Green bars: reference; red bars: raw prediction.`:'Working corrections mode. Reference revisions are independent from predictions and normal corrections.';
+  $('save').textContent=r?'Save reference revision':'Save correction revision';
+  for(const id of ['save','add','split','merge','delete','undo','reference-region'])$(id).disabled=!!published;
+  $('reference-regions').disabled=!!published;
+  for(const id of ['reference-annotator','reference-reviewer','reference-reviewed'])$(id).disabled=!!published;
+  $('reference-split').disabled=!!r&&(published||r.split!=='unassigned');
+  $('reference-group').disabled=!!published;
+  $('reference-download').hidden=!r;
+  if(r)$('reference-download').href=`/api/reference?reference_id=${r.id}&revision=${r.revision}`;
+}
+function enterReference(r){
+  state.reference=r;state.notes=copy(r.notes);state.checked.clear();state.undo=[];
+  $('reference-annotator').value=r.annotator;$('reference-reviewer').value=r.review.reviewer||'';
+  $('reference-split').value=r.split;$('reference-group').value=r.song_group;
+  $('reference-reviewed').checked=r.review.status==='reviewed'&&r.origin.kind!=='published_human_dataset';$('reference-regions').value=JSON.stringify(r.regions,null,2);
+  $('loopstart').value=r.excerpt.start;$('loopend').value=r.excerpt.end;
+  $('viewstart').value=r.excerpt.start;$('viewlength').value=Math.max(1,r.excerpt.end-r.excerpt.start);
+  $('reference-tools').open=true;referenceModeStatus();renderNotes();draw();
+}
+async function createReference(seed){
+  if(!state.id)throw new Error('Choose a recording first.');
+  const annotator=$('reference-annotator').value.trim();if(!annotator)throw new Error('Enter the human annotator name before creating a draft.');
+  const r=await api('reference-create',{id:state.id,start:+$('loopstart').value,end:+$('loopend').value,
+    annotator,split:$('reference-split').value,song_group:$('reference-group').value||state.report.audio.content_sha256,seed});
+  enterReference(r);await refreshReferences();status('Independent reference DRAFT created. Listen, correct notes, mark uncertainty and explicitly review before evaluation.');
+}
+$('reference-blank').onclick=()=>run(()=>createReference(false));
+$('reference-seed').onclick=()=>run(()=>createReference(true));
+$('reference-load').onclick=()=>run(async()=>{
+  if(!$('reference-list').value)throw new Error('Select a reference edition first.');
+  enterReference(await api('reference?reference_id='+$('reference-list').value));status('Reference and raw prediction are aligned in original source seconds.');
+});
+$('reference-working').onclick=()=>{if(!state.report)return;state.reference=null;state.notes=copy(state.report.notes);state.checked.clear();state.undo=[];referenceModeStatus();renderNotes();draw();status('Working corrections restored. Saved reference editions remain separate.');};
+$('reference-region').onclick=()=>run(async()=>{
+  if(!state.reference)throw new Error('Create or load an editable reference first.');
+  const regions=JSON.parse($('reference-regions').value);regions.push({kind:$('region-kind').value,
+    start:+$('loopstart').value,end:+$('loopend').value,reason:$('region-reason').value});
+  state.reference.regions=regions;$('reference-regions').value=JSON.stringify(regions,null,2);$('reference-reviewed').checked=false;draw();status('Region added to unsaved reference. Uncertain intervals require a reason and are excluded with coverage reported.');
+});
+$('reference-regions').onchange=()=>run(async()=>{if(!state.reference)return;state.reference.regions=JSON.parse($('reference-regions').value);$('reference-reviewed').checked=false;draw();});
+async function saveReference(){
+  const r=state.reference;const reviewed=$('reference-reviewed').checked;
+  const value=await api('reference-save',{reference_id:r.id,base_revision:r.revision,notes:state.notes,
+    regions:JSON.parse($('reference-regions').value),annotator:$('reference-annotator').value,
+    reviewer:$('reference-reviewer').value,reviewed,attestation:reviewed,
+    split:$('reference-split').value,song_group:$('reference-group').value});
+  enterReference(value);await refreshReferences();status(`Independent reference ${value.review.status} revision saved. No model prediction or normal correction was replaced.`);
+}
+$('reference-score').onclick=()=>run(async()=>{
+  if(!state.reference)throw new Error('Select a saved human reference first.');
+  const score=await api('reference-score',{id:state.id,reference_id:state.reference.id});
+  $('reference-result').textContent=JSON.stringify(score,null,2);status(score.validation_status);
+});
+$('reference-export').onclick=()=>run(async()=>{
+  const manifest=await api('reference-manifest',{});$('reference-result').textContent=JSON.stringify(manifest,null,2);
+  status('Reviewed manifest saved at outputs/real-validation/reviewed.manifest.json. Exact annotation revisions and checksums are frozen.');
 });
 run(refresh);

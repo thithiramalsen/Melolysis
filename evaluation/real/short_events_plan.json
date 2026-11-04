@@ -1,0 +1,10 @@
+{
+  "reason": "Development pYIN errors show under-segmentation and poor recall for published reference notes <=180ms across four distinct singers.",
+  "f0_changes": "none; reuse exactly the original processed pitch contour",
+  "candidate_count": 1,
+  "candidate": {"min_note_seconds": 0.04, "transition_seconds": 0.04},
+  "baseline": {"min_note_seconds": 0.06, "transition_seconds": 0.08},
+  "selection_rule": "Report both annotation editions; prefer only if macro offset-aware F1 improves in development without hiding per-recording regressions. Keep the existing default unless heldout tradeoffs justify promotion.",
+  "heldout_scores_seen_at_declaration": false,
+  "interpretation": "A small development-selected sensitivity study, not evidence of universal optimal thresholds. No per-song settings or automatic reference-dependent timing alignment."
+}

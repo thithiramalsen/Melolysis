@@ -1,0 +1,10 @@
+{
+  "dataset": "vocadito-v3",
+  "doi": "10.5281/zenodo.5578807",
+  "archive_md5": "dea40fd18f14d899643c4ba221b33a46",
+  "selection": "First eight distinct singers in numeric track order; one recording per singer. Frozen before evaluation scores or threshold tuning.",
+  "annotations": ["A1", "A2"],
+  "development": [1, 2, 4, 5],
+  "heldout": [6, 7, 10, 11],
+  "grouping": "Publisher singer_id; disjoint singers and songs between local development and heldout. Pretrained model training overlap is unknown."
+}

@@ -1,6 +1,8 @@
 """Optional note-model adapters. External repositories run in isolated interpreters."""
 from functools import lru_cache
 from pathlib import Path
+import csv
+import os
 import subprocess
 import tempfile
 from typing import Protocol
@@ -88,8 +90,9 @@ def transcribe_external(kind, audio_path, track, python, repository, weights, wo
                     "runpy.run_path(script,run_name='__main__')")
         args = [str(python), "-c", launcher, str(repo / "infer.py")]
         if kind == "game":
-            args += ["extract", str(wav), "-m", str(weights), "--output-formats", "mid",
+            args += ["extract", str(wav), "-m", str(weights), "--output-formats", "csv", "--pitch-format", "number",
                      "--output-dir", str(Path(tmp).resolve()),
+                     "--batch-size", "1", "--num-workers", "0",
                      "--seg-threshold", str(config.model_boundary_threshold),
                      "--est-threshold", str(config.model_presence_threshold)]
             if config.model_language:
@@ -97,11 +100,23 @@ def transcribe_external(kind, audio_path, track, python, repository, weights, wo
         else:
             args += ["--model", str(weights), "--wav", str(wav)]
         try:
+            environment={**os.environ,'OMP_NUM_THREADS':'2','MKL_NUM_THREADS':'2','PYTHONIOENCODING':'utf-8'}
+            if config.device=='cpu':
+                environment['CUDA_VISIBLE_DEVICES']=''
             result = subprocess.run(args, cwd=repo, capture_output=True, text=True,
-                                    timeout=900, check=True)
+                                    encoding='utf-8',timeout=900,check=True,env=environment,
+                                    creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
         except (OSError, subprocess.SubprocessError) as exc:
             detail = getattr(exc, "stderr", "") or str(exc)
             raise EstimatorUnavailable(f"{kind} inference failed: {detail[-3000:]}") from exc
+        if kind=='game':
+            tables=list(Path(tmp).rglob('*.csv'))
+            if len(tables)!=1:
+                raise EstimatorUnavailable(f'Expected one GAME note CSV, found {len(tables)}. {result.stdout[-1000:]}')
+            with tables[0].open(encoding='utf-8') as stream:
+                rows=[NoteEvent(f'game-{i}',float(row['onset']),float(row['offset']),float(row['pitch']),0.,
+                    flags=['game','confidence_unavailable']).to_dict() for i,row in enumerate(csv.DictReader(stream))]
+            return attach_frames(assign_phrases(notes_from_dicts(rows)),track)
         mids = list(Path(tmp).rglob("*.mid"))
         if len(mids) != 1:
             raise EstimatorUnavailable(f"Expected one MIDI from {kind}; found {len(mids)}. {result.stdout[-1000:]}")
@@ -119,6 +134,7 @@ def model_identity(kind, python=None, repository=None, weights=None):
         except (OSError, subprocess.SubprocessError):
             commit = "unknown"
         return {"name": kind, "weights_sha256": content_hash(weights), "repo": str(repo),
+                'output_representation':'float-csv-v1' if kind=='game' else 'midi',
                 "commit": commit, "infer_sha256": content_hash(repo / "infer.py"),
                 "sidecars_sha256": {name: content_hash(Path(weights).parent/name)
                     for name in ('config.yaml', 'lang_map.json') if (Path(weights).parent/name).is_file()},

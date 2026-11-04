@@ -1,0 +1,40 @@
+{
+  "vocadito": {
+    "url": "https://zenodo.org/records/5578807/files/vocadito.zip?download=1",
+    "bytes": 58492257,
+    "md5": "dea40fd18f14d899643c4ba221b33a46",
+    "sha256": "e0d6b99d3f9c594afe5ae5c4d7bdacebe569e53b809e90b89d1c771c4f9990e3",
+    "doi": "10.5281/zenodo.5578807",
+    "version": "v3",
+    "license": "CC-BY-4.0",
+    "citation": "Bittner, Pasalo, Bosch, Meseguer Brocal and Rubinstein (2021), vocadito"
+  },
+  "game": {
+    "url": "https://github.com/openvpi/GAME/releases/download/v1.0.0/GAME-1.0-small.zip",
+    "bytes": 46886125,
+    "md5": "6fb3cda4ee2d5d6393a1831ba9e407ee",
+    "sha256": "3d3e1ac0a83234b2a163a3d43043455d15670765eaa25ef6285c399da1ccc576",
+    "license": "CC-BY-NC-SA-4.0",
+    "release": "v1.0.0",
+    "code_commit": "475a8ee781fe8cca980b3b12fbe6c80c768a813a"
+  },
+  "torchcrepe_assets": {
+    "torchcrepe\\assets\\full.pth": {
+      "bytes": 88991291,
+      "sha256": "133225604dedd2e4005f8bbd1bd0a2ec073ba8b7a6cd31ff6d5edbbfa3539986"
+    },
+    "torchcrepe\\assets\\tiny.pth": {
+      "bytes": 1962363,
+      "sha256": "d4993eea36ed1a0ad9ac549c740dae5265b049ce72004f00c2f59e01c0be8432"
+    }
+  },
+  "recorded_hardware": {
+    "ram_bytes": 33955176448,
+    "logical_cpus": 20,
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU, 8188 MiB, driver 595.79",
+    "validation_device": "CPU only, native runtime threads 2",
+    "model_python": "3.12.16",
+    "core_python": "3.14.3"
+  },
+  "model_packages_lock_sha256": "90bb9946b1b9ec4f1853bf7bed342ae3cb8e5e6388f9081d560fd75cf9ce7e40"
+}

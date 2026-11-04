@@ -1,0 +1,13 @@
+{
+  "stage": "local-development selection frozen before heldout scoring",
+  "short_event_candidate": "rejected: offset-aware macro F1 decreased for both editions",
+  "tail_refinement_candidate": "selected for heldout verification: development macro F1 improved for both editions",
+  "data_split_sha256": "601ac8200d6cd6b093fc154a133f9a3af9456b4baf3c7fbce4f35b6f0ab4891f",
+  "systems_sha256": "cc00046e8378b51a65c3aa6597a1f7db40ff82ebb5aab71603f1fa7ced7e60f6",
+  "algorithm_sha256": {
+    "src\\note_refinement.py": "78d206ee5df7648126a84b712ae1a0e8993a259e3dff0cb91b7b05d957dc76a9",
+    "src\\transcription.py": "ac7475a488389af1459fd8e1054e638a553cbd1a6f1aba0704139cc7760a2a59",
+    "src\\pitch.py": "3d27b794138320bf5348f3434ef3780c3ec09936f12d0ef548df2055cee0c3ff"
+  },
+  "heldout_scores_seen": false
+}

@@ -1,0 +1,11 @@
+{
+  "systems": [
+    {"id":"pyin-baseline","python":".cache/model-env/Scripts/python.exe","config":{"estimator":"pyin","device":"cpu"}},
+    {
+      "id": "pyin-short-events",
+      "python": ".cache/model-env/Scripts/python.exe",
+      "resegment_from": "pyin-baseline",
+      "config_overrides": {"min_note_seconds":0.04,"transition_seconds":0.04}
+    }
+  ]
+}
