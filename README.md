@@ -14,6 +14,11 @@ workflows. Seed/density/MIDI-limit generation controls are under Advanced in the
 composition workspace. See the [learning journey and validation](docs/LEARNING_EXPERIENCE.md)
 and [product gap audit](docs/PRODUCT_GAP_AUDIT.md).
 
+[Transport and technique explorer](docs/TRANSPORT_AND_TECHNIQUES.md): Space/Play
+pause and resume in each workspace; drag a passage with live timestamps/handles,
+select one evidence-backed technique, then experiment with original notes and
+receive live structural feedback.
+
 This overhaul fixes the original loss of rests, frame-based note fragmentation and
 missing timestamps. Phase 2 measured actual pretrained GAME Small and TorchCREPE
 Tiny inference against two published human annotation editions of eight Vocadito

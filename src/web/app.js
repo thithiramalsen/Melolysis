@@ -14,7 +14,7 @@ async function api(path, data) {
   const result=await response.json(); if(!response.ok)throw new Error(result.error||'Request failed'); return result;
 }
 async function run(action) {try {await action();} catch(e) {status(e.message,true); console.error(e);}}
-function tab(name) {document.querySelectorAll('.panel').forEach(e=>e.classList.toggle('hidden',e.id!==name));document.querySelectorAll('.tab').forEach(e=>e.classList.toggle('active',e.dataset.tab===name));draw();learning?.onTab(name);const url=new URL(location);url.searchParams.set('workspace',name);history.replaceState(null,'',url);}
+function tab(name) {pianoEditor?.audition.activateWorkspace(name);document.querySelectorAll('.panel').forEach(e=>e.classList.toggle('hidden',e.id!==name));document.querySelectorAll('.tab').forEach(e=>e.classList.toggle('active',e.dataset.tab===name));draw();learning?.onTab(name);const url=new URL(location);url.searchParams.set('workspace',name);history.replaceState(null,'',url);}
 document.querySelectorAll('.tab').forEach(e=>e.onclick=()=>tab(e.dataset.tab));
 function config() {return {estimator:$('estimator').value,fmin:+$('fmin').value,fmax:+$('fmax').value,
   confidence:+$('confidence').value,min_note_seconds:+$('minnote').value,transition_seconds:+$('hold').value,input_kind:$('kind').value};}
@@ -153,12 +153,8 @@ $('generate').onclick=()=>run(async()=>{
   });
   $('candidates').append(element('p',result.warnings.join(' '),'muted'));status(`${result.candidates.length} candidates found; ${result.rejected_source_matches} source matches rejected. Sing and revise a candidate yourself.`);
 });
-async function playReference(notes){
-  if(!Array.isArray(notes)||notes.length>200)throw new Error('Use at most 200 reference notes.');
-  const context=new AudioContext();const now=context.currentTime+.05;
-  for(const n of notes){if(!Number.isFinite(n.start)||!Number.isFinite(n.end)||!Number.isFinite(n.pitch)||n.start<0||n.end<=n.start||n.end>180||n.pitch<0||n.pitch>127){await context.close();throw new Error('Invalid edited note.');}const osc=context.createOscillator(),gain=context.createGain();osc.type='sine';osc.frequency.value=440*2**((n.pitch-69)/12);gain.gain.setValueAtTime(0,now+n.start);gain.gain.linearRampToValueAtTime(.12,now+n.start+.01);gain.gain.setValueAtTime(.12,now+Math.max(n.start+.01,n.end-.02));gain.gain.linearRampToValueAtTime(0,now+n.end);osc.connect(gain).connect(context.destination);osc.start(now+n.start);osc.stop(now+n.end);}
-  setTimeout(()=>context.close(),((Math.max(0,...notes.map(n=>n.end))+.2)*1000));
-}
+async function playReference(notes){await pianoEditor.audition.sequence(notes.map((n,i)=>({...n,id:n.id||'reference-'+i})),60);}
+
 function renderExercises(){
   $('exercises').replaceChildren();for(const exercise of state.profile.exercises){const card=element('div',undefined,'card');card.append(element('span','PRACTICAL SONGWRITING SUGGESTION','eyebrow'),element('h3',exercise.title),element('p',exercise.why_selected),element('pre',JSON.stringify(exercise.constraint,null,2)),element('p',exercise.instructions));
     const editor=element('textarea');editor.rows=5;editor.value=JSON.stringify(exercise.structure,null,2);card.append(editor);const use=element('button','Practice this exercise');use.onclick=()=>run(async()=>{state.exercise=copy(exercise);state.exercise.structure=JSON.parse(editor.value);status(`Practice selected: ${exercise.title}. Record or import your own sung response.`);});card.append(use);$('exercises').append(card);}
@@ -266,5 +262,6 @@ pianoEditor=new window.MelodyEditor({state,$,api,status,run,renderNotes,referenc
 recordingLibrary=new window.RecordingLibrary({state,$,api,status,run,load,openReference,tab});
 learning=new window.MelodyLearning({state,$,api,status,run,load,tab,player:()=>pianoEditor.audition,editor:()=>pianoEditor});
 tab('study');
+document.addEventListener('keydown',event=>{if(event.code!=='Space'||event.defaultPrevented||event.repeat||event.target.closest('input,textarea,select,[contenteditable=true],dialog'))return;event.preventDefault();run(()=>document.body.dataset.workspace==='compose'?learning.playIdea():document.body.dataset.workspace==='study'?learning.playStudy():pianoEditor.audition.full());});
 window.addEventListener('beforeunload',event=>{if(pianoEditor.dirty||learning?.dirty){event.preventDefault();event.returnValue='';}});
 run(async()=>{await refresh();const params=launchParams,id=params.get('analysis'),ref=params.get('reference');if(id&&state.library.some(r=>r.id===id)){await load(id);if(ref){enterReference(await api('reference?reference_id='+encodeURIComponent(ref)));tab('review');}else if(params.get('workspace')==='review')tab('review');}if(params.get('idea'))await learning.loadIdea(params.get('idea'));});
