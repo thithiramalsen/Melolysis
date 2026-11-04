@@ -39,6 +39,10 @@ def fixture():
         clone=json.loads(json.dumps(r));clone['audio']['source_path']=str(sample.resolve());clone['audio']['content_sha256']=content_hash(sample)
         clone['metadata'].update(song=name,artist='Fixture artist '+str(index))
         clone['provenance']['note_model']={'name':'DISPOSABLE-LIBRARY-STUB-not-inference'}
+        if index==2:
+            # Explicit phrase-layout contract fixture for the learning A/B view.
+            for note in clone['notes'][3:]:note['phrase']=1
+            clone['predicted_notes']=clone['notes']
         if dataset:clone['metadata']['dataset']=dataset
         dest=workspace/'analyses'/clone['audio']['content_sha256']/clone['prediction_id'];dest.mkdir(parents=True)
         clone['report_path']=str((dest/'report.json').resolve());write_json(dest/'report.json',clone)

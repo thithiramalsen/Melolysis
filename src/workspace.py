@@ -23,6 +23,7 @@ from .transcription import assign_phrases
 from .references import ReferenceStore
 from .real_metrics import score_reference
 from .library import recording_groups,validate_corpus_sources
+from .learning_store import LearningStore,ACTIONS as LEARNING_ACTIONS
 
 log = logging.getLogger(__name__)
 STATIC = Path(__file__).parent / "web"
@@ -71,6 +72,8 @@ class Workspace:
 
     def dispatch(self, action, data):
         with self.lock:
+            if action in LEARNING_ACTIONS:
+                return LearningStore(self).dispatch(action,data)
             if action=='reference-create':
                 _,report=self.get_report(data['id'])
                 return self.references.create(report,data['start'],data['end'],data['annotator'],
@@ -197,6 +200,8 @@ def make_handler(workspace):
                         'selection_policy':'Unique source hashes; no automatic inclusion; research datasets require explicit corpus opt-in'})
                 if parsed.path == "/api/report":
                     return self.send(200, workspace.get_report(query["id"])[1])
+                if parsed.path=='/api/idea-export':
+                    return self.send_file(LearningStore(workspace).export(query['id'],query['revision'],query.get('type','midi')),attachment=True)
                 if parsed.path=='/api/references':
                     _,report=workspace.get_report(query['id'])
                     refs=workspace.references.list(report['audio']['content_sha256'])
@@ -228,7 +233,8 @@ def make_handler(workspace):
                         raise ValueError("Invalid candidate")
                     return self.send_file(workspace.root/"compositions"/identifier/f"candidate-{index}.mid", attachment=True)
                 files = {"/": "index.html", "/app.js": "app.js", "/style.css": "style.css",
-                    '/editor-core.js':'editor-core.js','/editor.js':'editor.js','/audition.js':'audition.js','/library.js':'library.js'}
+                    '/editor-core.js':'editor-core.js','/editor.js':'editor.js','/audition.js':'audition.js','/library.js':'library.js',
+                    '/learning.js':'learning.js','/learning-roll.js':'learning-roll.js','/learning.css':'learning.css'}
                 if parsed.path in files:
                     path = STATIC/files[parsed.path]
                     return self.send(200, path.read_bytes(), mimetypes.guess_type(path)[0] or "text/plain")

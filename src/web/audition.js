@@ -28,8 +28,8 @@ class VocalAudition {
     if(this.context){this.pianoGain.gain.setTargetAtTime(piano*.22,this.context.currentTime,.01);this.vocalGain.gain.setTargetAtTime(vocal,this.context.currentTime,.01);}
   }
   stopTone(){for(const node of this.nodes){try{node.stop();}catch{}try{node.disconnect();}catch{}}this.nodes=[];}
-  tone(pitch,duration=.65,delay=0){
-    if(!this.context)return;this.stopTone();const frequency=MelodyEdits.hz(pitch),at=this.context.currentTime+Math.max(0,delay);
+  tone(pitch,duration=.65,delay=0,append=false){
+    if(!this.context)return;if(!append)this.stopTone();const frequency=MelodyEdits.hz(pitch),at=this.context.currentTime+Math.max(0,delay);
     const envelope=this.context.createGain();envelope.gain.setValueAtTime(0,at);
     envelope.gain.linearRampToValueAtTime(.8,at+Math.min(.012,duration*.2));envelope.gain.exponentialRampToValueAtTime(.36,at+Math.min(.15,duration*.6));
     envelope.gain.setTargetAtTime(.00001,at+Math.max(.02,duration-.04),.015);envelope.connect(this.pianoGain);
@@ -48,7 +48,7 @@ class VocalAudition {
     await new Promise(resolve=>{this.audio.addEventListener('pause',resolve,{once:true});this.audio.pause();});
   }
   async piano(pitch){await this.ensure();this.cancelSegment();const token=this.token;await this.pauseVocal();if(token!==this.token)return;this.tone(pitch);this.notify(`Piano reference · ${MelodyEdits.pitchName(pitch)} · ${MelodyEdits.hz(pitch).toFixed(2)} Hz — listening aid, not annotation truth`);}
-  cancelSegment(){this.token++;this.segment=null;this.stopTone();}
+  cancelSegment(){this.token++;this.segment=null;this.sequenceInfo=null;this.stopTone();}
   async waitForSeek(time){
     if(Math.abs(this.audio.currentTime-time)<.00001)return;
     await new Promise((resolve,reject)=>{
@@ -76,6 +76,14 @@ class VocalAudition {
     this.tone(s.note.pitch,Math.max(.02,(s.note.end-Math.max(now,s.note.start))/rate),Math.max(0,(s.note.start-now)/rate));
   }
   async keyboard(pitch){await this.piano(pitch);}
+  async sequence(notes,tempo=100){
+    MelodyEdits.validate(notes,[0,256]);if(notes.length>200||!Number.isFinite(tempo)||tempo<20||tempo>300)throw Error('Invalid reference sequence');
+    await this.ensure();this.cancelSegment();await this.pauseVocal();const origin=this.context.currentTime+.06;
+    for(const n of notes)this.tone(n.pitch,(n.end-n.start)*60/tempo,.06+n.start*60/tempo,true);
+    this.sequenceInfo={started_context_time:origin,end_context_time:origin+Math.max(0,...notes.map(n=>n.end))*60/tempo,
+      tempo,frequencies:notes.map(n=>MelodyEdits.hz(n.pitch))};
+    this.notify('Your melody · local piano reference · original vocal unchanged');return this.sequenceInfo;
+  }
   async full(){await this.ensure();this.cancelSegment();if(this.audio.paused){await this.audio.play();this.notify('Complete original recording · vocal bus only');}else this.audio.pause();}
   async range(start,end,loop=false){
     await this.ensure();this.cancelSegment();this.audio.pause();const token=this.token;

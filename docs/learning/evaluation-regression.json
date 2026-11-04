@@ -1,0 +1,8 @@
+{
+  "scored_records": 64,
+  "all_scoring_outputs_identical": true,
+  "protected_files_unchanged": 143,
+  "frozen_manifest_revalidated": true,
+  "mhs_user_reference_touched": false,
+  "scope": "Re-scored stored predictions using frozen references; no inference rerun or benchmark modification."
+}
