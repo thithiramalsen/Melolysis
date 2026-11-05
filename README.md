@@ -1,9 +1,23 @@
 # Melolysis
 
-An inspectable vocal-melody analysis and songwriting application. The workflow is
-**vocal audio → continuous pitch → timed notes → phrases/motifs → multi-song evidence
-→ composition constraints → your own sung performance**. There is no voice cloning
-or generated singing.
+Learn a singer's melodic decisions and use the principles to make your own music.
+The primary workflow is **Study song → understand a technique → create your own
+melody**. Start with one recording: choose a phrase, hear its vocal and pitch
+contour, analyze the actual note events, then choose **Try this technique**. Draw
+an independent melody, explore transformations of your own motif, hear a piano
+reference, save an idea and export the edited MIDI. Singing/recording is optional.
+There is no voice cloning or generated singing.
+
+The default workspace is song study. **Artist patterns** compares selected songs;
+**Transcription / research** retains the full correction, reference and evaluation
+workflows. Seed/density/MIDI-limit generation controls are under Advanced in the
+composition workspace. See the [learning journey and validation](docs/LEARNING_EXPERIENCE.md)
+and [product gap audit](docs/PRODUCT_GAP_AUDIT.md).
+
+[Transport and technique explorer](docs/TRANSPORT_AND_TECHNIQUES.md): Space/Play
+pause and resume in each workspace; drag a passage with live timestamps/handles,
+select one evidence-backed technique, then experiment with original notes and
+receive live structural feedback.
 
 This overhaul fixes the original loss of rests, frame-based note fragmentation and
 missing timestamps. Phase 2 measured actual pretrained GAME Small and TorchCREPE
@@ -66,23 +80,25 @@ requirements are preferable when using a different Python or OS.
 
 ## Review and correct
 
-1. Import one or several recordings, or analyze existing paths using the CLI.
-   Model runs are grouped by source hash. Corpus checkboxes and bulk actions select
-   unique recordings independently from the opened editor. Research/Vocadito is
-   separate and excluded from artist corpora unless explicitly enabled.
-2. Select a recording. Inspect its waveform, raw expressive F0, symbolic notes,
-   phrase boundaries, confidence and review flags on the same source-second axis.
-3. Click note blocks, drag their bodies to change pitch/timing, and drag edges to
-   resize. Shift-click/drag selects a group. Use Draw, Split, Merge and Delete;
-   Ctrl+Z / Ctrl+Shift+Z undo/redo unsaved notes and uncertainty regions.
-4. Leave **Auto / By clicked target** selected: notes play the original vocal and
-   piano keys always play clean reference pitches. Piano/Vocal/Both are deliberate
-   note overrides. Turn off **On click** for silent selection. Listen → Settings
-   contains pre/post-roll and drag preview; Range contains note/phrase loops.
-   Use independent volumes and 0.5×/0.75× pitch-preserving playback.
-5. Inspect the review queue, then save an immutable revision. Restoring history
-   appends a new revision. Exact table fields and research controls remain under
-   **Inspector → Advanced / research**. Raw predictions remain separate.
+1. Choose a song in the library or **Import vocal audio**. Artist and song search
+   are available immediately; model versions/settings remain secondary.
+2. Choose an audible phrase, or drag a region on the waveform/pitch grid. Hear it
+   with **Hear passage**, then choose **Analyze this melody**.
+3. Read a supported observation and click **Hear** to see its exact targets and
+   hear the original recording. Multi-phrase passages can be compared A/B with
+   transposition-normalized views and interval patterns.
+4. Choose **Try this technique**. The idea roll starts blank. Draw your own notes,
+   choose a comfortable note-name range, key/scale and tempo, and use **Explore
+   variations of my motif** to change rhythm, ending or develop an answer.
+5. Audition the piano reference, edit, **Check this technique**, **Save idea** and
+   **Export saved MIDI**. The exported revision includes your edits. Source
+   evidence remains linked; it is never copied into a new idea automatically.
+6. Use **Artist patterns** to compare several songs by the same singer. One song
+   still has useful local findings, but cannot establish an artist signature.
+   Research/Vocadito stays separate and needs explicit corpus opt-in.
+7. When needed, open **Transcription / research** for the original DAW editor,
+   independent reference editions and model comparisons. Optional singing feedback
+   is at the end of the composition workflow, after saving an intended melody.
 
 Prediction files, original recordings and manual editions are separate. Selecting
 another model never deletes corrections; a correction stays attached to the input
