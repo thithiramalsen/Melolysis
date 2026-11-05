@@ -1,0 +1,3830 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "D:\\VSCode\\GitHub\\Melolysis\\node_modules\\@playwright\\test\\cli.js",
+      "test"
+    ],
+    "configFile": "D:\\VSCode\\GitHub\\Melolysis\\playwright.config.cjs",
+    "rootDir": "D:/VSCode/GitHub/Melolysis/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/VSCode/GitHub/Melolysis/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "1366x768",
+        "name": "1366x768",
+        "testDir": "D:/VSCode/GitHub/Melolysis/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/VSCode/GitHub/Melolysis/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "1920x1080",
+        "name": "1920x1080",
+        "testDir": "D:/VSCode/GitHub/Melolysis/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "D:\\VSCode\\GitHub\\Melolysis\\test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "1366x768",
+        "testDir": "D:\\VSCode\\GitHub\\Melolysis\\tests\\browser",
+        "snapshotDir": "D:\\VSCode\\GitHub\\Melolysis\\tests\\browser",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:8772",
+          "headless": true,
+          "trace": "retain-on-failure",
+          "screenshot": "only-on-failure",
+          "launchOptions": {
+            "args": [
+              "--mute-audio",
+              "--disable-gpu"
+            ]
+          },
+          "viewport": {
+            "width": 1366,
+            "height": 768
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "1366x768"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "D:\\VSCode\\GitHub\\Melolysis\\test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "1920x1080",
+        "testDir": "D:\\VSCode\\GitHub\\Melolysis\\tests\\browser",
+        "snapshotDir": "D:\\VSCode\\GitHub\\Melolysis\\tests\\browser",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:8772",
+          "headless": true,
+          "trace": "retain-on-failure",
+          "screenshot": "only-on-failure",
+          "launchOptions": {
+            "args": [
+              "--mute-audio",
+              "--disable-gpu"
+            ]
+          },
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "1920x1080"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": ".cache/editor-tests/browser-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": {
+      "command": ".venv\\Scripts\\python.exe -u tools/editor_test_server.py",
+      "url": "http://127.0.0.1:8772/api/state",
+      "reuseExistingServer": false,
+      "timeout": 90000
+    }
+  },
+  "suites": [
+    {
+      "title": "context_integration.spec.cjs",
+      "file": "context_integration.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "confirmed timing finding opens a blank independent melody with meter",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1250,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:11.648Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "81fd6bfc7a2506ce321d-18f55231ee54a1c2cb63",
+          "file": "context_integration.spec.cjs",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "same-section comparisons deduplicate model variants and show source-backed rolls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1668,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:13.063Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "81fd6bfc7a2506ce321d-0209942442041a8cb31b",
+          "file": "context_integration.spec.cjs",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "confirmed timing finding opens a blank independent melody with meter",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1176,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:58.951Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "81fd6bfc7a2506ce321d-7cb29ce9b25f4539ec61",
+          "file": "context_integration.spec.cjs",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "same-section comparisons deduplicate model variants and show source-backed rolls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1806,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:00.288Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "81fd6bfc7a2506ce321d-437e623b8cda53928f56",
+          "file": "context_integration.spec.cjs",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "context.spec.cjs",
+      "file": "context.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "sections save, reload and remain independent of note/reference editions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1351,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:14.768Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17afbe9b5c7075b6084d-66f3f4046b3bd8b4ff13",
+          "file": "context.spec.cjs",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "beat alignment persists and actual vocal/click buses are audible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3907,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:16.172Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17afbe9b5c7075b6084d-d1dc106fc8290a07bc07",
+          "file": "context.spec.cjs",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "seek mode preserves selection and zoom changes view without note changes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 888,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:20.095Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17afbe9b5c7075b6084d-60fe93c0a8853360ca43",
+          "file": "context.spec.cjs",
+          "line": 6,
+          "column": 1
+        },
+        {
+          "title": "metronome downbeat has a measurable stronger accent and independent mute",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1939,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:20.999Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17afbe9b5c7075b6084d-b6d8aeab1c5d5506d9b3",
+          "file": "context.spec.cjs",
+          "line": 8,
+          "column": 1
+        },
+        {
+          "title": "sections save, reload and remain independent of note/reference editions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1482,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:02.125Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17afbe9b5c7075b6084d-bdfeae50673d454927c1",
+          "file": "context.spec.cjs",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "beat alignment persists and actual vocal/click buses are audible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3497,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:03.648Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17afbe9b5c7075b6084d-902741498f3aaa562dac",
+          "file": "context.spec.cjs",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "seek mode preserves selection and zoom changes view without note changes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1121,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:07.158Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17afbe9b5c7075b6084d-5730f39c63955b0f75f8",
+          "file": "context.spec.cjs",
+          "line": 6,
+          "column": 1
+        },
+        {
+          "title": "metronome downbeat has a measurable stronger accent and independent mute",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2146,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:08.294Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17afbe9b5c7075b6084d-fe3048b5bc134f3d113f",
+          "file": "context.spec.cjs",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "editor.spec.cjs",
+      "file": "editor.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "draft, full source audio, bounded layout and distinct prediction layers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1234,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:22.989Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-2e5b69a0fd0410034fda",
+          "file": "editor.spec.cjs",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "direct move commits only on release, preserves fractional pitch and correct note identity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1392,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:24.266Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-2e2fc27f4ce6c12cc333",
+          "file": "editor.spec.cjs",
+          "line": 51,
+          "column": 1
+        },
+        {
+          "title": "resize clamps neighbours and source bounds, with undo/redo",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1587,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:25.674Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-7d9a84e522556f79d1e5",
+          "file": "editor.spec.cjs",
+          "line": 58,
+          "column": 1
+        },
+        {
+          "title": "split, compatible merge, delete, drawing and undo/redo use the same edit history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2610,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:27.275Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-61680cbd706fbcae4a48",
+          "file": "editor.spec.cjs",
+          "line": 64,
+          "column": 1
+        },
+        {
+          "title": "multi-selection moves two notes and region uncertainty has undo/redo",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1696,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:29.902Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-dd7d74f5fcf490945cce",
+          "file": "editor.spec.cjs",
+          "line": 76,
+          "column": 1
+        },
+        {
+          "title": "pitch keyboard stays aligned after time/pitch zoom and middle pan",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1717,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:31.618Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-febb0ce171206e034a2c",
+          "file": "editor.spec.cjs",
+          "line": 83,
+          "column": 1
+        },
+        {
+          "title": "saved reference edits survive refresh; revision restore appends an unreviewed revision",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2120,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:33.352Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-f335ab2490594ab86cf4",
+          "file": "editor.spec.cjs",
+          "line": 94,
+          "column": 1
+        },
+        {
+          "title": "working corrections and reference histories stay independent",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2116,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:35.491Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-ea8164f3eb4ca3165f7e",
+          "file": "editor.spec.cjs",
+          "line": 100,
+          "column": 1
+        },
+        {
+          "title": "review queue uses measurable disagreement, never verifies references automatically",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1504,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:37.625Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-f9cdebcc9510b3955042",
+          "file": "editor.spec.cjs",
+          "line": 108,
+          "column": 1
+        },
+        {
+          "title": "piano keys generate measured A4 and A sharp frequencies without starting vocal audio",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1636,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:39.147Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "measured-reference-audio",
+                      "contentType": "application/json",
+                      "body": "eyJBNCI6eyJybXMiOjAuMDE1MjIwNTAxMTE1MDMxMjQsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo2OSwiZnJlcXVlbmN5Ijo0NDAsInNjaGVkdWxlZF9jb250ZXh0X3RpbWUiOjAsImR1cmF0aW9uIjowLjY1fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6bnVsbCwic291cmNlX3RpbWUiOjAsInNwZWVkIjoxfSwiQXNoYXJwNCI6eyJybXMiOjAuMDE1MDIwMDU1NDExMzk3MDY4LCJwZWFrX2h6Ijo0NjguMzQ3MTY3OTY4NzUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOnsicGl0Y2giOjcwLCJmcmVxdWVuY3kiOjQ2Ni4xNjM3NjE1MTgwODk5LCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjowLjM3MTUxOTI3NDM3NjQxNzI0LCJkdXJhdGlvbiI6MC42NX0sIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOm51bGwsInNvdXJjZV90aW1lIjowLCJzcGVlZCI6MX19"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-9dafae6aa1de3d4fc58a",
+          "file": "editor.spec.cjs",
+          "line": 114,
+          "column": 1
+        },
+        {
+          "title": "vocal segment audition uses edited source boundaries with preroll/postroll and loop",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3425,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:40.803Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "measured-vocal-audio",
+                      "contentType": "application/json",
+                      "body": "eyJybXMiOjAuMTQ2ODQ1OTI3MjIyNDAxNzUsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjpudWxsLCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50Ijp7InN0YXJ0IjowLjE5OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45OTc5MTM4MzIxOTk1NDY0LCJub3RlIjp7ImlkIjoibjAwMDAwIiwic3RhcnQiOjAuMjU5NDMzMTA2NTc1OTYzNywiZW5kIjowLjkxNzkxMzgzMjE5OTU0NjUsInBpdGNoIjo2OS4zNywiY29uZmlkZW5jZSI6MC45ODQxMjI3OTk2NTQ2MzQ2LCJmcmFtZV9zdGFydCI6MCwiZnJhbWVfZW5kIjowLCJwaHJhc2UiOjAsImZsYWdzIjpbInVucmV2aWV3ZWRfbW9kZWxfc2VlZCIsImh1bWFuX2NvcnJlY3RlZCJdLCJkdXJhdGlvbiI6MC42NTg0ODA3MjU2MjM1ODI3fSwibG9vcCI6ZmFsc2UsIm1vZGUiOiJ2b2NhbCJ9LCJzb3VyY2VfdGltZSI6MC40MTg2MjgsInNwZWVkIjoxfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-7e5dc9efc074444094ba",
+          "file": "editor.spec.cjs",
+          "line": 118,
+          "column": 1
+        },
+        {
+          "title": "Both mode has one vocal source, simultaneous audible buses and independent volumes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2317,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:44.245Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "both-buses",
+                      "contentType": "application/json",
+                      "body": "eyJwaWFubyI6eyJybXMiOjAuMDIwMDk0Mzg5ODMwMTY5MTU2LCJwZWFrX2h6Ijo0NDYuODEzOTY0ODQzNzUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOnsicGl0Y2giOjY5LjM3LCJmcmVxdWVuY3kiOjQ0OS41MDQ5MDQ1NTE3NzY3LCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjowLjA3MTYxMDA4MzkwMDIyNjc2LCJkdXJhdGlvbiI6MC42Njg0ODA3MjU2MjM1ODI3fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6eyJzdGFydCI6MC4xODk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTk3OTEzODMyMTk5NTQ2NCwibm90ZSI6eyJpZCI6Im4wMDAwMCIsInN0YXJ0IjowLjI0OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45MTc5MTM4MzIxOTk1NDY1LCJwaXRjaCI6NjkuMzcsImNvbmZpZGVuY2UiOjAuOTg0MTIyNzk5NjU0NjM0NiwiZnJhbWVfc3RhcnQiOjAsImZyYW1lX2VuZCI6MCwicGhyYXNlIjowLCJmbGFncyI6WyJ1bnJldmlld2VkX21vZGVsX3NlZWQiXSwiZHVyYXRpb24iOjAuNjY4NDgwNzI1NjIzNTgyN30sImxvb3AiOnRydWUsIm1vZGUiOiJib3RoIn0sInNvdXJjZV90aW1lIjowLjQ1NzIxMSwic3BlZWQiOjF9LCJ2b2NhbCI6eyJybXMiOjAuMTU4MDkzNjc5NjUxNzk5NzQsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo2OS4zNywiZnJlcXVlbmN5Ijo0NDkuNTA0OTA0NTUxNzc2Nywic2NoZWR1bGVkX2NvbnRleHRfdGltZSI6MC4wNzE2MTAwODM5MDAyMjY3NiwiZHVyYXRpb24iOjAuNjY4NDgwNzI1NjIzNTgyN30sIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOnsic3RhcnQiOjAuMTg5NDMzMTA2NTc1OTYzNywiZW5kIjowLjk5NzkxMzgzMjE5OTU0NjQsIm5vdGUiOnsiaWQiOiJuMDAwMDAiLCJzdGFydCI6MC4yNDk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTE3OTEzODMyMTk5NTQ2NSwicGl0Y2giOjY5LjM3LCJjb25maWRlbmNlIjowLjk4NDEyMjc5OTY1NDYzNDYsImZyYW1lX3N0YXJ0IjowLCJmcmFtZV9lbmQiOjAsInBocmFzZSI6MCwiZmxhZ3MiOlsidW5yZXZpZXdlZF9tb2RlbF9zZWVkIl0sImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJsb29wIjp0cnVlLCJtb2RlIjoiYm90aCJ9LCJzb3VyY2VfdGltZSI6MC40Nzc5Mywic3BlZWQiOjF9LCJtdXRlZFBpYW5vIjp7InJtcyI6MCwicGVha19oeiI6MTA3LjY2NjAxNTYyNSwicGlhbm9fZ2FpbiI6MCwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo2OS4zNywiZnJlcXVlbmN5Ijo0NDkuNTA0OTA0NTUxNzc2Nywic2NoZWR1bGVkX2NvbnRleHRfdGltZSI6MC4wNzE2MTAwODM5MDAyMjY3NiwiZHVyYXRpb24iOjAuNjY4NDgwNzI1NjIzNTgyN30sIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOnsic3RhcnQiOjAuMTg5NDMzMTA2NTc1OTYzNywiZW5kIjowLjk5NzkxMzgzMjE5OTU0NjQsIm5vdGUiOnsiaWQiOiJuMDAwMDAiLCJzdGFydCI6MC4yNDk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTE3OTEzODMyMTk5NTQ2NSwicGl0Y2giOjY5LjM3LCJjb25maWRlbmNlIjowLjk4NDEyMjc5OTY1NDYzNDYsImZyYW1lX3N0YXJ0IjowLCJmcmFtZV9lbmQiOjAsInBocmFzZSI6MCwiZmxhZ3MiOlsidW5yZXZpZXdlZF9tb2RlbF9zZWVkIl0sImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJsb29wIjp0cnVlLCJtb2RlIjoiYm90aCJ9LCJzb3VyY2VfdGltZSI6MC44MDg2MDEsInNwZWVkIjoxfSwic3RpbGxWb2NhbCI6eyJybXMiOjAuMTU4MzI2MTM5MDYzNzQ1NjgsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJwaWFub19nYWluIjowLCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOnsicGl0Y2giOjY5LjM3LCJmcmVxdWVuY3kiOjQ0OS41MDQ5MDQ1NTE3NzY3LCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjowLjA3MTYxMDA4MzkwMDIyNjc2LCJkdXJhdGlvbiI6MC42Njg0ODA3MjU2MjM1ODI3fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6eyJzdGFydCI6MC4xODk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTk3OTEzODMyMTk5NTQ2NCwibm90ZSI6eyJpZCI6Im4wMDAwMCIsInN0YXJ0IjowLjI0OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45MTc5MTM4MzIxOTk1NDY1LCJwaXRjaCI6NjkuMzcsImNvbmZpZGVuY2UiOjAuOTg0MTIyNzk5NjU0NjM0NiwiZnJhbWVfc3RhcnQiOjAsImZyYW1lX2VuZCI6MCwicGhyYXNlIjowLCJmbGFncyI6WyJ1bnJldmlld2VkX21vZGVsX3NlZWQiXSwiZHVyYXRpb24iOjAuNjY4NDgwNzI1NjIzNTgyN30sImxvb3AiOnRydWUsIm1vZGUiOiJib3RoIn0sInNvdXJjZV90aW1lIjowLjgxOTI3NCwic3BlZWQiOjF9LCJtdXRlZEJvdGgiOnsicm1zIjowLCJwZWFrX2h6IjoxMDcuNjY2MDE1NjI1LCJwaWFub19nYWluIjowLCJ2b2NhbF9nYWluIjowLCJzYW1wbGVfcmF0ZSI6NDQxMDAsImxhc3RfdG9uZSI6eyJwaXRjaCI6NjkuMzcsImZyZXF1ZW5jeSI6NDQ5LjUwNDkwNDU1MTc3NjcsInNjaGVkdWxlZF9jb250ZXh0X3RpbWUiOjAuODgxNDA2MDAyMjY3NTczNiwiZHVyYXRpb24iOjAuNjY4NDgwNzI1NjIzNTgyN30sIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOnsic3RhcnQiOjAuMTg5NDMzMTA2NTc1OTYzNywiZW5kIjowLjk5NzkxMzgzMjE5OTU0NjQsIm5vdGUiOnsiaWQiOiJuMDAwMDAiLCJzdGFydCI6MC4yNDk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTE3OTEzODMyMTk5NTQ2NSwicGl0Y2giOjY5LjM3LCJjb25maWRlbmNlIjowLjk4NDEyMjc5OTY1NDYzNDYsImZyYW1lX3N0YXJ0IjowLCJmcmFtZV9lbmQiOjAsInBocmFzZSI6MCwiZmxhZ3MiOlsidW5yZXZpZXdlZF9tb2RlbF9zZWVkIl0sImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJsb29wIjp0cnVlLCJtb2RlIjoiYm90aCJ9LCJzb3VyY2VfdGltZSI6MC4zMjAwNDUsInNwZWVkIjoxfX0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-c70cc8998d73e2fc341b",
+          "file": "editor.spec.cjs",
+          "line": 124,
+          "column": 1
+        },
+        {
+          "title": "slow playback preserves source timestamps and requested pitch, with synchronized playhead",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2214,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:46.579Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "slow-vocal-measurement",
+                      "contentType": "application/json",
+                      "body": "eyJoYWxmIjp7InJtcyI6MC4xNTgxMTUyMTM1NDM0NTQ4LCJwZWFrX2h6Ijo0NDEuNDMwNjY0MDYyNSwicGlhbm9fZ2FpbiI6MC4wNTQ5OTk5OTk3MDE5NzY3NzYsInZvY2FsX2dhaW4iOjAuODAwMDAwMDExOTIwOTI5LCJzYW1wbGVfcmF0ZSI6NDQxMDAsImxhc3RfdG9uZSI6bnVsbCwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6eyJzdGFydCI6MC4xODk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTk3OTEzODMyMTk5NTQ2NCwibm90ZSI6eyJpZCI6Im4wMDAwMCIsInN0YXJ0IjowLjI0OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45MTc5MTM4MzIxOTk1NDY1LCJwaXRjaCI6NjkuMzcsImNvbmZpZGVuY2UiOjAuOTg0MTIyNzk5NjU0NjM0NiwiZnJhbWVfc3RhcnQiOjAsImZyYW1lX2VuZCI6MCwicGhyYXNlIjowLCJmbGFncyI6WyJ1bnJldmlld2VkX21vZGVsX3NlZWQiXSwiZHVyYXRpb24iOjAuNjY4NDgwNzI1NjIzNTgyN30sImxvb3AiOmZhbHNlLCJtb2RlIjoidm9jYWwifSwic291cmNlX3RpbWUiOjAuMzg5MDMxLCJzcGVlZCI6MC41fSwidGhyZWVRdWFydGVyIjp7InJtcyI6MC4xNTgyMTA5NjQ1NDYwOTAzOCwicGVha19oeiI6NDQxLjQzMDY2NDA2MjUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOm51bGwsIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOnsic3RhcnQiOjAuMTg5NDMzMTA2NTc1OTYzNywiZW5kIjowLjk5NzkxMzgzMjE5OTU0NjQsIm5vdGUiOnsiaWQiOiJuMDAwMDAiLCJzdGFydCI6MC4yNDk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTE3OTEzODMyMTk5NTQ2NSwicGl0Y2giOjY5LjM3LCJjb25maWRlbmNlIjowLjk4NDEyMjc5OTY1NDYzNDYsImZyYW1lX3N0YXJ0IjowLCJmcmFtZV9lbmQiOjAsInBocmFzZSI6MCwiZmxhZ3MiOlsidW5yZXZpZXdlZF9tb2RlbF9zZWVkIl0sImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJsb29wIjpmYWxzZSwibW9kZSI6InZvY2FsIn0sInNvdXJjZV90aW1lIjowLjQwNDQ2Nywic3BlZWQiOjAuNzV9fQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-618aa7b741330989a609",
+          "file": "editor.spec.cjs",
+          "line": 130,
+          "column": 1
+        },
+        {
+          "title": "Keyboard stays piano in Vocal override and Space plays complete original audio in Piano mode",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1216,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:48.817Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-12ebea126a9da08a4f6b",
+          "file": "editor.spec.cjs",
+          "line": 136,
+          "column": 1
+        },
+        {
+          "title": "Escape cancels a drag without symbolic changes or an extra history step",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1162,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:50.065Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-de3bac54635a3dcc617d",
+          "file": "editor.spec.cjs",
+          "line": 140,
+          "column": 1
+        },
+        {
+          "title": "A/B plays original vocal then reference, with no vocal pitch-shift claim",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2239,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:51.244Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "A-B-sequence",
+                      "contentType": "application/json",
+                      "body": "eyJybXMiOjAuMDE0Njg0OTEwMDI5MDI0ODMsInBlYWtfaHoiOjQ0Ni44MTM5NjQ4NDM3NSwicGlhbm9fZ2FpbiI6MC4wNTQ5OTk5OTk3MDE5NzY3NzYsInZvY2FsX2dhaW4iOjAuODAwMDAwMDExOTIwOTI5LCJzYW1wbGVfcmF0ZSI6NDQxMDAsImxhc3RfdG9uZSI6eyJwaXRjaCI6NjkuMzcsImZyZXF1ZW5jeSI6NDQ5LjUwNDkwNDU1MTc3NjcsInNjaGVkdWxlZF9jb250ZXh0X3RpbWUiOjAuODQxNzIzMzU2MDA5MDcwMywiZHVyYXRpb24iOjAuNjV9LCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50IjpudWxsLCJzb3VyY2VfdGltZSI6MS4wMDc5MzYsInNwZWVkIjoxfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-b377f8ad330816823494",
+          "file": "editor.spec.cjs",
+          "line": 145,
+          "column": 1
+        },
+        {
+          "title": "working revision restore appends a correction and review attestation clears on note edits",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3078,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:53.504Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-80d4d623e2a08b083d03",
+          "file": "editor.spec.cjs",
+          "line": 149,
+          "column": 1
+        },
+        {
+          "title": "range tool and missing-note queue windows remain source-aligned without inventing labels",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1752,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:56.600Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-b058398901825826496f",
+          "file": "editor.spec.cjs",
+          "line": 157,
+          "column": 1
+        },
+        {
+          "title": "review suggestions are confined to a short reference excerpt",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1414,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:58.367Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-245cecf0382596499e56",
+          "file": "editor.spec.cjs",
+          "line": 163,
+          "column": 1
+        },
+        {
+          "title": "raw predicted notes can be auditioned without populating a blank human reference",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1787,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:27:59.797Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-fd7fafcf9bdeba8b1d40",
+          "file": "editor.spec.cjs",
+          "line": 169,
+          "column": 1
+        },
+        {
+          "title": "Auto routes annotation clicks to original vocal and every keyboard override to clean piano",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3083,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:01.603Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "contextual-click-audio",
+                      "contentType": "application/json",
+                      "body": "eyJ2b2ljZSI6eyJybXMiOjAuMTQyMjc2OTM5MDc4MDY0NjMsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjpudWxsLCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50Ijp7InN0YXJ0IjowLjE4OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45OTc5MTM4MzIxOTk1NDY0LCJub3RlIjp7ImlkIjoibjAwMDAwIiwic3RhcnQiOjAuMjQ5NDMzMTA2NTc1OTYzNywiZW5kIjowLjkxNzkxMzgzMjE5OTU0NjUsInBpdGNoIjo2OS4zNywiY29uZmlkZW5jZSI6MC45ODQxMjI3OTk2NTQ2MzQ2LCJmcmFtZV9zdGFydCI6MCwiZnJhbWVfZW5kIjowLCJwaHJhc2UiOjAsImZsYWdzIjpbInVucmV2aWV3ZWRfbW9kZWxfc2VlZCJdLCJkdXJhdGlvbiI6MC42Njg0ODA3MjU2MjM1ODI3fSwibG9vcCI6ZmFsc2UsIm1vZGUiOiJ2b2NhbCJ9LCJzb3VyY2VfdGltZSI6MC40MDg1NDIsInNwZWVkIjoxfSwia2V5Ym9hcmQiOlt7Im1vZGUiOiJhdXRvIiwicm1zIjowLjAxOTM0MzYyNjkwOTYwNjgxNiwicGVha19oeiI6NDQxLjQzMDY2NDA2MjUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOnsicGl0Y2giOjY5LCJmcmVxdWVuY3kiOjQ0MCwic2NoZWR1bGVkX2NvbnRleHRfdGltZSI6MC40MzI0NzE2NTUzMjg3OTgxNywiZHVyYXRpb24iOjAuNjV9LCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50IjpudWxsLCJzb3VyY2VfdGltZSI6MC4xLCJzcGVlZCI6MX0seyJtb2RlIjoicGlhbm8iLCJybXMiOjAuMDIwMTYzMDQ3NzI0NTkyMjQsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo2OSwiZnJlcXVlbmN5Ijo0NDAsInNjaGVkdWxlZF9jb250ZXh0X3RpbWUiOjAuODYyMDQwODE2MzI2NTMwNiwiZHVyYXRpb24iOjAuNjV9LCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50IjpudWxsLCJzb3VyY2VfdGltZSI6MC4xLCJzcGVlZCI6MX0seyJtb2RlIjoidm9jYWwiLCJybXMiOjAuMDIwNzU0ODQwNjY4OTkzNDQ0LCJwZWFrX2h6Ijo0NDEuNDMwNjY0MDYyNSwicGlhbm9fZ2FpbiI6MC4wNTQ5OTk5OTk3MDE5NzY3NzYsInZvY2FsX2dhaW4iOjAuODAwMDAwMDExOTIwOTI5LCJzYW1wbGVfcmF0ZSI6NDQxMDAsImxhc3RfdG9uZSI6eyJwaXRjaCI6NjksImZyZXF1ZW5jeSI6NDQwLCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjoxLjMwMDMxNzQ2MDMxNzQ2MDMsImR1cmF0aW9uIjowLjY1fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6bnVsbCwic291cmNlX3RpbWUiOjAuMSwic3BlZWQiOjF9LHsibW9kZSI6ImJvdGgiLCJybXMiOjAuMDIwNTA2NDk3NzU0MjIyMzI1LCJwZWFrX2h6Ijo0NDEuNDMwNjY0MDYyNSwicGlhbm9fZ2FpbiI6MC4wNTQ5OTk5OTk3MDE5NzY3NzYsInZvY2FsX2dhaW4iOjAuODAwMDAwMDExOTIwOTI5LCJzYW1wbGVfcmF0ZSI6NDQxMDAsImxhc3RfdG9uZSI6eyJwaXRjaCI6NjksImZyZXF1ZW5jeSI6NDQwLCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjoxLjczMjc4OTExNTY0NjI1ODUsImR1cmF0aW9uIjowLjY1fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6bnVsbCwic291cmNlX3RpbWUiOjAuMSwic3BlZWQiOjF9XX0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-31b05b9065c278e8c6a1",
+          "file": "editor.spec.cjs",
+          "line": 182,
+          "column": 1
+        },
+        {
+          "title": "Audition on click can be disabled; manual note overrides preserve their separate routes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2519,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:04.705Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "manual-click-overrides",
+                      "contentType": "application/json",
+                      "body": "W3sibW9kZSI6InBpYW5vIiwicGlhbm8iOnsicm1zIjowLjAyMjA0MjEzNjg4NzQxODc4NSwicGVha19oeiI6NDQ2LjgxMzk2NDg0Mzc1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo2OS4zNywiZnJlcXVlbmN5Ijo0NDkuNTA0OTA0NTUxNzc2Nywic2NoZWR1bGVkX2NvbnRleHRfdGltZSI6MC4wMjAzMTc0NjAzMTc0NjAzMTcsImR1cmF0aW9uIjowLjY1fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6bnVsbCwic291cmNlX3RpbWUiOjAuMSwic3BlZWQiOjF9LCJ2b2NhbCI6eyJybXMiOjAsInBlYWtfaHoiOjEwNy42NjYwMTU2MjUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOnsicGl0Y2giOjY5LjM3LCJmcmVxdWVuY3kiOjQ0OS41MDQ5MDQ1NTE3NzY3LCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjowLjAyMDMxNzQ2MDMxNzQ2MDMxNywiZHVyYXRpb24iOjAuNjV9LCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50IjpudWxsLCJzb3VyY2VfdGltZSI6MC4xLCJzcGVlZCI6MX19LHsibW9kZSI6InZvY2FsIiwicGlhbm8iOnsicm1zIjowLCJwZWFrX2h6IjoxMDcuNjY2MDE1NjI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo2OS4zNywiZnJlcXVlbmN5Ijo0NDkuNTA0OTA0NTUxNzc2Nywic2NoZWR1bGVkX2NvbnRleHRfdGltZSI6MC4wMjAzMTc0NjAzMTc0NjAzMTcsImR1cmF0aW9uIjowLjY1fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6eyJzdGFydCI6MC4xODk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTk3OTEzODMyMTk5NTQ2NCwibm90ZSI6eyJpZCI6Im4wMDAwMCIsInN0YXJ0IjowLjI0OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45MTc5MTM4MzIxOTk1NDY1LCJwaXRjaCI6NjkuMzcsImNvbmZpZGVuY2UiOjAuOTg0MTIyNzk5NjU0NjM0NiwiZnJhbWVfc3RhcnQiOjAsImZyYW1lX2VuZCI6MCwicGhyYXNlIjowLCJmbGFncyI6WyJ1bnJldmlld2VkX21vZGVsX3NlZWQiXSwiZHVyYXRpb24iOjAuNjY4NDgwNzI1NjIzNTgyN30sImxvb3AiOmZhbHNlLCJtb2RlIjoidm9jYWwifSwic291cmNlX3RpbWUiOjAuMzY5Mzg4LCJzcGVlZCI6MX0sInZvY2FsIjp7InJtcyI6MC4xMzIyMzcwMzY1ODQzNTIyNCwicGVha19oeiI6NDQxLjQzMDY2NDA2MjUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOnsicGl0Y2giOjY5LjM3LCJmcmVxdWVuY3kiOjQ0OS41MDQ5MDQ1NTE3NzY3LCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjowLjAyMDMxNzQ2MDMxNzQ2MDMxNywiZHVyYXRpb24iOjAuNjV9LCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50Ijp7InN0YXJ0IjowLjE4OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45OTc5MTM4MzIxOTk1NDY0LCJub3RlIjp7ImlkIjoibjAwMDAwIiwic3RhcnQiOjAuMjQ5NDMzMTA2NTc1OTYzNywiZW5kIjowLjkxNzkxMzgzMjE5OTU0NjUsInBpdGNoIjo2OS4zNywiY29uZmlkZW5jZSI6MC45ODQxMjI3OTk2NTQ2MzQ2LCJmcmFtZV9zdGFydCI6MCwiZnJhbWVfZW5kIjowLCJwaHJhc2UiOjAsImZsYWdzIjpbInVucmV2aWV3ZWRfbW9kZWxfc2VlZCJdLCJkdXJhdGlvbiI6MC42Njg0ODA3MjU2MjM1ODI3fSwibG9vcCI6ZmFsc2UsIm1vZGUiOiJ2b2NhbCJ9LCJzb3VyY2VfdGltZSI6MC4zODk3MDUsInNwZWVkIjoxfX0seyJtb2RlIjoiYm90aCIsInBpYW5vIjp7InJtcyI6MC4wMTkxMjI3MzQzNjI0NzA4NzUsInBlYWtfaHoiOjQ0Ni44MTM5NjQ4NDM3NSwicGlhbm9fZ2FpbiI6MC4wNTQ5OTk5OTk3MDE5NzY3NzYsInZvY2FsX2dhaW4iOjAuODAwMDAwMDExOTIwOTI5LCJzYW1wbGVfcmF0ZSI6NDQxMDAsImxhc3RfdG9uZSI6eyJwaXRjaCI6NjkuMzcsImZyZXF1ZW5jeSI6NDQ5LjUwNDkwNDU1MTc3NjcsInNjaGVkdWxlZF9jb250ZXh0X3RpbWUiOjAuOTEwNDMwOTQ1NTc4MjMxMywiZHVyYXRpb24iOjAuNjY4NDgwNzI1NjIzNTgyN30sIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOnsic3RhcnQiOjAuMTg5NDMzMTA2NTc1OTYzNywiZW5kIjowLjk5NzkxMzgzMjE5OTU0NjQsIm5vdGUiOnsiaWQiOiJuMDAwMDAiLCJzdGFydCI6MC4yNDk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTE3OTEzODMyMTk5NTQ2NSwicGl0Y2giOjY5LjM3LCJjb25maWRlbmNlIjowLjk4NDEyMjc5OTY1NDYzNDYsImZyYW1lX3N0YXJ0IjowLCJmcmFtZV9lbmQiOjAsInBocmFzZSI6MCwiZmxhZ3MiOlsidW5yZXZpZXdlZF9tb2RlbF9zZWVkIl0sImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJsb29wIjpmYWxzZSwibW9kZSI6ImJvdGgifSwic291cmNlX3RpbWUiOjAuMzgwOTk4LCJzcGVlZCI6MX0sInZvY2FsIjp7InJtcyI6MC4xNDIyNzY5MjQzNDU3MzA5NCwicGVha19oeiI6NDQxLjQzMDY2NDA2MjUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOnsicGl0Y2giOjY5LjM3LCJmcmVxdWVuY3kiOjQ0OS41MDQ5MDQ1NTE3NzY3LCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjowLjkxMDQzMDk0NTU3ODIzMTMsImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50Ijp7InN0YXJ0IjowLjE4OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45OTc5MTM4MzIxOTk1NDY0LCJub3RlIjp7ImlkIjoibjAwMDAwIiwic3RhcnQiOjAuMjQ5NDMzMTA2NTc1OTYzNywiZW5kIjowLjkxNzkxMzgzMjE5OTU0NjUsInBpdGNoIjo2OS4zNywiY29uZmlkZW5jZSI6MC45ODQxMjI3OTk2NTQ2MzQ2LCJmcmFtZV9zdGFydCI6MCwiZnJhbWVfZW5kIjowLCJwaHJhc2UiOjAsImZsYWdzIjpbInVucmV2aWV3ZWRfbW9kZWxfc2VlZCJdLCJkdXJhdGlvbiI6MC42Njg0ODA3MjU2MjM1ODI3fSwibG9vcCI6ZmFsc2UsIm1vZGUiOiJib3RoIn0sInNvdXJjZV90aW1lIjowLjQxMDAyMywic3BlZWQiOjF9fV0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-9a507874f0ea1dafae3d",
+          "file": "editor.spec.cjs",
+          "line": 192,
+          "column": 1
+        },
+        {
+          "title": "vertical drag previews proposed piano pitch before commit and supports undo",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1671,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:07.253Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "drag-preview-signal",
+                      "contentType": "application/json",
+                      "body": "eyJybXMiOjAuMDU0MTgwMjg5MTMyNzU4MiwicGVha19oeiI6NDc5LjExMzc2OTUzMTI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo3MC4zNywiZnJlcXVlbmN5Ijo0NzYuMjMzODU3MTA2MTA0OTUsInNjaGVkdWxlZF9jb250ZXh0X3RpbWUiOjAuMDMxOTI3NDM3NjQxNzIzMzYsImR1cmF0aW9uIjowLjE1fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6bnVsbCwic291cmNlX3RpbWUiOjAsInNwZWVkIjoxfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-8a7303cdee05aa3c50f7",
+          "file": "editor.spec.cjs",
+          "line": 200,
+          "column": 1
+        },
+        {
+          "title": "reference framing fits excerpt and pitch events; mode-specific deliberate views survive switching",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1972,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:08.944Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-c43ee29cbe1950fe2021",
+          "file": "editor.spec.cjs",
+          "line": 207,
+          "column": 1
+        },
+        {
+          "title": "collapsed resizable inspector and maximize preserve notes, viewport and continuous playback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2532,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:10.933Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-7052ed32dcecdedd804e",
+          "file": "editor.spec.cjs",
+          "line": 215,
+          "column": 1
+        },
+        {
+          "title": "unique-recording bulk scope, filtered actions and tri-state groups never discard edits or stop playback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2154,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:13.483Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-f8672d551ef3bd4da860",
+          "file": "editor.spec.cjs",
+          "line": 222,
+          "column": 1
+        },
+        {
+          "title": "model variants and references remain discoverable under their source; search and model filters work",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1284,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:15.660Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-433389e3943b8d2fc015",
+          "file": "editor.spec.cjs",
+          "line": 230,
+          "column": 1
+        },
+        {
+          "title": "Vocadito source policy requires explicit UI and API opt-in even when all recordings are selected",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1492,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:16.974Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-d68ccff41e265cb0c971",
+          "file": "editor.spec.cjs",
+          "line": 235,
+          "column": 1
+        },
+        {
+          "title": "changing audition mode and corpus selection does not interrupt whole-song playback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1546,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:18.487Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-bb865fc99ebe554d7d39",
+          "file": "editor.spec.cjs",
+          "line": 241,
+          "column": 1
+        },
+        {
+          "title": "draft, full source audio, bounded layout and distinct prediction layers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1282,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:10.492Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-65ca859b6ce94c601d99",
+          "file": "editor.spec.cjs",
+          "line": 39,
+          "column": 1
+        },
+        {
+          "title": "direct move commits only on release, preserves fractional pitch and correct note identity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1504,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:11.813Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-6ed136189948980461af",
+          "file": "editor.spec.cjs",
+          "line": 51,
+          "column": 1
+        },
+        {
+          "title": "resize clamps neighbours and source bounds, with undo/redo",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2123,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:13.336Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-f399b5f975f15d979f30",
+          "file": "editor.spec.cjs",
+          "line": 58,
+          "column": 1
+        },
+        {
+          "title": "split, compatible merge, delete, drawing and undo/redo use the same edit history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3072,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:15.478Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-946dbc524695f2b048cf",
+          "file": "editor.spec.cjs",
+          "line": 64,
+          "column": 1
+        },
+        {
+          "title": "multi-selection moves two notes and region uncertainty has undo/redo",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2009,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:18.570Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-49cee2e27ae72f455510",
+          "file": "editor.spec.cjs",
+          "line": 76,
+          "column": 1
+        },
+        {
+          "title": "pitch keyboard stays aligned after time/pitch zoom and middle pan",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2091,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:20.599Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-623ef8e8e7ba1c2ea13e",
+          "file": "editor.spec.cjs",
+          "line": 83,
+          "column": 1
+        },
+        {
+          "title": "saved reference edits survive refresh; revision restore appends an unreviewed revision",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3052,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:22.709Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-68bf7072bb8a4234f615",
+          "file": "editor.spec.cjs",
+          "line": 94,
+          "column": 1
+        },
+        {
+          "title": "working corrections and reference histories stay independent",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2325,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:25.781Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-7e6f1bc5d35a7bc44974",
+          "file": "editor.spec.cjs",
+          "line": 100,
+          "column": 1
+        },
+        {
+          "title": "review queue uses measurable disagreement, never verifies references automatically",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1495,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:28.125Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-37fb94f71642e0a70656",
+          "file": "editor.spec.cjs",
+          "line": 108,
+          "column": 1
+        },
+        {
+          "title": "piano keys generate measured A4 and A sharp frequencies without starting vocal audio",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1671,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:29.639Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "measured-reference-audio",
+                      "contentType": "application/json",
+                      "body": "eyJBNCI6eyJybXMiOjAuMDE1NzQyMjkzNjE1MjQ0NzgzLCJwZWFrX2h6Ijo0NDEuNDMwNjY0MDYyNSwicGlhbm9fZ2FpbiI6MC4wNTQ5OTk5OTk3MDE5NzY3NzYsInZvY2FsX2dhaW4iOjAuODAwMDAwMDExOTIwOTI5LCJzYW1wbGVfcmF0ZSI6NDQxMDAsImxhc3RfdG9uZSI6eyJwaXRjaCI6NjksImZyZXF1ZW5jeSI6NDQwLCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjowLCJkdXJhdGlvbiI6MC42NX0sIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOm51bGwsInNvdXJjZV90aW1lIjowLCJzcGVlZCI6MX0sIkFzaGFycDQiOnsicm1zIjowLjAxNDk1MjQzMDU0ODE2MDI0NiwicGVha19oeiI6NDY4LjM0NzE2Nzk2ODc1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo3MCwiZnJlcXVlbmN5Ijo0NjYuMTYzNzYxNTE4MDg5OSwic2NoZWR1bGVkX2NvbnRleHRfdGltZSI6MC4zNTEyMDE4MTQwNTg5NTY5LCJkdXJhdGlvbiI6MC42NX0sIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOm51bGwsInNvdXJjZV90aW1lIjowLCJzcGVlZCI6MX19"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-a589201fe0772a1ae555",
+          "file": "editor.spec.cjs",
+          "line": 114,
+          "column": 1
+        },
+        {
+          "title": "vocal segment audition uses edited source boundaries with preroll/postroll and loop",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3812,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:31.327Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "measured-vocal-audio",
+                      "contentType": "application/json",
+                      "body": "eyJybXMiOjAuMTQxMzIyNDYyNjQ0NjM2NCwicGVha19oeiI6NDQxLjQzMDY2NDA2MjUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOm51bGwsIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOnsic3RhcnQiOjAuMTk5NDMzMTA2NTc1OTYzNywiZW5kIjowLjk5NzkxMzgzMjE5OTU0NjQsIm5vdGUiOnsiaWQiOiJuMDAwMDAiLCJzdGFydCI6MC4yNTk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTE3OTEzODMyMTk5NTQ2NSwicGl0Y2giOjY5LjM3LCJjb25maWRlbmNlIjowLjk4NDEyMjc5OTY1NDYzNDYsImZyYW1lX3N0YXJ0IjowLCJmcmFtZV9lbmQiOjAsInBocmFzZSI6MCwiZmxhZ3MiOlsidW5yZXZpZXdlZF9tb2RlbF9zZWVkIiwiaHVtYW5fY29ycmVjdGVkIl0sImR1cmF0aW9uIjowLjY1ODQ4MDcyNTYyMzU4Mjd9LCJsb29wIjpmYWxzZSwibW9kZSI6InZvY2FsIn0sInNvdXJjZV90aW1lIjowLjQwODQxMywic3BlZWQiOjF9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-42ab44efac081bd0659b",
+          "file": "editor.spec.cjs",
+          "line": 118,
+          "column": 1
+        },
+        {
+          "title": "Both mode has one vocal source, simultaneous audible buses and independent volumes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2379,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:35.156Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "both-buses",
+                      "contentType": "application/json",
+                      "body": "eyJwaWFubyI6eyJybXMiOjAuMDIwNzU4MDEyOTEwNzYzNDc4LCJwZWFrX2h6Ijo0NDYuODEzOTY0ODQzNzUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOnsicGl0Y2giOjY5LjM3LCJmcmVxdWVuY3kiOjQ0OS41MDQ5MDQ1NTE3NzY3LCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjowLjA3MTYxMDA4MzkwMDIyNjc2LCJkdXJhdGlvbiI6MC42Njg0ODA3MjU2MjM1ODI3fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6eyJzdGFydCI6MC4xODk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTk3OTEzODMyMTk5NTQ2NCwibm90ZSI6eyJpZCI6Im4wMDAwMCIsInN0YXJ0IjowLjI0OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45MTc5MTM4MzIxOTk1NDY1LCJwaXRjaCI6NjkuMzcsImNvbmZpZGVuY2UiOjAuOTg0MTIyNzk5NjU0NjM0NiwiZnJhbWVfc3RhcnQiOjAsImZyYW1lX2VuZCI6MCwicGhyYXNlIjowLCJmbGFncyI6WyJ1bnJldmlld2VkX21vZGVsX3NlZWQiXSwiZHVyYXRpb24iOjAuNjY4NDgwNzI1NjIzNTgyN30sImxvb3AiOnRydWUsIm1vZGUiOiJib3RoIn0sInNvdXJjZV90aW1lIjowLjQzOTA0OCwic3BlZWQiOjF9LCJ2b2NhbCI6eyJybXMiOjAuMTU4MTcwNjA4NzMwNDU4MTMsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo2OS4zNywiZnJlcXVlbmN5Ijo0NDkuNTA0OTA0NTUxNzc2Nywic2NoZWR1bGVkX2NvbnRleHRfdGltZSI6MC4wNzE2MTAwODM5MDAyMjY3NiwiZHVyYXRpb24iOjAuNjY4NDgwNzI1NjIzNTgyN30sIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOnsic3RhcnQiOjAuMTg5NDMzMTA2NTc1OTYzNywiZW5kIjowLjk5NzkxMzgzMjE5OTU0NjQsIm5vdGUiOnsiaWQiOiJuMDAwMDAiLCJzdGFydCI6MC4yNDk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTE3OTEzODMyMTk5NTQ2NSwicGl0Y2giOjY5LjM3LCJjb25maWRlbmNlIjowLjk4NDEyMjc5OTY1NDYzNDYsImZyYW1lX3N0YXJ0IjowLCJmcmFtZV9lbmQiOjAsInBocmFzZSI6MCwiZmxhZ3MiOlsidW5yZXZpZXdlZF9tb2RlbF9zZWVkIl0sImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJsb29wIjp0cnVlLCJtb2RlIjoiYm90aCJ9LCJzb3VyY2VfdGltZSI6MC40NTkzNjUsInNwZWVkIjoxfSwibXV0ZWRQaWFubyI6eyJybXMiOjAsInBlYWtfaHoiOjEwNy42NjYwMTU2MjUsInBpYW5vX2dhaW4iOjAsInZvY2FsX2dhaW4iOjAuODAwMDAwMDExOTIwOTI5LCJzYW1wbGVfcmF0ZSI6NDQxMDAsImxhc3RfdG9uZSI6eyJwaXRjaCI6NjkuMzcsImZyZXF1ZW5jeSI6NDQ5LjUwNDkwNDU1MTc3NjcsInNjaGVkdWxlZF9jb250ZXh0X3RpbWUiOjAuMDcxNjEwMDgzOTAwMjI2NzYsImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50Ijp7InN0YXJ0IjowLjE4OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45OTc5MTM4MzIxOTk1NDY0LCJub3RlIjp7ImlkIjoibjAwMDAwIiwic3RhcnQiOjAuMjQ5NDMzMTA2NTc1OTYzNywiZW5kIjowLjkxNzkxMzgzMjE5OTU0NjUsInBpdGNoIjo2OS4zNywiY29uZmlkZW5jZSI6MC45ODQxMjI3OTk2NTQ2MzQ2LCJmcmFtZV9zdGFydCI6MCwiZnJhbWVfZW5kIjowLCJwaHJhc2UiOjAsImZsYWdzIjpbInVucmV2aWV3ZWRfbW9kZWxfc2VlZCJdLCJkdXJhdGlvbiI6MC42Njg0ODA3MjU2MjM1ODI3fSwibG9vcCI6dHJ1ZSwibW9kZSI6ImJvdGgifSwic291cmNlX3RpbWUiOjAuNzc4NjM5LCJzcGVlZCI6MX0sInN0aWxsVm9jYWwiOnsicm1zIjowLjE1ODEzNTM3OTcwNDk4OTI4LCJwZWFrX2h6Ijo0NDEuNDMwNjY0MDYyNSwicGlhbm9fZ2FpbiI6MCwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo2OS4zNywiZnJlcXVlbmN5Ijo0NDkuNTA0OTA0NTUxNzc2Nywic2NoZWR1bGVkX2NvbnRleHRfdGltZSI6MC4wNzE2MTAwODM5MDAyMjY3NiwiZHVyYXRpb24iOjAuNjY4NDgwNzI1NjIzNTgyN30sIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOnsic3RhcnQiOjAuMTg5NDMzMTA2NTc1OTYzNywiZW5kIjowLjk5NzkxMzgzMjE5OTU0NjQsIm5vdGUiOnsiaWQiOiJuMDAwMDAiLCJzdGFydCI6MC4yNDk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTE3OTEzODMyMTk5NTQ2NSwicGl0Y2giOjY5LjM3LCJjb25maWRlbmNlIjowLjk4NDEyMjc5OTY1NDYzNDYsImZyYW1lX3N0YXJ0IjowLCJmcmFtZV9lbmQiOjAsInBocmFzZSI6MCwiZmxhZ3MiOlsidW5yZXZpZXdlZF9tb2RlbF9zZWVkIl0sImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJsb29wIjp0cnVlLCJtb2RlIjoiYm90aCJ9LCJzb3VyY2VfdGltZSI6MC43OTAyNDksInNwZWVkIjoxfSwibXV0ZWRCb3RoIjp7InJtcyI6MCwicGVha19oeiI6MTA3LjY2NjAxNTYyNSwicGlhbm9fZ2FpbiI6MCwidm9jYWxfZ2FpbiI6MCwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOnsicGl0Y2giOjY5LjM3LCJmcmVxdWVuY3kiOjQ0OS41MDQ5MDQ1NTE3NzY3LCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjowLjkwMTcyMzQ2MjU4NTAzNDEsImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50Ijp7InN0YXJ0IjowLjE4OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45OTc5MTM4MzIxOTk1NDY0LCJub3RlIjp7ImlkIjoibjAwMDAwIiwic3RhcnQiOjAuMjQ5NDMzMTA2NTc1OTYzNywiZW5kIjowLjkxNzkxMzgzMjE5OTU0NjUsInBpdGNoIjo2OS4zNywiY29uZmlkZW5jZSI6MC45ODQxMjI3OTk2NTQ2MzQ2LCJmcmFtZV9zdGFydCI6MCwiZnJhbWVfZW5kIjowLCJwaHJhc2UiOjAsImZsYWdzIjpbInVucmV2aWV3ZWRfbW9kZWxfc2VlZCJdLCJkdXJhdGlvbiI6MC42Njg0ODA3MjU2MjM1ODI3fSwibG9vcCI6dHJ1ZSwibW9kZSI6ImJvdGgifSwic291cmNlX3RpbWUiOjAuMjY3OCwic3BlZWQiOjF9fQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-17d7e59257d81a9334c8",
+          "file": "editor.spec.cjs",
+          "line": 124,
+          "column": 1
+        },
+        {
+          "title": "slow playback preserves source timestamps and requested pitch, with synchronized playhead",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2337,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:37.557Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "slow-vocal-measurement",
+                      "contentType": "application/json",
+                      "body": "eyJoYWxmIjp7InJtcyI6MC4xNTgxMzIyMzE0MDI2NDg3MywicGVha19oeiI6NDQxLjQzMDY2NDA2MjUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOm51bGwsIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOnsic3RhcnQiOjAuMTg5NDMzMTA2NTc1OTYzNywiZW5kIjowLjk5NzkxMzgzMjE5OTU0NjQsIm5vdGUiOnsiaWQiOiJuMDAwMDAiLCJzdGFydCI6MC4yNDk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTE3OTEzODMyMTk5NTQ2NSwicGl0Y2giOjY5LjM3LCJjb25maWRlbmNlIjowLjk4NDEyMjc5OTY1NDYzNDYsImZyYW1lX3N0YXJ0IjowLCJmcmFtZV9lbmQiOjAsInBocmFzZSI6MCwiZmxhZ3MiOlsidW5yZXZpZXdlZF9tb2RlbF9zZWVkIl0sImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJsb29wIjpmYWxzZSwibW9kZSI6InZvY2FsIn0sInNvdXJjZV90aW1lIjowLjM3OTQ3OCwic3BlZWQiOjAuNX0sInRocmVlUXVhcnRlciI6eyJybXMiOjAuMTU4MjUyMzE4NjYwNDYyNCwicGVha19oeiI6NDQxLjQzMDY2NDA2MjUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOm51bGwsIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOnsic3RhcnQiOjAuMTg5NDMzMTA2NTc1OTYzNywiZW5kIjowLjk5NzkxMzgzMjE5OTU0NjQsIm5vdGUiOnsiaWQiOiJuMDAwMDAiLCJzdGFydCI6MC4yNDk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTE3OTEzODMyMTk5NTQ2NSwicGl0Y2giOjY5LjM3LCJjb25maWRlbmNlIjowLjk4NDEyMjc5OTY1NDYzNDYsImZyYW1lX3N0YXJ0IjowLCJmcmFtZV9lbmQiOjAsInBocmFzZSI6MCwiZmxhZ3MiOlsidW5yZXZpZXdlZF9tb2RlbF9zZWVkIl0sImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJsb29wIjpmYWxzZSwibW9kZSI6InZvY2FsIn0sInNvdXJjZV90aW1lIjowLjQwNjQzNiwic3BlZWQiOjAuNzV9fQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-cb2d34d9ff60cdfd27ed",
+          "file": "editor.spec.cjs",
+          "line": 130,
+          "column": 1
+        },
+        {
+          "title": "Keyboard stays piano in Vocal override and Space plays complete original audio in Piano mode",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1310,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:39.921Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-6fa65f6fa6cfe7e6658e",
+          "file": "editor.spec.cjs",
+          "line": 136,
+          "column": 1
+        },
+        {
+          "title": "Escape cancels a drag without symbolic changes or an extra history step",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1352,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:41.248Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-7c8ad3cedc59a0a2555f",
+          "file": "editor.spec.cjs",
+          "line": 140,
+          "column": 1
+        },
+        {
+          "title": "A/B plays original vocal then reference, with no vocal pitch-shift claim",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2387,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:42.620Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "A-B-sequence",
+                      "contentType": "application/json",
+                      "body": "eyJybXMiOjAuMDE0OTM3MTMzMjA1MTExMjk2LCJwZWFrX2h6Ijo0NDYuODEzOTY0ODQzNzUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOnsicGl0Y2giOjY5LjM3LCJmcmVxdWVuY3kiOjQ0OS41MDQ5MDQ1NTE3NzY3LCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjowLjgzMDExMzM3ODY4NDgwNzMsImR1cmF0aW9uIjowLjY1fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6bnVsbCwic291cmNlX3RpbWUiOjEuMDA3OTM2LCJzcGVlZCI6MX0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-57dc689cb7bd555a3cb2",
+          "file": "editor.spec.cjs",
+          "line": 145,
+          "column": 1
+        },
+        {
+          "title": "working revision restore appends a correction and review attestation clears on note edits",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3295,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:45.026Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-72fdd947011d211baa8b",
+          "file": "editor.spec.cjs",
+          "line": 149,
+          "column": 1
+        },
+        {
+          "title": "range tool and missing-note queue windows remain source-aligned without inventing labels",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2003,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:48.341Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-81996f9d04714990aad9",
+          "file": "editor.spec.cjs",
+          "line": 157,
+          "column": 1
+        },
+        {
+          "title": "review suggestions are confined to a short reference excerpt",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1707,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:50.366Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-16248a156406cbdc2dd8",
+          "file": "editor.spec.cjs",
+          "line": 163,
+          "column": 1
+        },
+        {
+          "title": "raw predicted notes can be auditioned without populating a blank human reference",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2181,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:52.092Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-2fd0930b8e0c7da1479d",
+          "file": "editor.spec.cjs",
+          "line": 169,
+          "column": 1
+        },
+        {
+          "title": "Auto routes annotation clicks to original vocal and every keyboard override to clean piano",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3514,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:54.293Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "contextual-click-audio",
+                      "contentType": "application/json",
+                      "body": "eyJ2b2ljZSI6eyJybXMiOjAuMTMyMjM3MDM2NTg0MzUyMjQsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjpudWxsLCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50Ijp7InN0YXJ0IjowLjE4OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45OTc5MTM4MzIxOTk1NDY0LCJub3RlIjp7ImlkIjoibjAwMDAwIiwic3RhcnQiOjAuMjQ5NDMzMTA2NTc1OTYzNywiZW5kIjowLjkxNzkxMzgzMjE5OTU0NjUsInBpdGNoIjo2OS4zNywiY29uZmlkZW5jZSI6MC45ODQxMjI3OTk2NTQ2MzQ2LCJmcmFtZV9zdGFydCI6MCwiZnJhbWVfZW5kIjowLCJwaHJhc2UiOjAsImZsYWdzIjpbInVucmV2aWV3ZWRfbW9kZWxfc2VlZCJdLCJkdXJhdGlvbiI6MC42Njg0ODA3MjU2MjM1ODI3fSwibG9vcCI6ZmFsc2UsIm1vZGUiOiJ2b2NhbCJ9LCJzb3VyY2VfdGltZSI6MC4zOTY1ODcsInNwZWVkIjoxfSwia2V5Ym9hcmQiOlt7Im1vZGUiOiJhdXRvIiwicm1zIjowLjAyMDE2MzA0NzcxNzcxNjQ4NywicGVha19oeiI6NDQxLjQzMDY2NDA2MjUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOnsicGl0Y2giOjY5LCJmcmVxdWVuY3kiOjQ0MCwic2NoZWR1bGVkX2NvbnRleHRfdGltZSI6MC40ODE4MTQwNTg5NTY5MTYxLCJkdXJhdGlvbiI6MC42NX0sIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOm51bGwsInNvdXJjZV90aW1lIjowLjEsInNwZWVkIjoxfSx7Im1vZGUiOiJwaWFubyIsInJtcyI6MC4wMjA3MTk2MjUzNjYzMTAxNjUsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo2OSwiZnJlcXVlbmN5Ijo0NDAsInNjaGVkdWxlZF9jb250ZXh0X3RpbWUiOjAuOTExMzgzMjE5OTU0NjQ4NSwiZHVyYXRpb24iOjAuNjV9LCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50IjpudWxsLCJzb3VyY2VfdGltZSI6MC4xLCJzcGVlZCI6MX0seyJtb2RlIjoidm9jYWwiLCJybXMiOjAuMDE5MzQzNjI2OTEwMjA4MDQsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo2OSwiZnJlcXVlbmN5Ijo0NDAsInNjaGVkdWxlZF9jb250ZXh0X3RpbWUiOjEuMzUyNTYyMzU4Mjc2NjQ0LCJkdXJhdGlvbiI6MC42NX0sIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOm51bGwsInNvdXJjZV90aW1lIjowLjEsInNwZWVkIjoxfSx7Im1vZGUiOiJib3RoIiwicm1zIjowLjAxOTM0MzYyNjkxMDIwODA0LCJwZWFrX2h6Ijo0NDEuNDMwNjY0MDYyNSwicGlhbm9fZ2FpbiI6MC4wNTQ5OTk5OTk3MDE5NzY3NzYsInZvY2FsX2dhaW4iOjAuODAwMDAwMDExOTIwOTI5LCJzYW1wbGVfcmF0ZSI6NDQxMDAsImxhc3RfdG9uZSI6eyJwaXRjaCI6NjksImZyZXF1ZW5jeSI6NDQwLCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjoxLjkwMTEzMzc4Njg0ODA3MjcsImR1cmF0aW9uIjowLjY1fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6bnVsbCwic291cmNlX3RpbWUiOjAuMSwic3BlZWQiOjF9XX0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-f07e728f39ffbd268b44",
+          "file": "editor.spec.cjs",
+          "line": 182,
+          "column": 1
+        },
+        {
+          "title": "Audition on click can be disabled; manual note overrides preserve their separate routes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2760,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:29:57.833Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "manual-click-overrides",
+                      "contentType": "application/json",
+                      "body": "W3sibW9kZSI6InBpYW5vIiwicGlhbm8iOnsicm1zIjowLjAyNDY5ODU4MzI3ODA2MzEsInBlYWtfaHoiOjQ0Ni44MTM5NjQ4NDM3NSwicGlhbm9fZ2FpbiI6MC4wNTQ5OTk5OTk3MDE5NzY3NzYsInZvY2FsX2dhaW4iOjAuODAwMDAwMDExOTIwOTI5LCJzYW1wbGVfcmF0ZSI6NDQxMDAsImxhc3RfdG9uZSI6eyJwaXRjaCI6NjkuMzcsImZyZXF1ZW5jeSI6NDQ5LjUwNDkwNDU1MTc3NjcsInNjaGVkdWxlZF9jb250ZXh0X3RpbWUiOjAuMDIwMzE3NDYwMzE3NDYwMzE3LCJkdXJhdGlvbiI6MC42NX0sIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOm51bGwsInNvdXJjZV90aW1lIjowLjEsInNwZWVkIjoxfSwidm9jYWwiOnsicm1zIjowLCJwZWFrX2h6IjoxMDcuNjY2MDE1NjI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo2OS4zNywiZnJlcXVlbmN5Ijo0NDkuNTA0OTA0NTUxNzc2Nywic2NoZWR1bGVkX2NvbnRleHRfdGltZSI6MC4wMjAzMTc0NjAzMTc0NjAzMTcsImR1cmF0aW9uIjowLjY1fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6bnVsbCwic291cmNlX3RpbWUiOjAuMSwic3BlZWQiOjF9fSx7Im1vZGUiOiJ2b2NhbCIsInBpYW5vIjp7InJtcyI6MCwicGVha19oeiI6MTA3LjY2NjAxNTYyNSwicGlhbm9fZ2FpbiI6MC4wNTQ5OTk5OTk3MDE5NzY3NzYsInZvY2FsX2dhaW4iOjAuODAwMDAwMDExOTIwOTI5LCJzYW1wbGVfcmF0ZSI6NDQxMDAsImxhc3RfdG9uZSI6eyJwaXRjaCI6NjkuMzcsImZyZXF1ZW5jeSI6NDQ5LjUwNDkwNDU1MTc3NjcsInNjaGVkdWxlZF9jb250ZXh0X3RpbWUiOjAuMDIwMzE3NDYwMzE3NDYwMzE3LCJkdXJhdGlvbiI6MC42NX0sIm1lZGlhX3NvdXJjZXMiOjEsInNlZ21lbnQiOnsic3RhcnQiOjAuMTg5NDMzMTA2NTc1OTYzNywiZW5kIjowLjk5NzkxMzgzMjE5OTU0NjQsIm5vdGUiOnsiaWQiOiJuMDAwMDAiLCJzdGFydCI6MC4yNDk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTE3OTEzODMyMTk5NTQ2NSwicGl0Y2giOjY5LjM3LCJjb25maWRlbmNlIjowLjk4NDEyMjc5OTY1NDYzNDYsImZyYW1lX3N0YXJ0IjowLCJmcmFtZV9lbmQiOjAsInBocmFzZSI6MCwiZmxhZ3MiOlsidW5yZXZpZXdlZF9tb2RlbF9zZWVkIl0sImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJsb29wIjpmYWxzZSwibW9kZSI6InZvY2FsIn0sInNvdXJjZV90aW1lIjowLjM3ODIwOSwic3BlZWQiOjF9LCJ2b2NhbCI6eyJybXMiOjAuMTMyMjM3MDM2NTg0MzUyMjQsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo2OS4zNywiZnJlcXVlbmN5Ijo0NDkuNTA0OTA0NTUxNzc2Nywic2NoZWR1bGVkX2NvbnRleHRfdGltZSI6MC4wMjAzMTc0NjAzMTc0NjAzMTcsImR1cmF0aW9uIjowLjY1fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6eyJzdGFydCI6MC4xODk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTk3OTEzODMyMTk5NTQ2NCwibm90ZSI6eyJpZCI6Im4wMDAwMCIsInN0YXJ0IjowLjI0OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45MTc5MTM4MzIxOTk1NDY1LCJwaXRjaCI6NjkuMzcsImNvbmZpZGVuY2UiOjAuOTg0MTIyNzk5NjU0NjM0NiwiZnJhbWVfc3RhcnQiOjAsImZyYW1lX2VuZCI6MCwicGhyYXNlIjowLCJmbGFncyI6WyJ1bnJldmlld2VkX21vZGVsX3NlZWQiXSwiZHVyYXRpb24iOjAuNjY4NDgwNzI1NjIzNTgyN30sImxvb3AiOmZhbHNlLCJtb2RlIjoidm9jYWwifSwic291cmNlX3RpbWUiOjAuMzg5NzA1LCJzcGVlZCI6MX19LHsibW9kZSI6ImJvdGgiLCJwaWFubyI6eyJybXMiOjAuMDE4NjkzMDczODc1MTAzMzE0LCJwZWFrX2h6Ijo0NDYuODEzOTY0ODQzNzUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOnsicGl0Y2giOjY5LjM3LCJmcmVxdWVuY3kiOjQ0OS41MDQ5MDQ1NTE3NzY3LCJzY2hlZHVsZWRfY29udGV4dF90aW1lIjowLjkwMTcyMzQ2MjU4NTAzNDEsImR1cmF0aW9uIjowLjY2ODQ4MDcyNTYyMzU4Mjd9LCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50Ijp7InN0YXJ0IjowLjE4OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45OTc5MTM4MzIxOTk1NDY0LCJub3RlIjp7ImlkIjoibjAwMDAwIiwic3RhcnQiOjAuMjQ5NDMzMTA2NTc1OTYzNywiZW5kIjowLjkxNzkxMzgzMjE5OTU0NjUsInBpdGNoIjo2OS4zNywiY29uZmlkZW5jZSI6MC45ODQxMjI3OTk2NTQ2MzQ2LCJmcmFtZV9zdGFydCI6MCwiZnJhbWVfZW5kIjowLCJwaHJhc2UiOjAsImZsYWdzIjpbInVucmV2aWV3ZWRfbW9kZWxfc2VlZCJdLCJkdXJhdGlvbiI6MC42Njg0ODA3MjU2MjM1ODI3fSwibG9vcCI6ZmFsc2UsIm1vZGUiOiJib3RoIn0sInNvdXJjZV90aW1lIjowLjM2OTM4OCwic3BlZWQiOjF9LCJ2b2NhbCI6eyJybXMiOjAuMTMyMjM3MDM2NTg0MzUyMjQsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJwaWFub19nYWluIjowLjA1NDk5OTk5OTcwMTk3Njc3Niwidm9jYWxfZ2FpbiI6MC44MDAwMDAwMTE5MjA5MjksInNhbXBsZV9yYXRlIjo0NDEwMCwibGFzdF90b25lIjp7InBpdGNoIjo2OS4zNywiZnJlcXVlbmN5Ijo0NDkuNTA0OTA0NTUxNzc2Nywic2NoZWR1bGVkX2NvbnRleHRfdGltZSI6MC45MDE3MjM0NjI1ODUwMzQxLCJkdXJhdGlvbiI6MC42Njg0ODA3MjU2MjM1ODI3fSwibWVkaWFfc291cmNlcyI6MSwic2VnbWVudCI6eyJzdGFydCI6MC4xODk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTk3OTEzODMyMTk5NTQ2NCwibm90ZSI6eyJpZCI6Im4wMDAwMCIsInN0YXJ0IjowLjI0OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45MTc5MTM4MzIxOTk1NDY1LCJwaXRjaCI6NjkuMzcsImNvbmZpZGVuY2UiOjAuOTg0MTIyNzk5NjU0NjM0NiwiZnJhbWVfc3RhcnQiOjAsImZyYW1lX2VuZCI6MCwicGhyYXNlIjowLCJmbGFncyI6WyJ1bnJldmlld2VkX21vZGVsX3NlZWQiXSwiZHVyYXRpb24iOjAuNjY4NDgwNzI1NjIzNTgyN30sImxvb3AiOmZhbHNlLCJtb2RlIjoiYm90aCJ9LCJzb3VyY2VfdGltZSI6MC4zODk3MDUsInNwZWVkIjoxfX1d"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-4e294537dd8017b4997a",
+          "file": "editor.spec.cjs",
+          "line": 192,
+          "column": 1
+        },
+        {
+          "title": "vertical drag previews proposed piano pitch before commit and supports undo",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1797,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:00.611Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "drag-preview-signal",
+                      "contentType": "application/json",
+                      "body": "eyJybXMiOjAuMDUyNzM3MjU4ODM1ODI1NzE2LCJwZWFrX2h6Ijo0NzkuMTEzNzY5NTMxMjUsInBpYW5vX2dhaW4iOjAuMDU0OTk5OTk5NzAxOTc2Nzc2LCJ2b2NhbF9nYWluIjowLjgwMDAwMDAxMTkyMDkyOSwic2FtcGxlX3JhdGUiOjQ0MTAwLCJsYXN0X3RvbmUiOnsicGl0Y2giOjcwLjM3LCJmcmVxdWVuY3kiOjQ3Ni4yMzM4NTcxMDYxMDQ5NSwic2NoZWR1bGVkX2NvbnRleHRfdGltZSI6MC4wMzE5Mjc0Mzc2NDE3MjMzNiwiZHVyYXRpb24iOjAuMTV9LCJtZWRpYV9zb3VyY2VzIjoxLCJzZWdtZW50IjpudWxsLCJzb3VyY2VfdGltZSI6MCwic3BlZWQiOjF9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-2fe44593ac728c9b060b",
+          "file": "editor.spec.cjs",
+          "line": 200,
+          "column": 1
+        },
+        {
+          "title": "reference framing fits excerpt and pitch events; mode-specific deliberate views survive switching",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2413,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:02.429Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-be79fbb7824d744f95c1",
+          "file": "editor.spec.cjs",
+          "line": 207,
+          "column": 1
+        },
+        {
+          "title": "collapsed resizable inspector and maximize preserve notes, viewport and continuous playback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2971,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:04.870Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-59ca88bf3abf5efeb660",
+          "file": "editor.spec.cjs",
+          "line": 215,
+          "column": 1
+        },
+        {
+          "title": "unique-recording bulk scope, filtered actions and tri-state groups never discard edits or stop playback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2362,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:07.863Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-561d8ced89e9732dd1c2",
+          "file": "editor.spec.cjs",
+          "line": 222,
+          "column": 1
+        },
+        {
+          "title": "model variants and references remain discoverable under their source; search and model filters work",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1485,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:10.247Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-77486e209a6686d71be6",
+          "file": "editor.spec.cjs",
+          "line": 230,
+          "column": 1
+        },
+        {
+          "title": "Vocadito source policy requires explicit UI and API opt-in even when all recordings are selected",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1939,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:11.749Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-1a7594f8bec091b953ed",
+          "file": "editor.spec.cjs",
+          "line": 235,
+          "column": 1
+        },
+        {
+          "title": "changing audition mode and corpus selection does not interrupt whole-song playback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1919,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:13.710Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbf3332c07ad0eafaed0-d285b64963c90b64914e",
+          "file": "editor.spec.cjs",
+          "line": 241,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "imports.spec.cjs",
+      "file": "imports.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "real upload and transcription become ready without refresh, and survive reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2450,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:20.064Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "558f77135a65c4099872-a2c160ff0773183c9585",
+          "file": "imports.spec.cjs",
+          "line": 6,
+          "column": 1
+        },
+        {
+          "title": "processing feedback survives refresh; completion preserves unsaved edits",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2505,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:22.546Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "558f77135a65c4099872-12fdc77abbe14c59995d",
+          "file": "imports.spec.cjs",
+          "line": 28,
+          "column": 1
+        },
+        {
+          "title": "failed processing displays exact error and retries without a second upload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 471,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:25.067Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "558f77135a65c4099872-08ba0f4c69ff9419c8db",
+          "file": "imports.spec.cjs",
+          "line": 48,
+          "column": 1
+        },
+        {
+          "title": "real upload and transcription become ready without refresh, and survive reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2688,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:15.665Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "558f77135a65c4099872-61395b0025dd8a3dc79c",
+          "file": "imports.spec.cjs",
+          "line": 6,
+          "column": 1
+        },
+        {
+          "title": "processing feedback survives refresh; completion preserves unsaved edits",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2501,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:18.386Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "558f77135a65c4099872-6881dfa6ccf4f2902e2f",
+          "file": "imports.spec.cjs",
+          "line": 28,
+          "column": 1
+        },
+        {
+          "title": "failed processing displays exact error and retries without a second upload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 479,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:20.905Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "558f77135a65c4099872-2f2330918733a7d83974",
+          "file": "imports.spec.cjs",
+          "line": 48,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "learning.spec.cjs",
+      "file": "learning.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "primary empty state and one-song entry do not require corpus or annotation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 838,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:25.569Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-383230c6b5cec40614ba",
+          "file": "learning.spec.cjs",
+          "line": 14,
+          "column": 1
+        },
+        {
+          "title": "complete song → evidenced technique → drawn, audible, edited, saved and exported idea journey",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4474,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:26.441Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "learning-audio-and-source-link",
+                      "contentType": "application/json",
+                      "body": "eyJ2b2NhbCI6eyJybXMiOjAuMTU4MjYyMTQwMDAzMzkzOTgsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJzZWdtZW50Ijp7InN0YXJ0IjowLjI0OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45MTc5MTM4MzIxOTk1NDY1LCJsb29wIjpmYWxzZSwibW9kZSI6InZvY2FsIiwibm90ZSI6eyJzdGFydCI6MC4yNDk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTE3OTEzODMyMTk5NTQ2NX19LCJzZXF1ZW5jZSI6bnVsbH0sInBpYW5vIjp7InJtcyI6MC4wMTk1NDgwMjU5NjMwNzM3NywicGVha19oeiI6MjYzLjc4MTczODI4MTI1LCJzZWdtZW50IjpudWxsLCJzZXF1ZW5jZSI6eyJzdGFydGVkX2NvbnRleHRfdGltZSI6MS40MjUyOTQ3ODQ1ODA0OTg5LCJlbmRfY29udGV4dF90aW1lIjozLjY3NTI5NDc4NDU4MDQ5OSwidGVtcG8iOjEwMCwiZnJlcXVlbmNpZXMiOlsyNjEuNjI1NTY1MzAwNTk4NiwzMjkuNjI3NTU2OTEyODY5OSwzOTEuOTk1NDM1OTgxNzQ5MjcsMjkzLjY2NDc2NzkxNzQwNzZdfX0sInNvdXJjZSI6eyJzb3VyY2VfaGFzaCI6IjQ0ZDIxYzJlODE4YWM4NGNhNGQ3NTFlN2E0ODFiMWI3MDY5ODEwNTFkYmFmM2JiZTNhZjM2MjJmN2ZhY2VmOGIiLCJwcmVkaWN0aW9uX2lkIjoiNzE3ZDkwYWMwNDYxOWQzYzFmYzc5NzM1N2VkZGNkYWQyNjRjNjI2MWM0YjU4NTQ1MWViZmVhNzJlY2FlMGRjMiIsImNvcnJlY3Rpb25fcmV2aXNpb24iOiIyMDI2MTEwNVQwOTI3NTYzMjcxMzRaLWNlY2I3ZTdlIiwic29uZyI6IkRJU1BPU0FCTEUgRURJVE9SIEZJWFRVUkUiLCJhcnRpc3QiOiIiLCJub3RlX2ZpbmdlcnByaW50IjoiOTFhMWM3OGRmNmRkYjc4OTdiYmU5MjAxZmY3ODE2MzMxMmE3OWRiMDhiNzU2NmQzNWQ2NThjOGM4ZjdkMmIzYSIsInN0YXJ0IjowLjI0OTQzMzEwNjU3NTk2MzcsImVuZCI6NC45NTg3MzAxNTg3MzAxNTksIm5vdGVfZWRpdGlvbiI6InNhdmVkIHdvcmtpbmcgY29ycmVjdGlvbiJ9LCJpZGVhX2lkIjoiNzdkZjY1ZmEwMWYwNDYwZDgzYWU3Njk1N2Y3MWU1OGUiLCJyZWZlcmVuY2VfbXV0YXRpb25zIjowfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-3f6fdd4a7f0d35e462e8",
+          "file": "learning.spec.cjs",
+          "line": 19,
+          "column": 1
+        },
+        {
+          "title": "waveform and grid passage selection retain source seconds and handle no-note regions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1148,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:30.933Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-d3e6ba99e54aad50d868",
+          "file": "learning.spec.cjs",
+          "line": 32,
+          "column": 1
+        },
+        {
+          "title": "source-backed technique bookmarks persist and do not turn the source into an idea",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1318,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:32.096Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-666d1a79e3e5fe89c968",
+          "file": "learning.spec.cjs",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "composition direct move, resize, delete and undo/redo preserve independent source data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2616,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:33.432Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-fd5c1c6b83fabd4b8af8",
+          "file": "learning.spec.cjs",
+          "line": 41,
+          "column": 1
+        },
+        {
+          "title": "one-song artist profile explains scope and retains immediate song learning",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1253,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:36.067Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-0c38348cc5a13778fe55",
+          "file": "learning.spec.cjs",
+          "line": 47,
+          "column": 1
+        },
+        {
+          "title": "two source phrases have aligned contour views and actual original-vocal A/B playback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4705,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:37.336Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "source-phrase-AB",
+                      "contentType": "application/json",
+                      "body": "eyJwYWlyIjp7ImEiOnsic3RhcnQiOjAuMjQ5NDMzMTA2NTc1OTYzNywiZW5kIjoyLjUxNDI4NTcxNDI4NTcxNDIsIm5vdGVfaWRzIjpbIm4wMDAwMCIsIm4wMDAwMSIsIm4wMDAwMiJdLCJpbnRlcnZhbHMiOlswLDJdLCJkdXJhdGlvbnMiOlswLjY2ODQ4MDcyNTYyMzU4MjcsMC40Njg5MzQyNDAzNjI4MTE4NCwwLjYxODU5NDEwNDMwODM5XSwiY29udG91ciI6WzAsMV19LCJiIjp7InN0YXJ0IjoyLjc0Mzc2NDE3MjMzNTYwMSwiZW5kIjo0Ljk1ODczMDE1ODczMDE1OSwibm90ZV9pZHMiOlsibjAwMDAzIiwibjAwMDA0IiwibjAwMDA1Il0sImludGVydmFscyI6WzIsLTJdLCJkdXJhdGlvbnMiOlswLjcxODM2NzM0NjkzODc3NTIsMC41MTg4MjA4NjE2NzgwMDM5LDAuNTU4NzMwMTU4NzMwMTU4NV0sImNvbnRvdXIiOlsxLC0xXX0sInZhcmlhdGlvbiI6ImNvbXBhcmVfY29udG91cl9hbmRfcmh5dGhtIiwiZGlzdGFuY2UiOjAuNjA0MzM4NDEzNzgzOTU0NywibGFiZWwiOiJQaHJhc2UgY29tcGFyaXNvbiwgbm90IGFuIGVzdGFibGlzaGVkIHJlY3VycmluZyBtb3RpZi4ifSwidm9jYWwiOnsicm1zIjowLjA3NDk2MjUxOTg3Njc4Mjg2LCJwZWFrX2h6Ijo1MjIuMTgwMTc1NzgxMjUsInNlZ21lbnQiOnsic3RhcnQiOjIuNzQzNzY0MTcyMzM1NjAxLCJlbmQiOjQuOTU4NzMwMTU4NzMwMTU5LCJsb29wIjpmYWxzZSwibW9kZSI6InZvY2FsIiwibm90ZSI6eyJzdGFydCI6Mi43NDM3NjQxNzIzMzU2MDEsImVuZCI6NC45NTg3MzAxNTg3MzAxNTl9fSwic2VxdWVuY2UiOm51bGx9fQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-be27a35a15a20bc118f8",
+          "file": "learning.spec.cjs",
+          "line": 51,
+          "column": 1
+        },
+        {
+          "title": "primary empty state and one-song entry do not require corpus or annotation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 927,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:21.418Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-342cbae9f51a2aab291f",
+          "file": "learning.spec.cjs",
+          "line": 14,
+          "column": 1
+        },
+        {
+          "title": "complete song → evidenced technique → drawn, audible, edited, saved and exported idea journey",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5335,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:22.396Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "learning-audio-and-source-link",
+                      "contentType": "application/json",
+                      "body": "eyJ2b2NhbCI6eyJybXMiOjAuMTU4MTk5MjA0ODMwMTQ0NzQsInBlYWtfaHoiOjQ0MS40MzA2NjQwNjI1LCJzZWdtZW50Ijp7InN0YXJ0IjowLjI0OTQzMzEwNjU3NTk2MzcsImVuZCI6MC45MTc5MTM4MzIxOTk1NDY1LCJsb29wIjpmYWxzZSwibW9kZSI6InZvY2FsIiwibm90ZSI6eyJzdGFydCI6MC4yNDk0MzMxMDY1NzU5NjM3LCJlbmQiOjAuOTE3OTEzODMyMTk5NTQ2NX19LCJzZXF1ZW5jZSI6bnVsbH0sInBpYW5vIjp7InJtcyI6MC4wMTg3Nzc5OTQzODc4Mjg0MSwicGVha19oeiI6MjYzLjc4MTczODI4MTI1LCJzZWdtZW50IjpudWxsLCJzZXF1ZW5jZSI6eyJzdGFydGVkX2NvbnRleHRfdGltZSI6MS42OTUyMjY3NTczNjk2MTQ1LCJlbmRfY29udGV4dF90aW1lIjozLjk0NTIyNjc1NzM2OTYxNDUsInRlbXBvIjoxMDAsImZyZXF1ZW5jaWVzIjpbMjYxLjYyNTU2NTMwMDU5ODYsMzI5LjYyNzU1NjkxMjg2OTksMzkxLjk5NTQzNTk4MTc0OTI3LDI5My42NjQ3Njc5MTc0MDc2XX19LCJzb3VyY2UiOnsic291cmNlX2hhc2giOiI0NGQyMWMyZTgxOGFjODRjYTRkNzUxZTdhNDgxYjFiNzA2OTgxMDUxZGJhZjNiYmUzYWYzNjIyZjdmYWNlZjhiIiwicHJlZGljdGlvbl9pZCI6IjcxN2Q5MGFjMDQ2MTlkM2MxZmM3OTczNTdlZGRjZGFkMjY0YzYyNjFjNGI1ODU0NTFlYmZlYTcyZWNhZTBkYzIiLCJjb3JyZWN0aW9uX3JldmlzaW9uIjoiMjAyNjExMDVUMDkyOTQ4MDI3MDkyWi1kNTE4NzZlNSIsInNvbmciOiJESVNQT1NBQkxFIEVESVRPUiBGSVhUVVJFIiwiYXJ0aXN0IjoiIiwibm90ZV9maW5nZXJwcmludCI6ImY3ZjQyMGFhNTMyMThmNzhlZGI3NWM5NzVjYjIyNjFiMWYyYjAwNTU0NjgyNDFhMmM4ODI5YWU3NmIwMWVmYWIiLCJzdGFydCI6MC4yNDk0MzMxMDY1NzU5NjM3LCJlbmQiOjQuOTU4NzMwMTU4NzMwMTU5LCJub3RlX2VkaXRpb24iOiJzYXZlZCB3b3JraW5nIGNvcnJlY3Rpb24ifSwiaWRlYV9pZCI6IjMxMjE5NmEwM2U4NzRjN2Y5NTk1MDJmYWZmZmRkYmUwIiwicmVmZXJlbmNlX211dGF0aW9ucyI6MH0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-b51abb3b9e1a5ada994d",
+          "file": "learning.spec.cjs",
+          "line": 19,
+          "column": 1
+        },
+        {
+          "title": "waveform and grid passage selection retain source seconds and handle no-note regions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1334,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:27.751Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-a78c41bcd004a3c93f8f",
+          "file": "learning.spec.cjs",
+          "line": 32,
+          "column": 1
+        },
+        {
+          "title": "source-backed technique bookmarks persist and do not turn the source into an idea",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1387,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:29.103Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-72280ad2d160ab423d44",
+          "file": "learning.spec.cjs",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "composition direct move, resize, delete and undo/redo preserve independent source data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2944,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:30.508Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-a93d2dc4c8f19fae9d19",
+          "file": "learning.spec.cjs",
+          "line": 41,
+          "column": 1
+        },
+        {
+          "title": "one-song artist profile explains scope and retains immediate song learning",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1284,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:33.469Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-1bc8919cf69377dc6fa2",
+          "file": "learning.spec.cjs",
+          "line": 47,
+          "column": 1
+        },
+        {
+          "title": "two source phrases have aligned contour views and actual original-vocal A/B playback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4945,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:34.773Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "source-phrase-AB",
+                      "contentType": "application/json",
+                      "body": "eyJwYWlyIjp7ImEiOnsic3RhcnQiOjAuMjQ5NDMzMTA2NTc1OTYzNywiZW5kIjoyLjUxNDI4NTcxNDI4NTcxNDIsIm5vdGVfaWRzIjpbIm4wMDAwMCIsIm4wMDAwMSIsIm4wMDAwMiJdLCJpbnRlcnZhbHMiOlswLDJdLCJkdXJhdGlvbnMiOlswLjY2ODQ4MDcyNTYyMzU4MjcsMC40Njg5MzQyNDAzNjI4MTE4NCwwLjYxODU5NDEwNDMwODM5XSwiY29udG91ciI6WzAsMV19LCJiIjp7InN0YXJ0IjoyLjc0Mzc2NDE3MjMzNTYwMSwiZW5kIjo0Ljk1ODczMDE1ODczMDE1OSwibm90ZV9pZHMiOlsibjAwMDAzIiwibjAwMDA0IiwibjAwMDA1Il0sImludGVydmFscyI6WzIsLTJdLCJkdXJhdGlvbnMiOlswLjcxODM2NzM0NjkzODc3NTIsMC41MTg4MjA4NjE2NzgwMDM5LDAuNTU4NzMwMTU4NzMwMTU4NV0sImNvbnRvdXIiOlsxLC0xXX0sInZhcmlhdGlvbiI6ImNvbXBhcmVfY29udG91cl9hbmRfcmh5dGhtIiwiZGlzdGFuY2UiOjAuNjA0MzM4NDEzNzgzOTU0NywibGFiZWwiOiJQaHJhc2UgY29tcGFyaXNvbiwgbm90IGFuIGVzdGFibGlzaGVkIHJlY3VycmluZyBtb3RpZi4ifSwidm9jYWwiOnsicm1zIjowLjA4NTUyNDkwOTM4NjgwNjQ0LCJwZWFrX2h6Ijo1MjIuMTgwMTc1NzgxMjUsInNlZ21lbnQiOnsic3RhcnQiOjIuNzQzNzY0MTcyMzM1NjAxLCJlbmQiOjQuOTU4NzMwMTU4NzMwMTU5LCJsb29wIjpmYWxzZSwibW9kZSI6InZvY2FsIiwibm90ZSI6eyJzdGFydCI6Mi43NDM3NjQxNzIzMzU2MDEsImVuZCI6NC45NTg3MzAxNTg3MzAxNTl9fSwic2VxdWVuY2UiOm51bGx9fQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76672676b35c0933348f-bb441f79d9ce0589ce60",
+          "file": "learning.spec.cjs",
+          "line": 51,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "transport.spec.cjs",
+      "file": "transport.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "song and passage transport pause/resume exact source position, seek and stop reset with audible media",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3020,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:42.073Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "resumable-vocal",
+                      "contentType": "application/json",
+                      "body": "eyJib3VuZHMiOlswLjI0OTQzMzEwNjU3NTk2MzcsNC45NTg3MzAxNTg3MzAxNTldLCJwYXVzZWQiOnsia2V5Ijoic3R1ZHk6cGFzc2FnZTowODYyYjQzOWYzMDljOTFjYWRiMzEzZWU4ZGYyNmIyY2YxOWZiYmM0MjM5ZjRiOGZkYzlmNWZhODM5YTZhZTQ4IiwicG9zaXRpb24iOjAuNzM5OTU1LCJwbGF5aW5nIjpmYWxzZSwic2VnbWVudCI6bnVsbCwiZW5kIjo0Ljk1ODczMDE1ODczMDE1OSwia2luZCI6InZvY2FsIn0sInJlc3VtZWQiOnsia2V5Ijoic3R1ZHk6cGFzc2FnZTowODYyYjQzOWYzMDljOTFjYWRiMzEzZWU4ZGYyNmIyY2YxOWZiYmM0MjM5ZjRiOGZkYzlmNWZhODM5YTZhZTQ4IiwicG9zaXRpb24iOjAuOTI4NjE3LCJwbGF5aW5nIjp0cnVlLCJzZWdtZW50IjpudWxsLCJlbmQiOjQuOTU4NzMwMTU4NzMwMTU5LCJraW5kIjoidm9jYWwifSwic29uZyI6eyJrZXkiOiJzdHVkeTpzb25nOjA4NjJiNDM5ZjMwOWM5MWNhZGIzMTNlZThkZjI2YjJjZjE5ZmJiYzQyMzlmNGI4ZmRjOWY1ZmE4MzlhNmFlNDgiLCJwb3NpdGlvbiI6MC40Njg0OCwicGxheWluZyI6ZmFsc2UsInNlZ21lbnQiOm51bGwsImVuZCI6NS4xNDk4ODY2MjEzMTUxOTMsImtpbmQiOiJ2b2NhbCJ9fQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "15305a10ffc47879d590-42fdc42dbe15ab695aa4",
+          "file": "transport.spec.cjs",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "live waveform range, precise handles, snapping and clear selection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1457,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:45.126Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "15305a10ffc47879d590-e82abda642db8b435d36",
+          "file": "transport.spec.cjs",
+          "line": 20,
+          "column": 1
+        },
+        {
+          "title": "compact finding explorer keeps passage, highlights actual evidence and visualizes durations",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1167,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:46.599Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "15305a10ffc47879d590-14c283e98025e9458712",
+          "file": "transport.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "composed piano pauses without sound, resumes mid-note, seeks and loops without changing notes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5437,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:47.784Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "resumable-piano",
+                      "contentType": "application/json",
+                      "body": "eyJhdWRpYmxlIjowLjAyMDQ5NTA2NTQ2NzA2MTExNSwicGF1c2VkIjp7ImtleSI6ImNvbXBvc2U6aWRlYToxIiwicG9zaXRpb24iOjAuMjU1MjQ5NDMzMTA2NTc1OSwicGxheWluZyI6ZmFsc2UsInNlZ21lbnQiOm51bGwsImVuZCI6My40NSwia2luZCI6InNlcXVlbmNlIn0sInJlc3VtZWQiOnsia2V5IjoiY29tcG9zZTppZGVhOjEiLCJwb3NpdGlvbiI6MC40MDAyMDQwODE2MzI2NTMsInBsYXlpbmciOnRydWUsInNlZ21lbnQiOm51bGwsImVuZCI6My40NSwia2luZCI6InNlcXVlbmNlIn19"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "15305a10ffc47879d590-c2ff8474b01fb71df25e",
+          "file": "transport.spec.cjs",
+          "line": 35,
+          "column": 1
+        },
+        {
+          "title": "note auditions retain main position, tab switching silences audio and text entry ignores Space",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2168,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:53.241Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "15305a10ffc47879d590-601d65ffdc78f4287255",
+          "file": "transport.spec.cjs",
+          "line": 42,
+          "column": 1
+        },
+        {
+          "title": "own-note experiments update live structural checks and source return retains the idea",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1366x768",
+              "projectName": "1366x768",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2440,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:28:55.424Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "15305a10ffc47879d590-5136630e650c9b321d85",
+          "file": "transport.spec.cjs",
+          "line": 49,
+          "column": 1
+        },
+        {
+          "title": "song and passage transport pause/resume exact source position, seek and stop reset with audible media",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3225,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:39.746Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "resumable-vocal",
+                      "contentType": "application/json",
+                      "body": "eyJib3VuZHMiOlswLjI0OTQzMzEwNjU3NTk2MzcsNC45NTg3MzAxNTg3MzAxNTldLCJwYXVzZWQiOnsia2V5Ijoic3R1ZHk6cGFzc2FnZTowODYyYjQzOWYzMDljOTFjYWRiMzEzZWU4ZGYyNmIyY2YxOWZiYmM0MjM5ZjRiOGZkYzlmNWZhODM5YTZhZTQ4IiwicG9zaXRpb24iOjAuNzU4NzQzLCJwbGF5aW5nIjpmYWxzZSwic2VnbWVudCI6bnVsbCwiZW5kIjo0Ljk1ODczMDE1ODczMDE1OSwia2luZCI6InZvY2FsIn0sInJlc3VtZWQiOnsia2V5Ijoic3R1ZHk6cGFzc2FnZTowODYyYjQzOWYzMDljOTFjYWRiMzEzZWU4ZGYyNmIyY2YxOWZiYmM0MjM5ZjRiOGZkYzlmNWZhODM5YTZhZTQ4IiwicG9zaXRpb24iOjAuOTE4MzgsInBsYXlpbmciOnRydWUsInNlZ21lbnQiOm51bGwsImVuZCI6NC45NTg3MzAxNTg3MzAxNTksImtpbmQiOiJ2b2NhbCJ9LCJzb25nIjp7ImtleSI6InN0dWR5OnNvbmc6MDg2MmI0MzlmMzA5YzkxY2FkYjMxM2VlOGRmMjZiMmNmMTlmYmJjNDIzOWY0YjhmZGM5ZjVmYTgzOWE2YWU0OCIsInBvc2l0aW9uIjowLjQ3ODczLCJwbGF5aW5nIjpmYWxzZSwic2VnbWVudCI6bnVsbCwiZW5kIjo1LjE0OTg4NjYyMTMxNTE5Mywia2luZCI6InZvY2FsIn19"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "15305a10ffc47879d590-2e49f5b38d404d9f93ec",
+          "file": "transport.spec.cjs",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "live waveform range, precise handles, snapping and clear selection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1615,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:43.010Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "15305a10ffc47879d590-47df6c5f27afa6c7005d",
+          "file": "transport.spec.cjs",
+          "line": 20,
+          "column": 1
+        },
+        {
+          "title": "compact finding explorer keeps passage, highlights actual evidence and visualizes durations",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1264,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:44.643Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "15305a10ffc47879d590-11b50653d3b52131e4eb",
+          "file": "transport.spec.cjs",
+          "line": 29,
+          "column": 1
+        },
+        {
+          "title": "composed piano pauses without sound, resumes mid-note, seeks and loops without changing notes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5802,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:45.921Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "resumable-piano",
+                      "contentType": "application/json",
+                      "body": "eyJhdWRpYmxlIjowLjAyMDQ5NTAzMDk5NDY5NzcyOCwicGF1c2VkIjp7ImtleSI6ImNvbXBvc2U6aWRlYToxIiwicG9zaXRpb24iOjAuMjc1NTY2ODkzNDI0MDM2MywicGxheWluZyI6ZmFsc2UsInNlZ21lbnQiOm51bGwsImVuZCI6My40NSwia2luZCI6InNlcXVlbmNlIn0sInJlc3VtZWQiOnsia2V5IjoiY29tcG9zZTppZGVhOjEiLCJwb3NpdGlvbiI6MC40MTE4MTQwNTg5NTY5MTYxNCwicGxheWluZyI6dHJ1ZSwic2VnbWVudCI6bnVsbCwiZW5kIjozLjQ1LCJraW5kIjoic2VxdWVuY2UifX0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "15305a10ffc47879d590-35daa5eb9d6c64f05d3d",
+          "file": "transport.spec.cjs",
+          "line": 35,
+          "column": 1
+        },
+        {
+          "title": "note auditions retain main position, tab switching silences audio and text entry ignores Space",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2209,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:51.741Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "15305a10ffc47879d590-181be391b388cbdf72ca",
+          "file": "transport.spec.cjs",
+          "line": 42,
+          "column": 1
+        },
+        {
+          "title": "own-note experiments update live structural checks and source return retains the idea",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "1920x1080",
+              "projectName": "1920x1080",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2777,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-05T09:30:53.974Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "15305a10ffc47879d590-db055b34732987cf74d3",
+          "file": "transport.spec.cjs",
+          "line": 49,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-05T09:27:01.857Z",
+    "duration": 235939.41199999998,
+    "expected": 102,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

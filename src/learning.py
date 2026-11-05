@@ -147,7 +147,7 @@ def passage_study(report,start,end,context=None):
     return result
 
 
-def chord_spans(text,origin,tempo):
+def chord_spans(text,origin,tempo,meter=(4,4)):
     import re
     roots={'C':0,'D':2,'E':4,'F':5,'G':7,'A':9,'B':11};result=[]
     for i,label in enumerate(text.split('|')):
@@ -156,21 +156,21 @@ def chord_spans(text,origin,tempo):
         root=(roots[m[1]]+{'':0,'#':1,'b':-1}[m[2]])%12;quality=m[3] or ''
         pcs=[root,(root+(3 if quality in ('m','m7') else 4))%12,(root+7)%12]
         if quality in ('7','m7','maj7'):pcs.append((root+(11 if quality=='maj7' else 10))%12)
-        result.append({'start':origin+i*240/tempo,'end':origin+(i+1)*240/tempo,'pitch_classes':pcs,'label':label})
+        result.append({'start':origin+i*(meter[0]*4/meter[1])*60/tempo,'end':origin+(i+1)*(meter[0]*4/meter[1])*60/tempo,'pitch_classes':pcs,'label':label})
     return result
 
 
 def idea_config(value):
-    config=CompositionConfig(**{k:value[k] for k in ('tonic','scale','tempo','low','high','bars','contour') if k in value})
+    config=CompositionConfig(**{k:value[k] for k in ('tonic','scale','tempo','low','high','bars','contour','time_signature') if k in value})
     return {'tonic':config.tonic,'scale':config.scale,'tempo':config.tempo,'low':config.low,'high':config.high,
-        'bars':config.bars,'contour':config.contour,'feel':value.get('feel','balanced'),
+        'bars':config.bars,'time_signature':list(config.time_signature),'contour':config.contour,'feel':value.get('feel','balanced'),
         'variation':value.get('variation','ending'),'lyrics':str(value.get('lyrics',''))[:4000],
         'progression':str(value.get('progression',''))[:1000]}
 
 
 def idea_notes(values,config):
     if not isinstance(values,list) or len(values)>200:raise ValueError('Use at most 200 melody notes.')
-    notes=notes_from_dicts(values);limit=config['bars']*4
+    notes=notes_from_dicts(values);limit=config['bars']*config.get('time_signature',[4,4])[0]*4/config.get('time_signature',[4,4])[1]
     if any(n.end>limit+1e-6 for n in notes):raise ValueError('Keep notes inside the chosen phrase length.')
     return notes
 
@@ -188,6 +188,7 @@ def assess_idea(values,config,technique=None,source_notes=()):
     if kind in ('shape','late_peak'):check('Position of first high point',f'{position:.0%} through phrase',position>=c['min_peak_position'] if kind=='late_peak' else abs(position-c.get('peak_position_target',.5))<=.2)
     if kind=='release':check('Interior peak and lower ending',f'ending {p[-1]-max(p):+g} semitones from peak',peak not in (notes[0],notes[-1]) and p[-1]<max(p)-.5)
     if kind=='stepwise':check('At least half the moves are steps',f'{sum(.5<=abs(x)<=2.1 for x in ints)}/{len(ints)} transitions',bool(ints) and sum(.5<=abs(x)<=2.1 for x in ints)/len(ints)>=.5)
+    if kind=='offbeat':check('An original offbeat entry','half a quarter beat from a whole beat',any(abs(n.start%1-.5)<.08 for n in notes))
     if kind=='repeated_pitch':check('Repeated target',sum(abs(x)<.5 for x in ints),any(abs(x)<.5 for x in ints))
     if kind=='duration_contrast':check('One target held at least twice as long',f'{max(duration)/min(duration):.1f}×',max(duration)/min(duration)>=2)
     if kind=='rest':check('Deliberate space between gestures','at least half a beat',any(b.start-a.end>=.5 for a,b in zip(notes,notes[1:])))
@@ -201,7 +202,7 @@ def assess_idea(values,config,technique=None,source_notes=()):
     check('Chosen shape: '+shape.replace('_',' '),f'first high point at {position:.0%}; ending {p[-1]-p[0]:+g} semitones from opening',shape_met)
     harmony=None
     if config['progression']:
-        harmony=analyze_notes(notes,chords=chord_spans(config['progression'],0,60))['harmony']
+        harmony=analyze_notes(notes,chords=chord_spans(config['progression'],0,60,config['time_signature']))['harmony']
     if kind=='harmony':
         checks.append({'label':'Own chord context','observed':f'{len(harmony["interpretation_candidates"])} stepwise non-chord connection candidates' if harmony else 'Supply your own chords; source chords are not automatically reused.',
             'met':bool(harmony['interpretation_candidates']) if harmony else None})
@@ -220,7 +221,7 @@ def develop_idea(values,config):
     """Deterministic transformations of user-entered material; never source templates."""
     config=idea_config(config);notes=idea_notes(values,config)
     if len(notes)<3:raise ValueError('Draw at least three of your own motif notes before exploring variations.')
-    limit=config['bars']*4;result=[]
+    limit=config['bars']*config.get('time_signature',[4,4])[0]*4/config.get('time_signature',[4,4])[1];result=[]
     # Original material is supplied by the user, not fetched from an artist corpus.
     for kind,label in [('rhythm','Change the rhythm'),('ending','Answer with a new ending'),('repeat','Repeat your motif, vary the answer')]:
         ns=list(notes)

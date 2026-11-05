@@ -33,6 +33,7 @@ $('files').onchange=()=>run(async()=>{const files=[...$('files').files];$('files
 $('attemptfile').onchange=()=>run(async()=>{const file=$('attemptfile').files[0];$('attemptfile').value='';if(file)await importAudio(file,true);});
 $('refresh').onclick=()=>run(refresh);
 async function load(id) {
+  if(typeof musicalWorkspace!=='undefined'&&(musicalWorkspace.sectionDirty||musicalWorkspace.gridDirty)&&!confirm('Discard unsaved section or beat-grid edits before changing recordings?'))return false;
   if(pianoEditor?.dirty&&!confirm('Discard unsaved edits before changing recordings?'))return false;
   pianoEditor?.stashView();
   pianoEditor?.audition.stop();
@@ -251,10 +252,11 @@ $('reference-export').onclick=()=>run(async()=>{
 pianoEditor=new window.MelodyEditor({state,$,api,status,run,renderNotes,referenceModeStatus,enterReference});
 recordingLibrary=new window.RecordingLibrary({state,$,api,status,run,load,openReference,tab});
 learning=new window.MelodyLearning({state,$,api,status,run,load,tab,player:()=>pianoEditor.audition,editor:()=>pianoEditor});
+const musicalWorkspace=new window.MusicalWorkspace({$,api,run,state,load,status,learning,player:()=>pianoEditor.audition});
 const importQueue=new window.ImportQueue({$,api,run,refresh,load,state,status,
   isDirty:()=>pianoEditor.dirty||learning?.dirty,
   onAttempt:async id=>{if(state.exercise){const feedback=await api('attempt',{id,exercise:state.exercise});$('feedback').textContent=JSON.stringify(feedback,null,2);tab('compose');status('Attempt transcribed. Review its notes before interpreting constraint feedback.');}}});
 tab('study');
 document.addEventListener('keydown',event=>{if(event.code!=='Space'||event.defaultPrevented||event.repeat||event.target.closest('input,textarea,select,[contenteditable=true],dialog'))return;event.preventDefault();run(()=>document.body.dataset.workspace==='compose'?learning.playIdea():document.body.dataset.workspace==='study'?learning.playStudy():pianoEditor.audition.full());});
-window.addEventListener('beforeunload',event=>{if(pianoEditor.dirty||learning?.dirty){event.preventDefault();event.returnValue='';}});
+window.addEventListener('beforeunload',event=>{if(pianoEditor.dirty||learning?.dirty||musicalWorkspace.sectionDirty||musicalWorkspace.gridDirty){event.preventDefault();event.returnValue='';}});
 run(async()=>{await refresh();const params=launchParams,id=params.get('analysis'),ref=params.get('reference');if(id&&state.library.some(r=>r.id===id)){await load(id);if(ref){enterReference(await api('reference?reference_id='+encodeURIComponent(ref)));tab('review');}else if(params.get('workspace')==='review')tab('review');}if(params.get('idea'))await learning.loadIdea(params.get('idea'));});

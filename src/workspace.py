@@ -25,6 +25,7 @@ from .real_metrics import score_reference
 from .library import recording_groups,validate_corpus_sources
 from .learning_store import LearningStore,ACTIONS as LEARNING_ACTIONS
 from .import_jobs import ImportJobs
+from .musical_context import MusicalContext, rhythm
 
 log = logging.getLogger(__name__)
 STATIC = Path(__file__).parent / "web"
@@ -35,6 +36,7 @@ class Workspace:
         self.root = Path(root).resolve()
         self.root.mkdir(parents=True, exist_ok=True)
         self.lock = RLock()
+        self.musical_context = MusicalContext(self.root)
         self.references = ReferenceStore(self.root/'references')
         self.import_jobs = ImportJobs(self.root, self.analyze_upload)
 
@@ -91,6 +93,30 @@ class Workspace:
             self.validate_upload(data)
             return self.import_jobs.submit(data)
         with self.lock:
+            if action in {'context-get','context-save'}:
+                _,r=self.get_report(data['id']);source=r['audio']['content_sha256']
+                if action=='context-save':
+                    return self.musical_context.save(source,data['kind'],data['value'],data.get('base_revision'),r['audio']['duration'])
+                return {kind:self.musical_context.get(source,kind) for kind in ('sections','grid')}
+            if action=='section-compare':
+                reports=[self.get_report(i)[1] for i in data['ids']]
+                reports,scope=validate_corpus_sources(reports,self.references.list(),False)
+                artists={r['metadata'].get('artist','').strip() for r in reports}
+                if len(artists)!=1 or not next(iter(artists),'') or next(iter(artists))=='Unspecified singer':raise ValueError('Assign the same explicit artist to the selected songs first')
+                rows=[]
+                for r in reports:
+                    source=r['audio']['content_sha256'];sections=self.musical_context.get(source,'sections');grid=self.musical_context.get(source,'grid')
+                    for section in sections['value']:
+                        if section['type']!=data['type']:continue
+                        ns=[n for n in r['notes'] if section['start']<=n['start']<section['end']]
+                        rows.append({'source_hash':source,'analysis_id':next(i for i in data['ids'] if self.get_report(i)[1]['audio']['content_sha256']==source),'song':r['metadata'].get('song',source),'section':section,'section_revision':sections['revision'],'grid_revision':grid['revision'],'grid':grid['value'],'notes':ns,'rhythm':rhythm(ns,grid['value'],section['start'],section['end'])})
+                songs={row['song'] for row in rows}
+                per_song={}
+                for row in rows:
+                    ns=row['notes'];row['pitch_range']=max((n['pitch'] for n in ns),default=0)-min((n['pitch'] for n in ns),default=0)
+                    per_song.setdefault(row['song'],[]).append(row['pitch_range'])
+                mean_range=sum(sum(v)/len(v) for v in per_song.values())/len(per_song) if per_song else None
+                return {'occurrences':rows,'support_songs':len(songs),'equal_song_mean_range':mean_range,'scope':scope,'warning':'Exploratory section comparison; two songs do not establish an artist signature.'}
             if action in LEARNING_ACTIONS:
                 return LearningStore(self).dispatch(action,data)
             if action=='reference-create':
@@ -251,7 +277,7 @@ def make_handler(workspace):
                 files = {"/": "index.html", "/app.js": "app.js", "/style.css": "style.css",
                     '/editor-core.js':'editor-core.js','/editor.js':'editor.js','/audition.js':'audition.js','/library.js':'library.js',
                     '/learning.js':'learning.js','/learning-roll.js':'learning-roll.js','/learning.css':'learning.css',
-                    '/imports.js':'imports.js'}
+                    '/imports.js':'imports.js','/context.js':'context.js'}
                 if parsed.path in files:
                     path = STATIC/files[parsed.path]
                     return self.send(200, path.read_bytes(), mimetypes.guess_type(path)[0] or "text/plain")
