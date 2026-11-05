@@ -13,7 +13,7 @@
 <div class="bulk-row"><button id="corpus-select-filtered">Select filtered</button><button id="corpus-deselect-filtered">Deselect filtered</button></div><p id="corpus-scope"></p>
 <label class="inline research-consent"><input id="allow-research-corpus" type="checkbox"> Allow research in corpus</label>
 <div class="corpus-build"><label>Artist / corpus name<input id="artist" placeholder="Name your corpus"></label><button id="profile" class="primary">Build profile</button></div></section>
-<label class="upload song-import">Import vocal audio<input id="files" type="file" accept="audio/*" multiple></label><details id="library-options"><summary>Advanced import settings</summary><details><summary>Transcription settings</summary><label>F0 model<select id="estimator"><option value="pyin">pYIN · CPU baseline</option value="torchcrepe">TorchCREPE · optional install</option></select></label>
+<label class="upload song-import">Import vocal audio<input id="files" type="file" accept="audio/*" multiple></label><section id="import-progress" aria-label="Audio import status" aria-live="polite" hidden></section><details id="library-options"><summary>Advanced import settings</summary><details><summary>Transcription settings</summary><label>F0 model<select id="estimator"><option value="pyin">pYIN · CPU baseline</option value="torchcrepe">TorchCREPE · optional install</option></select></label>
 <div class="pair"><label>Lowest Hz<input id="fmin" type="number" value="65.406" min="20"></label><label>Highest Hz<input id="fmax" type="number" value="1046.503" min="30"></label></div>
 <div class="pair"><label>Minimum note (s)<input id="minnote" type="number" step=".01" value=".06"></label><label>Boundary hold (s)<input id="hold" type="number" step=".01" value=".08"></label></div>
 <label>Voicing threshold<input id="confidence" type="number" min="0" max="1" step=".05" value=".15"></label>
@@ -75,4 +75,4 @@
 <h2>Corpus exercises</h2><div id="exercises">Build a corpus profile to select evidence-based exercises.</div>
 </details></section>
 <footer>Measured properties · statistical inferences · subjective interpretations · songwriting suggestions are separate. No voice cloning or generated singing.</footer></section></main>
-<script src="/library.js"></script><script src="/editor-core.js"></script><script src="/audition.js"></script><script src="/editor.js"></script><script src="/learning-roll.js"></script><script src="/learning.js"></script><script src="/app.js"></script></body></html>
+<script src="/library.js"></script><script src="/editor-core.js"></script><script src="/audition.js"></script><script src="/editor.js"></script><script src="/learning-roll.js"></script><script src="/learning.js"></script><script src="/imports.js"></script><script src="/app.js"></script></body></html>

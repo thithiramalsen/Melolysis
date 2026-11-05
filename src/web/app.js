@@ -26,21 +26,11 @@ function renderLibrary() {
   recordingLibrary?.render();
 }
 async function importAudio(file, attempt=false) {
-  status(`Importing ${file.name}…`);
-  const response=await fetch('/api/import?name='+encodeURIComponent(file.name),{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:file});
-  const upload=await response.json(); if(!response.ok)throw new Error(upload.error);
-  status(`Analyzing ${file.name} with ${$('estimator').value}. CPU inference may take a few minutes…`);
-  const result=await api('analyze',{upload_id:upload.upload_id,config:config(),metadata:{song:file.name,
+  return importQueue.submit(file,{config:config(),metadata:{song:file.name,
     artist:$('artist').value,section:attempt?'practice':$('section').value,tags:attempt?['practice-attempt']:[]}});
-  if(!attempt)state.selected.add(result.report.audio.content_sha256);await refresh();await load(result.id);
-  if(attempt && state.exercise) {
-    const feedback=await api('attempt',{id:result.id,exercise:state.exercise});$('feedback').textContent=JSON.stringify(feedback,null,2);tab('compose');
-    status('Attempt recorded and transcribed. Constraint feedback is available; review the notes for transcription errors.');
-  }
-  return result;
 }
-$('files').onchange=()=>run(async()=>{for(const file of $('files').files)await importAudio(file);$('files').value='';});
-$('attemptfile').onchange=()=>run(async()=>{if($('attemptfile').files[0])await importAudio($('attemptfile').files[0],true);});
+$('files').onchange=()=>run(async()=>{const files=[...$('files').files];$('files').value='';for(const file of files)await importAudio(file);});
+$('attemptfile').onchange=()=>run(async()=>{const file=$('attemptfile').files[0];$('attemptfile').value='';if(file)await importAudio(file,true);});
 $('refresh').onclick=()=>run(refresh);
 async function load(id) {
   if(pianoEditor?.dirty&&!confirm('Discard unsaved edits before changing recordings?'))return false;
@@ -261,6 +251,9 @@ $('reference-export').onclick=()=>run(async()=>{
 pianoEditor=new window.MelodyEditor({state,$,api,status,run,renderNotes,referenceModeStatus,enterReference});
 recordingLibrary=new window.RecordingLibrary({state,$,api,status,run,load,openReference,tab});
 learning=new window.MelodyLearning({state,$,api,status,run,load,tab,player:()=>pianoEditor.audition,editor:()=>pianoEditor});
+const importQueue=new window.ImportQueue({$,api,run,refresh,load,state,status,
+  isDirty:()=>pianoEditor.dirty||learning?.dirty,
+  onAttempt:async id=>{if(state.exercise){const feedback=await api('attempt',{id,exercise:state.exercise});$('feedback').textContent=JSON.stringify(feedback,null,2);tab('compose');status('Attempt transcribed. Review its notes before interpreting constraint feedback.');}}});
 tab('study');
 document.addEventListener('keydown',event=>{if(event.code!=='Space'||event.defaultPrevented||event.repeat||event.target.closest('input,textarea,select,[contenteditable=true],dialog'))return;event.preventDefault();run(()=>document.body.dataset.workspace==='compose'?learning.playIdea():document.body.dataset.workspace==='study'?learning.playStudy():pianoEditor.audition.full());});
 window.addEventListener('beforeunload',event=>{if(pianoEditor.dirty||learning?.dirty){event.preventDefault();event.returnValue='';}});

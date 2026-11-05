@@ -24,6 +24,7 @@ from .references import ReferenceStore
 from .real_metrics import score_reference
 from .library import recording_groups,validate_corpus_sources
 from .learning_store import LearningStore,ACTIONS as LEARNING_ACTIONS
+from .import_jobs import ImportJobs
 
 log = logging.getLogger(__name__)
 STATIC = Path(__file__).parent / "web"
@@ -35,6 +36,21 @@ class Workspace:
         self.root.mkdir(parents=True, exist_ok=True)
         self.lock = RLock()
         self.references = ReferenceStore(self.root/'references')
+        self.import_jobs = ImportJobs(self.root, self.analyze_upload)
+
+    def validate_upload(self, data):
+        source_id = data['upload_id']
+        if not re.fullmatch(r'[a-f0-9]{64}\.(wav|mp3|flac|m4a|ogg|aac)', source_id):
+            raise ValueError('Invalid upload identifier')
+        if not (self.root/'imports'/source_id).is_file():
+            raise ValueError('Uploaded file not found; upload it again')
+        AnalysisConfig(**data.get('config', {}))
+
+    def analyze_upload(self, data):
+        self.validate_upload(data)
+        r = analyze_file(self.root/'imports'/data['upload_id'], self.root,
+            AnalysisConfig(**data.get('config', {})), metadata=data.get('metadata'))
+        return {'id': key_for(str(Path(r['report_path']).relative_to(self.root))), 'report': r}
 
     def catalog(self):
         paths=list((self.root/'analyses').glob('*/*/report.json'))
@@ -71,6 +87,9 @@ class Workspace:
         write_json(path, report)
 
     def dispatch(self, action, data):
+        if action == 'import-start':
+            self.validate_upload(data)
+            return self.import_jobs.submit(data)
         with self.lock:
             if action in LEARNING_ACTIONS:
                 return LearningStore(self).dispatch(action,data)
@@ -105,12 +124,7 @@ class Workspace:
                     raise ValueError('No reviewed, split-assigned human references are ready for evaluation')
                 return self.references.export_manifest(self.root/'real-validation'/'reviewed.manifest.json',ids)
             if action == "analyze":
-                source_id = data["upload_id"]
-                if not re.fullmatch(r"[a-f0-9]{64}\.(wav|mp3|flac|m4a|ogg|aac)", source_id):
-                    raise ValueError("Invalid upload identifier")
-                r = analyze_file(self.root/"imports"/source_id, self.root,
-                    AnalysisConfig(**data.get("config", {})), metadata=data.get("metadata"))
-                return {"id": key_for(str(Path(r["report_path"]).relative_to(self.root))), "report": r}
+                return self.analyze_upload(data)
             if action == "correct":
                 path, r = self.get_report(data["id"])
                 current=latest_correction(self.root/'corrections',r['audio']['content_sha256'])
@@ -187,6 +201,8 @@ def make_handler(workspace):
             try:
                 parsed = urlparse(self.path)
                 query = {k: v[0] for k, v in parse_qs(parsed.query).items()}
+                if parsed.path == '/api/import-jobs':
+                    return self.send(200, workspace.import_jobs.list())
                 if parsed.path == "/api/state":
                     rows = []
                     for identifier in workspace.catalog():
@@ -234,7 +250,8 @@ def make_handler(workspace):
                     return self.send_file(workspace.root/"compositions"/identifier/f"candidate-{index}.mid", attachment=True)
                 files = {"/": "index.html", "/app.js": "app.js", "/style.css": "style.css",
                     '/editor-core.js':'editor-core.js','/editor.js':'editor.js','/audition.js':'audition.js','/library.js':'library.js',
-                    '/learning.js':'learning.js','/learning-roll.js':'learning-roll.js','/learning.css':'learning.css'}
+                    '/learning.js':'learning.js','/learning-roll.js':'learning-roll.js','/learning.css':'learning.css',
+                    '/imports.js':'imports.js'}
                 if parsed.path in files:
                     path = STATIC/files[parsed.path]
                     return self.send(200, path.read_bytes(), mimetypes.guess_type(path)[0] or "text/plain")
