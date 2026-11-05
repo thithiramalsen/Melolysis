@@ -1,0 +1,33 @@
+{
+  "protected_files": 128,
+  "results": [
+    {
+      "width": 1366,
+      "run_id": "099f49f672aba7594d144092bcfb4d69830369955cd55975cc97fe75b051fda0",
+      "matches": 11,
+      "sources": [
+        "[fadr.com] Vocals - 30 October 2026 - 108bpm - Cmaj.mp3",
+        "MHS Chorus"
+      ],
+      "rms": [
+        0.15800145104592145,
+        0.15475396303757563
+      ],
+      "errors": []
+    },
+    {
+      "width": 1920,
+      "run_id": "099f49f672aba7594d144092bcfb4d69830369955cd55975cc97fe75b051fda0",
+      "matches": 11,
+      "sources": [
+        "[fadr.com] Vocals - 30 October 2026 - 108bpm - Cmaj.mp3",
+        "MHS Chorus"
+      ],
+      "rms": [
+        0.15800145104592145,
+        0.15980789978837057
+      ],
+      "errors": []
+    }
+  ]
+}

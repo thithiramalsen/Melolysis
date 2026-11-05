@@ -9,6 +9,9 @@ reference, save an idea and export the edited MIDI. Singing/recording is optiona
 There is no voice cloning or generated singing.
 
 The default workspace is song study. **Artist patterns** compares selected songs;
+its [melodic relationships workspace](docs/MELODIC_IDENTITY_USAGE.md) now compares
+two recordings with explicit note correspondences, original-audio A/B and a linked
+original-motif exercise. Legacy profile statistics remain under Advanced.
 **Transcription / research** retains the full correction, reference and evaluation
 workflows. Seed/density/MIDI-limit generation controls are under Advanced in the
 composition workspace. See the [learning journey and validation](docs/LEARNING_EXPERIENCE.md)

@@ -28,6 +28,7 @@ class LearningStore:
         study=self.study(data['study_id']);finding=next((f for f in study['findings'] if f['id']==data.get('finding_id')),None)
         if not finding or not finding['technique']:raise ValueError('Choose an evidenced technique from a saved study.')
         return {'study_id':study['id'],'analysis_id':study['analysis_id'],'source':study['source'],
+            'identity_evidence':study.get('identity_evidence'),
             'finding':finding,'source_notes':study['notes']}
 
     def dispatch(self,action,data):

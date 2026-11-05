@@ -89,6 +89,50 @@ class Workspace:
         write_json(path, report)
 
     def dispatch(self, action, data):
+        if action == 'identity-compare':
+            from .melodic_identity import compare
+            # Only snapshot under the workspace lock; pair alignment must not block
+            # import status, playback requests or correction saves.
+            with self.lock:
+                sides=[]
+                for identifier in (data['a'],data['b']):
+                    _,r=self.get_report(identifier)
+                    validate_corpus_sources([r],self.references.list(),False,
+                        [json.loads(p.read_text(encoding='utf-8')) for p in self.catalog().values()])
+                    source=r['audio']['content_sha256']
+                    sides.append(json.loads(json.dumps({'analysis_id':identifier,'source_hash':source,
+                        'song':r['metadata'].get('song') or source,'artist':r['metadata'].get('artist',''),
+                        'prediction_id':r['prediction_id'],'correction_revision':r['provenance'].get('correction_revision'),
+                        'note_fingerprint':key_for(r['notes']),'notes':r['notes'],
+                        'sections':self.musical_context.get(source,'sections'),'grid':self.musical_context.get(source,'grid')})))
+            result=compare(*sides)
+            write_json(self.root/'melodic-identity'/'runs'/(result['id']+'.json'),result)
+            return result
+        if action == 'identity-study':
+            from .learning import passage_study, evidence
+            identifier=data['run_id']
+            if not re.fullmatch('[a-f0-9]{64}',identifier):raise ValueError('Invalid identity run')
+            run=json.loads((self.root/'melodic-identity'/'runs'/(identifier+'.json')).read_text(encoding='utf-8'))
+            m=next(m for m in run['matches'] if m['id']==data['match_id'])
+            saved=self.root/'learning'/'studies'/(key_for([identifier,m['id'],'study'])+'.json')
+            if saved.exists():return json.loads(saved.read_text(encoding='utf-8'))
+            side=run['sources'][0];_,report=self.get_report(side['analysis_id'])
+            report=json.loads(json.dumps(report));report['notes']=side['notes']
+            report['metadata']={'song':side['song'],'artist':side['artist']};report['context']={}
+            report['prediction_id']=side['prediction_id'];report['provenance']['correction_revision']=side['correction_revision']
+            study=passage_study(report,m['a']['start'],m['a']['end'])
+            finding={'id':key_for([identifier,m['id'],'learn']),'kind':'motif','title':'Develop a related gesture with your own notes',
+                'text':f"{m['matched_targets']} aligned targets link these recordings: "+', '.join(m['transformations'])+'.',
+                'category':'statistical_interpretation','conditions':'Local candidate; not an artist-specific signature.',
+                'evidence':evidence(notes_from_dicts(m['a']['notes'])),
+                'technique':{'type':'motif','title':'Invent a motif and vary its rhythm or ending',
+                'instruction':'Draw your own short motif, then a related answer. Change rhythm or the ending. Listen to both sources as structural examples; choose your own pitches.',
+                'constraint':{'own_motif_then_variation':True}}}
+            study['findings']=[finding];study['analysis_id']=side['analysis_id']
+            study['identity_evidence']={'run_id':identifier,'match_id':m['id'],'a':m['a'],'b':m['b']}
+            study['id']=key_for([identifier,m['id'],'study'])
+            write_json(self.root/'learning'/'studies'/(study['id']+'.json'),study)
+            return study
         if action == 'import-start':
             self.validate_upload(data)
             return self.import_jobs.submit(data)
@@ -277,7 +321,7 @@ def make_handler(workspace):
                 files = {"/": "index.html", "/app.js": "app.js", "/style.css": "style.css",
                     '/editor-core.js':'editor-core.js','/editor.js':'editor.js','/audition.js':'audition.js','/library.js':'library.js',
                     '/learning.js':'learning.js','/learning-roll.js':'learning-roll.js','/learning.css':'learning.css',
-                    '/imports.js':'imports.js','/context.js':'context.js'}
+                    '/imports.js':'imports.js','/context.js':'context.js','/artist-identity.js':'artist-identity.js'}
                 if parsed.path in files:
                     path = STATIC/files[parsed.path]
                     return self.send(200, path.read_bytes(), mimetypes.guess_type(path)[0] or "text/plain")

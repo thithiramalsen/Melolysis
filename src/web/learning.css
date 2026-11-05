@@ -60,3 +60,5 @@ aside{min-height:0}.song-import{font-size:11px;margin:2px 0;padding:5px}.song-im
 #study-ruler{position:sticky;top:0;z-index:6}#study-playhead[aria-valuenow]{max-width:16px}
 
 #study-lanes{position:sticky;top:0;z-index:6;background:#111e22;flex:0 0 auto;padding-bottom:3px}#study-ruler{position:relative;top:auto}#study-playhead-time{max-width:110px}#study-playhead.near-end #study-playhead-time{left:auto;right:10px}
+
+.identity-rolls{display:grid;grid-template-columns:1fr 1fr;gap:12px}.identity-rolls .learning-roll{height:240px}#identity-operations{max-height:110px;overflow:auto}#identity-workspace{padding:12px}#identity-workspace select{max-width:300px}

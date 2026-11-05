@@ -6,6 +6,7 @@ const copy = value => JSON.parse(JSON.stringify(value));
 let pianoEditor=null;
 let recordingLibrary=null;
 let learning=null;
+let identityWorkspace=null;
 const launchParams=new URLSearchParams(location.search);
 function element(tag, text, cls) {const e=document.createElement(tag); if(text!==undefined)e.textContent=text; if(cls)e.className=cls; return e;}
 function status(text, error=false) {$('status').textContent=text; $('status').classList.toggle('error',error);}
@@ -14,13 +15,13 @@ async function api(path, data) {
   const result=await response.json(); if(!response.ok)throw new Error(result.error||'Request failed'); return result;
 }
 async function run(action) {try {await action();} catch(e) {status(e.message,true); console.error(e);}}
-function tab(name) {pianoEditor?.audition.activateWorkspace(name);document.querySelectorAll('.panel').forEach(e=>e.classList.toggle('hidden',e.id!==name));document.querySelectorAll('.tab').forEach(e=>e.classList.toggle('active',e.dataset.tab===name));draw();learning?.onTab(name);const url=new URL(location);url.searchParams.set('workspace',name);history.replaceState(null,'',url);}
+function tab(name) {identityWorkspace?.leave(name);pianoEditor?.audition.activateWorkspace(name);document.querySelectorAll('.panel').forEach(e=>e.classList.toggle('hidden',e.id!==name));document.querySelectorAll('.tab').forEach(e=>e.classList.toggle('active',e.dataset.tab===name));draw();learning?.onTab(name);const url=new URL(location);url.searchParams.set('workspace',name);history.replaceState(null,'',url);}
 document.querySelectorAll('.tab').forEach(e=>e.onclick=()=>tab(e.dataset.tab));
 function config() {return {estimator:$('estimator').value,fmin:+$('fmin').value,fmax:+$('fmax').value,
   confidence:+$('confidence').value,min_note_seconds:+$('minnote').value,transition_seconds:+$('hold').value,input_kind:$('kind').value};}
 async function refresh() {
   const result=await api('state');state.library=result.analyses;state.recordings=result.recordings||[];
-  recordingLibrary?.refreshFilters();renderLibrary();status(`${state.recordings.length} recordings · ${state.library.length} preserved analysis versions · corpus inclusion is explicit`);
+  recordingLibrary?.refreshFilters();identityWorkspace?.choices();renderLibrary();status(`${state.recordings.length} recordings · ${state.library.length} preserved analysis versions · corpus inclusion is explicit`);
 }
 function renderLibrary() {
   recordingLibrary?.render();
@@ -119,7 +120,7 @@ function distribution(container,weights) {
   for(const [key,value] of Object.entries(weights).sort((a,b)=>+a[0]- +b[0])){const row=element('div',undefined,'barrow');const p=element('progress');p.max=1;p.value=value;row.append(element('span',key+' st'),p,element('span',(value*100).toFixed(1)+'%'));container.append(row);}
 }
 $('profile').onclick=()=>run(async()=>{if(!state.selected.size)throw new Error('Select at least one recording.');status('Building a recording-balanced profile…');state.profile=await api('profile',{ids:recordingLibrary.corpusIds(),artist:$('artist').value,allow_research:recordingLibrary.allowedResearch()});renderProfile();renderExercises();tab('style');status(state.profile.corpus_scope?.research_opt_in?'Explicit research corpus · dataset recordings included':'Style profile ready. Evidence and limited sample sizes are visible in every conclusion.');});
-function renderProfile(){const p=state.profile,root=$('stylecontent');root.replaceChildren();if(p.songs<2){root.append(element('h3','One song: local findings, not an artist signature'),element('p','Study this song now. Add different songs by the same singer to compare recurring decisions.','muted'));const study=element('button','Study this song','primary');study.onclick=()=>tab('study');root.append(study);}const stats=element('div',undefined,'statgrid');for(const [v,label] of [[p.songs,`songs / ${p.recordings} recordings`],[p.phrases,'rest-delimited phrases'],[p.notes,'note events']]){const e=element('div',undefined,'stat');e.append(element('strong',v),element('span',label));stats.append(e);}root.append(stats);
+function renderProfile(){if($('identity-advanced'))$('identity-advanced').open=true;const p=state.profile,root=$('stylecontent');root.replaceChildren();if(p.songs<2){root.append(element('h3','One song: local findings, not an artist signature'),element('p','Study this song now. Add different songs by the same singer to compare recurring decisions.','muted'));const study=element('button','Study this song','primary');study.onclick=()=>tab('study');root.append(study);}const stats=element('div',undefined,'statgrid');for(const [v,label] of [[p.songs,`songs / ${p.recordings} recordings`],[p.phrases,'rest-delimited phrases'],[p.notes,'note events']]){const e=element('div',undefined,'stat');e.append(element('strong',v),element('span',label));stats.append(e);}root.append(stats);
   const intervals=element('div',undefined,'card');intervals.append(element('h3','Measured property · within-phrase interval distribution'),element('p','Recordings are averaged within each song; songs contribute equal weight. Transposition is normalized through relative intervals.','muted'));distribution(intervals,p.interval_weights);root.append(intervals);
   for(const c of p.conclusions){const card=element('div',undefined,'card');card.append(element('span','MEASURED MUSICAL PROPERTY','eyebrow'),element('h3',c.description),element('p',`${(c.equal_song_mean*100).toFixed(1)}% · ${c.support_songs} songs · ${c.support_recordings} recordings · ${c.support_notes} notes`));
     card.append(element('p',c.song_bootstrap_95_interval?`Song bootstrap interval: ${c.song_bootstrap_95_interval.map(v=>(v*100).toFixed(1)+'%').join(' – ')}`:'Too few recordings for a bootstrap interval.','muted'));
@@ -253,10 +254,11 @@ pianoEditor=new window.MelodyEditor({state,$,api,status,run,renderNotes,referenc
 recordingLibrary=new window.RecordingLibrary({state,$,api,status,run,load,openReference,tab});
 learning=new window.MelodyLearning({state,$,api,status,run,load,tab,player:()=>pianoEditor.audition,editor:()=>pianoEditor});
 const musicalWorkspace=new window.MusicalWorkspace({$,api,run,state,load,status,learning,player:()=>pianoEditor.audition});
+identityWorkspace=new window.ArtistIdentity({state,$,api,run,learning,player:()=>pianoEditor.audition});
 const importQueue=new window.ImportQueue({$,api,run,refresh,load,state,status,
   isDirty:()=>pianoEditor.dirty||learning?.dirty,
   onAttempt:async id=>{if(state.exercise){const feedback=await api('attempt',{id,exercise:state.exercise});$('feedback').textContent=JSON.stringify(feedback,null,2);tab('compose');status('Attempt transcribed. Review its notes before interpreting constraint feedback.');}}});
 tab('study');
-document.addEventListener('keydown',event=>{if(event.code!=='Space'||event.defaultPrevented||event.repeat||event.target.closest('input,textarea,select,[contenteditable=true],dialog'))return;event.preventDefault();run(()=>document.body.dataset.workspace==='compose'?learning.playIdea():document.body.dataset.workspace==='study'?learning.playStudy():pianoEditor.audition.full());});
+document.addEventListener('keydown',event=>{if(event.code!=='Space'||event.defaultPrevented||event.repeat||event.target.closest('input,textarea,select,[contenteditable=true],dialog'))return;event.preventDefault();run(()=>document.body.dataset.workspace==='compose'?learning.playIdea():document.body.dataset.workspace==='study'?learning.playStudy():document.body.dataset.workspace==='style'&&identityWorkspace?.active?identityWorkspace.play(identityWorkspace.active):pianoEditor.audition.full());});
 window.addEventListener('beforeunload',event=>{if(pianoEditor.dirty||learning?.dirty||musicalWorkspace.sectionDirty||musicalWorkspace.gridDirty){event.preventDefault();event.returnValue='';}});
 run(async()=>{await refresh();const params=launchParams,id=params.get('analysis'),ref=params.get('reference');if(id&&state.library.some(r=>r.id===id)){await load(id);if(ref){enterReference(await api('reference?reference_id='+encodeURIComponent(ref)));tab('review');}else if(params.get('workspace')==='review')tab('review');}if(params.get('idea'))await learning.loadIdea(params.get('idea'));});
