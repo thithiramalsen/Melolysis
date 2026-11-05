@@ -48,3 +48,15 @@ aside{min-height:0}.song-import{font-size:11px;margin:2px 0;padding:5px}.song-im
 .idea-feedback [data-met=unmet]{border-color:#eab774;color:#f1ca91}#idea-roll[data-constraints=unmet]{border-color:#eab774}#idea-roll[data-constraints=met]{border-color:#badc86}#idea-live-state{font-size:10px;color:#c2dba6}
 
 .context-tools{display:flex;flex-wrap:wrap;gap:5px;align-items:center}.context-tools input[type=number]{width:90px}.context-tools label{display:inline-flex;margin:3px}.context-tools button{padding:4px 7px;font-size:11px}#musical-workspace{max-height:260px;overflow:auto;padding:5px}#section-track{height:29px;position:relative;background:#13272d;margin:5px 0}.section-region{position:absolute;height:27px;background:#426f77;border:1px solid #a8d99b;overflow:hidden;font-size:10px;cursor:pointer}.section-edge{position:absolute;top:0;bottom:0;width:7px;background:#d2e995;cursor:ew-resize}.section-edge.start{left:0}.section-edge.end{right:0}#rhythm-evidence{max-height:130px;overflow:auto}#beat-count{font-size:22px;color:#d2e995}#section-list input{max-width:140px}#study-workspace{overflow-y:auto}.study-layout{min-height:330px}#study-workspace>.context-tools{flex-shrink:0;font-size:10px}#study-workspace>.context-tools label{font-size:10px}#study-workspace>.context-tools select{padding:3px}#musical-workspace{flex-shrink:0}
+
+#study-ruler{height:35px;flex:0 0 35px;position:relative;touch-action:none;cursor:ew-resize;background:#25343c;border:1px solid #64818b;border-radius:4px;z-index:2;user-select:none}
+#study-ruler-ticks{height:30px;width:100%;background:transparent;border:0;pointer-events:none}
+#study-playhead{position:absolute;top:0;bottom:0;width:16px;margin-left:-8px;cursor:ew-resize;touch-action:none;border-bottom:9px solid #ffe39a;z-index:2}
+#study-playhead:after{content:'';position:absolute;left:7px;top:0;bottom:-9px;width:2px;background:#ffe39a}
+#study-playhead-time{position:absolute;left:10px;top:15px;white-space:nowrap;background:#25343c;color:#ffe39a;font:10px monospace;padding:1px 3px;pointer-events:none}
+#study-playhead:focus-visible{outline:2px solid #88d5e6}.ruler-hint{position:absolute;right:5px;top:2px;font-size:8px;background:#25343c;color:#c0d1d5;pointer-events:none}
+#study-ruler.scrubbing{border-color:#ffe39a}#passage-overview{cursor:crosshair}#song-overview{cursor:crosshair}
+
+#study-ruler{position:sticky;top:0;z-index:6}#study-playhead[aria-valuenow]{max-width:16px}
+
+#study-lanes{position:sticky;top:0;z-index:6;background:#111e22;flex:0 0 auto;padding-bottom:3px}#study-ruler{position:relative;top:auto}#study-playhead-time{max-width:110px}#study-playhead.near-end #study-playhead-time{left:auto;right:10px}

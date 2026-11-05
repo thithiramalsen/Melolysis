@@ -4,7 +4,7 @@ Implemented increment, 2026-11-05. Open the updated server at http://127.0.0.1:8
 
 ## Study one recording
 
-1. Open a song. In **Waveform gesture**, choose Select passage or Seek only. Select mode retains click-to-seek and drag-to-select; Seek only never changes the passage. The roll's top ruler always seeks.
+1. Open a song. Use the permanently available timeline ruler to click-seek or drag the yellow playhead. Drag in the separate waveform lane to select a passage; its edge handles resize the passage. Seeking never changes the selected passage. No gesture-mode dropdown is required.
 2. Expand **Sections & beat alignment**. Select a passage, choose its type/name and click **Label selected passage**. Drag the yellow section edges or edit the precise boundary fields. Sections may have gaps but cannot overlap. Repeated choruses have distinct IDs. Rename, remove or change navigation order, then **Save sections**. Undo/redo applies to section edits; saves append independent revisions.
 3. Use **Open** or **Loop** for a section. Analyze this melody uses the selected region. Section labels never change model notes or transcription references.
 4. Use Time/Pitch zoom buttons, Ctrl+wheel for time, Alt+wheel for pitch, Shift+wheel for time pan, and middle drag to pan. **Fit excerpt** and **Fit song** change the roll viewport without changing the selected passage. The entire-song overview remains a fixed navigation reference.
@@ -13,7 +13,7 @@ Implemented increment, 2026-11-05. Open the updated server at http://127.0.0.1:8
 
 Expand Beat alignment. Enter BPM, meter and the pulse unit (quarter, eighth or dotted quarter). Tap tempo estimates from the median recent tap interval; a long pause resets tapping. Filename tempo is never automatically accepted.
 
-Play the original vocal with **Metronome** enabled. Volume controls the separate click bus. Downbeats use a stronger, higher-pitched click. The visible count follows the denominator beats in the chosen meter (4/4 counts 1–4; 6/8 counts 1–6). **Beat 1 at playhead**, +/-10 ms, the origin field, or the waveform's Move beat grid gesture adjust the grid, never the recording. Count in one bar plays a metronome-only lead-in before the passage. Stop cancels count-in.
+Play the original vocal with **Metronome** enabled. Volume controls the separate click bus. Downbeats use a stronger, higher-pitched click. The visible count follows the denominator beats in the chosen meter (4/4 counts 1–4; 6/8 counts 1–6). **Beat 1 at playhead**, +/-10 ms, the origin field, or Alt-drag in the waveform lane adjust the grid, never the recording. Count in one bar plays a metronome-only lead-in before the passage. Stop cancels count-in.
 
 Confirm only after listening, then save. Confirmation covers the selected passage at save time; it does not attest the transcription. Editing grid parameters clears the checkbox. Analyze uses the **saved** grid, whereas live overlay/clicks preview unsaved controls. Save before interpreting updated measurements. Analysis outside the confirmed coverage remains provisional.
 
