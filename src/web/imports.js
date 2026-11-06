@@ -73,7 +73,7 @@ window.ImportQueue=class ImportQueue {
         row.append(progress);
       }
       const button=(label,action)=>{const b=document.createElement('button');b.textContent=label;b.onclick=()=>this.run(action);row.append(b);};
-      if(job.status==='complete')button('Open song',()=>this.load(job.analysis_id));
+      if(job.status==='complete')button('Open song',async()=>{if(await this.load(job.analysis_id)!==false)document.getElementById('upload-manager')?.close();});
       if(['failed','interrupted'].includes(job.status)&&job.request)button('Retry processing',async()=>{
         const next=await this.api('import-start',job.request);this.dismissed.add(job.id);this.jobs=[next,...this.jobs.filter(j=>j.id!==next.id)];this.render();await this.poll();
       });

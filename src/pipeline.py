@@ -124,7 +124,7 @@ def analyze_file(path, output_root="outputs", config=AnalysisConfig(), metadata=
     return report
 
 
-def export_notes(notes, csv_path=None, midi_path=None, tempo=120):
+def export_notes(notes, csv_path=None, midi_path=None, tempo=120, meter=None):
     if csv_path:
         Path(csv_path).parent.mkdir(parents=True, exist_ok=True)
         with open(csv_path, "w", newline="", encoding="utf-8") as stream:
@@ -135,6 +135,8 @@ def export_notes(notes, csv_path=None, midi_path=None, tempo=120):
     if midi_path:
         import pretty_midi
         midi = pretty_midi.PrettyMIDI(initial_tempo=tempo)
+        if meter is not None:
+            midi.time_signature_changes.append(pretty_midi.TimeSignature(meter[0],meter[1],0))
         inst = pretty_midi.Instrument(program=0, name="Melody reference")
         inst.notes = [pretty_midi.Note(velocity=85, pitch=int(round(n.pitch)), start=n.start, end=n.end) for n in notes]
         midi.instruments.append(inst)

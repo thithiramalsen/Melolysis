@@ -1,6 +1,10 @@
 # Melolysis
 
 Learn a singer's melodic decisions and use the principles to make your own music.
+For long songs, see the [linked overview/detail timeline and library guide](docs/NAVIGATION_WORKSPACE.md).
+Use [Song / artist associations](docs/CATALOG_IDENTITY.md) in the recording library
+to confirm artists, musical works and takes without rewriting original reports.
+Unresolved identities stay explicit; model variants are one source recording.
 The primary workflow is **Study song → understand a technique → create your own
 melody**. Start with one recording: choose a phrase, hear its vocal and pitch
 contour, analyze the actual note events, then choose **Try this technique**. Draw
@@ -9,6 +13,9 @@ reference, save an idea and export the edited MIDI. Singing/recording is optiona
 There is no voice cloning or generated singing.
 
 The default workspace is song study. **Artist patterns** compares selected songs;
+its [melodic relationships workspace](docs/MELODIC_IDENTITY_USAGE.md) now compares
+two recordings with explicit note correspondences, original-audio A/B and a linked
+original-motif exercise. Legacy profile statistics remain under Advanced.
 **Transcription / research** retains the full correction, reference and evaluation
 workflows. Seed/density/MIDI-limit generation controls are under Advanced in the
 composition workspace. See the [learning journey and validation](docs/LEARNING_EXPERIENCE.md)
@@ -18,6 +25,10 @@ and [product gap audit](docs/PRODUCT_GAP_AUDIT.md).
 pause and resume in each workspace; drag a passage with live timestamps/handles,
 select one evidence-backed technique, then experiment with original notes and
 receive live structural feedback.
+
+[Sections and manual beat alignment](docs/SECTION_BEAT_USAGE.md): label timed sections, align a vocal to an audible metronome, inspect saved-grid timing, compare section occurrences and carry a timing principle into an original idea. This is a fixed-tempo increment; the guide lists remaining plan work.
+
+[Section editing guide](docs/SECTION_EDITING.md): unified two-level Study timeline, fresh type-based names, explicit analytical overlaps, shared-boundary editing, revision-safe undo/redo and comparison-layer policy.
 
 This overhaul fixes the original loss of rests, frame-based note fragmentation and
 missing timestamps. Phase 2 measured actual pretrained GAME Small and TorchCREPE

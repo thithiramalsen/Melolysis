@@ -17,12 +17,12 @@ test('song and passage transport pause/resume exact source position, seek and st
   await info.attach('resumable-vocal',{body:JSON.stringify({bounds,paused,resumed,song}),contentType:'application/json'});
 });
 
-test('live waveform range, precise handles, snapping and clear selection',async({page})=>{
+test('live waveform range, precise handles, snapping and clear selection',async({page})=>{await page.locator('#study-fit-song').click();await page.locator('#song-overview').scrollIntoViewIfNeeded();
   const box=await page.locator('#song-overview').boundingBox(),duration=await page.evaluate(()=>state.report.audio.duration),old=await page.evaluate(()=>learning.selection);
   expect(await page.locator('#song-overview').evaluate(e=>getComputedStyle(e).cursor)).toBe('crosshair');await page.mouse.move(box.x+box.width*.1,box.y+25);await page.mouse.down();await page.mouse.move(box.x+box.width*.6,box.y+25,{steps:5});
   const preview=await page.evaluate(()=>learning.rangePreview);expect(preview[0]).toBeCloseTo(duration*.1,1);expect(preview[1]).toBeCloseTo(duration*.6,1);expect(await page.evaluate(()=>learning.selection)).toEqual(old);await expect(page.locator('#study-range-label')).toContainText('selecting');expect(await page.locator('#passage-selection').evaluate(e=>parseFloat(e.style.width))).toBeGreaterThan(45);await page.mouse.up();expect(await page.evaluate(()=>learning.selection)).toEqual(preview);
   const handle=page.locator('.passage-handle.start');await handle.focus();await page.keyboard.press('ArrowRight');expect((await page.evaluate(()=>learning.selection))[0]).toBeCloseTo(preview[0]+.01,6);
-  await page.locator('#passage-snap').check();const target=await page.evaluate(()=>state.report.notes[0].start),x=box.x+(target+.04)/duration*box.width;await page.mouse.move(x,box.y+35);await page.mouse.down();await page.mouse.move(box.x+box.width*.8,box.y+35,{steps:5});await page.mouse.up();expect((await page.evaluate(()=>learning.selection))[0]).toBeCloseTo(target,6);
+  await page.locator('#passage-snap').check();await page.locator('#song-overview').scrollIntoViewIfNeeded();const fresh=await page.locator('#song-overview').boundingBox(),target=await page.evaluate(()=>state.report.notes[0].start),x=fresh.x+(target+.04)/duration*fresh.width;await page.mouse.move(x,fresh.y+35);await page.mouse.down();await page.mouse.move(fresh.x+fresh.width*.8,fresh.y+35,{steps:5});await page.mouse.up();expect((await page.evaluate(()=>learning.selection))[0]).toBeCloseTo(target,6);
   await page.locator('#passage-clear').click();await expect(page.locator('#study-range-label')).toContainText('Entire song');expect(await page.evaluate(()=>learning.selection)).toEqual([0,duration]);
 });
 

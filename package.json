@@ -1,6 +1,11 @@
 {
-  "name":"melolysis-editor-tests",
-  "private":true,
-  "scripts":{"test:editor":"node --test tests/editor_core.test.cjs","test:browser":"node tools/run_browser_tests.cjs"},
-  "devDependencies":{"@playwright/test":"1.64.1"}
+  "name": "melolysis-editor-tests",
+  "private": true,
+  "scripts": {
+    "test:editor": "node --test tests/editor_core.test.cjs tests/section_edits.test.cjs",
+    "test:browser": "node tools/run_browser_tests.cjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
+  }
 }

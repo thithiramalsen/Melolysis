@@ -1,0 +1,67 @@
+{
+  "verified_at": "2026-11-06T17:15:19.664064+00:00",
+  "url": "http://127.0.0.1:8784/?workspace=study",
+  "python": {
+    "passed": 114,
+    "failed": 0
+  },
+  "javascript": {
+    "passed": 19,
+    "failed": 0
+  },
+  "browser": {
+    "passed": 120,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "full_suite": 118,
+    "long_fixture": 2,
+    "viewports": [
+      "1366x768",
+      "1920x1080"
+    ],
+    "full_duration_ms": 219937.492,
+    "long_duration_ms": 28882.007999999998
+  },
+  "actual_recording": [
+    {
+      "width": 1366,
+      "duration": 232.04678004535148,
+      "fit": "25-second passage; no 20\u201330-second saved section available, no annotation invented",
+      "section_count": 0,
+      "vocal_rms": 0.13674947435498822,
+      "selection_preserved": true,
+      "source_sections_unchanged": true,
+      "viewport": [
+        46.26586350275251,
+        66.7341294265514
+      ],
+      "errors": []
+    },
+    {
+      "width": 1920,
+      "duration": 232.04678004535148,
+      "fit": "25-second passage; no 20\u201330-second saved section available, no annotation invented",
+      "section_count": 0,
+      "vocal_rms": 0.1152306787943962,
+      "selection_preserved": true,
+      "source_sections_unchanged": true,
+      "viewport": [
+        46.26586574155037,
+        66.73413735786235
+      ],
+      "errors": []
+    }
+  ],
+  "protected_files": 825,
+  "protected_changes": 0,
+  "protected_additions": 0,
+  "scope": "Section annotation, typed overlaps and unified Study timeline; no M1, estimation, transcription, generation or frozen evaluation algorithm changes",
+  "limitations": [
+    "Actual recording has no saved 20\u201330-second section; read-only acceptance fits a selected 25-second passage.",
+    "Structural and analytical layers only; nested/shared multiple conflicts need explicit analytical overlap or confirmed trim.",
+    "Audio checks measure signal output in muted headless Chromium, not human perceptual quality.",
+    "No new transcription accuracy claim."
+  ],
+  "earlier_gate_note": "Interim runs exposed obsolete viewport/sidebar selectors, a single-frame rest-sampling test race, restored-section active-target loss and an asynchronous bookmark assertion. These were corrected and targeted tests passed before the final gate. Final results are recorded here."
+}

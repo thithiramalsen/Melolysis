@@ -1,0 +1,614 @@
+{
+  "scope": "M0 catalog and snapshot integrity",
+  "python": {
+    "passed": 110,
+    "failed": 0
+  },
+  "javascript": {
+    "passed": 11,
+    "failed": 0
+  },
+  "browser": {
+    "stats": {
+      "startTime": "2026-11-05T16:08:44.196Z",
+      "duration": 205197.846,
+      "expected": 114,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "checks": [
+      {
+        "test": "catalog reconciliation previews, groups takes, pins input and preserves editor/audio",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "catalog reconciliation previews, groups takes, pins input and preserves editor/audio",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "confirmed timing finding opens a blank independent melody with meter",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "same-section comparisons deduplicate model variants and show source-backed rolls",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "confirmed timing finding opens a blank independent melody with meter",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "same-section comparisons deduplicate model variants and show source-backed rolls",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "sections save, reload and remain independent of note/reference editions",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "beat alignment persists and actual vocal/click buses are audible",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "dedicated ruler preserves selection and zoom changes view without note changes",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "metronome downbeat has a measurable stronger accent and independent mute",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "count-in cancellation cannot start orphan vocal playback",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "sections save, reload and remain independent of note/reference editions",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "beat alignment persists and actual vocal/click buses are audible",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "dedicated ruler preserves selection and zoom changes view without note changes",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "metronome downbeat has a measurable stronger accent and independent mute",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "count-in cancellation cannot start orphan vocal playback",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "draft, full source audio, bounded layout and distinct prediction layers",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "direct move commits only on release, preserves fractional pitch and correct note identity",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "resize clamps neighbours and source bounds, with undo/redo",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "split, compatible merge, delete, drawing and undo/redo use the same edit history",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "multi-selection moves two notes and region uncertainty has undo/redo",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "pitch keyboard stays aligned after time/pitch zoom and middle pan",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "saved reference edits survive refresh; revision restore appends an unreviewed revision",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "working corrections and reference histories stay independent",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "review queue uses measurable disagreement, never verifies references automatically",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "piano keys generate measured A4 and A sharp frequencies without starting vocal audio",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "vocal segment audition uses edited source boundaries with preroll/postroll and loop",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "Both mode has one vocal source, simultaneous audible buses and independent volumes",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "slow playback preserves source timestamps and requested pitch, with synchronized playhead",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "Keyboard stays piano in Vocal override and Space plays complete original audio in Piano mode",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "Escape cancels a drag without symbolic changes or an extra history step",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "A/B plays original vocal then reference, with no vocal pitch-shift claim",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "working revision restore appends a correction and review attestation clears on note edits",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "range tool and missing-note queue windows remain source-aligned without inventing labels",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "review suggestions are confined to a short reference excerpt",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "raw predicted notes can be auditioned without populating a blank human reference",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "Auto routes annotation clicks to original vocal and every keyboard override to clean piano",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "Audition on click can be disabled; manual note overrides preserve their separate routes",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "vertical drag previews proposed piano pitch before commit and supports undo",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "reference framing fits excerpt and pitch events; mode-specific deliberate views survive switching",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "collapsed resizable inspector and maximize preserve notes, viewport and continuous playback",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "unique-recording bulk scope, filtered actions and tri-state groups never discard edits or stop playback",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "model variants and references remain discoverable under their source; search and model filters work",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "Vocadito source policy requires explicit UI and API opt-in even when all recordings are selected",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "changing audition mode and corpus selection does not interrupt whole-song playback",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "draft, full source audio, bounded layout and distinct prediction layers",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "direct move commits only on release, preserves fractional pitch and correct note identity",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "resize clamps neighbours and source bounds, with undo/redo",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "split, compatible merge, delete, drawing and undo/redo use the same edit history",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "multi-selection moves two notes and region uncertainty has undo/redo",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "pitch keyboard stays aligned after time/pitch zoom and middle pan",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "saved reference edits survive refresh; revision restore appends an unreviewed revision",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "working corrections and reference histories stay independent",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "review queue uses measurable disagreement, never verifies references automatically",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "piano keys generate measured A4 and A sharp frequencies without starting vocal audio",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "vocal segment audition uses edited source boundaries with preroll/postroll and loop",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "Both mode has one vocal source, simultaneous audible buses and independent volumes",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "slow playback preserves source timestamps and requested pitch, with synchronized playhead",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "Keyboard stays piano in Vocal override and Space plays complete original audio in Piano mode",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "Escape cancels a drag without symbolic changes or an extra history step",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "A/B plays original vocal then reference, with no vocal pitch-shift claim",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "working revision restore appends a correction and review attestation clears on note edits",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "range tool and missing-note queue windows remain source-aligned without inventing labels",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "review suggestions are confined to a short reference excerpt",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "raw predicted notes can be auditioned without populating a blank human reference",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "Auto routes annotation clicks to original vocal and every keyboard override to clean piano",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "Audition on click can be disabled; manual note overrides preserve their separate routes",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "vertical drag previews proposed piano pitch before commit and supports undo",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "reference framing fits excerpt and pitch events; mode-specific deliberate views survive switching",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "collapsed resizable inspector and maximize preserve notes, viewport and continuous playback",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "unique-recording bulk scope, filtered actions and tri-state groups never discard edits or stop playback",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "model variants and references remain discoverable under their source; search and model filters work",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "Vocadito source policy requires explicit UI and API opt-in even when all recordings are selected",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "changing audition mode and corpus selection does not interrupt whole-song playback",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "two sources: correspondence, original A/B signals, pause/resume and independent idea",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "two sources: correspondence, original A/B signals, pause/resume and independent idea",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "real upload and transcription become ready without refresh, and survive reload",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "processing feedback survives refresh; completion preserves unsaved edits",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "failed processing displays exact error and retries without a second upload",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "real upload and transcription become ready without refresh, and survive reload",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "processing feedback survives refresh; completion preserves unsaved edits",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "failed processing displays exact error and retries without a second upload",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "primary empty state and one-song entry do not require corpus or annotation",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "complete song \u2192 evidenced technique \u2192 drawn, audible, edited, saved and exported idea journey",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "waveform and grid passage selection retain source seconds and handle no-note regions",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "source-backed technique bookmarks persist and do not turn the source into an idea",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "composition direct move, resize, delete and undo/redo preserve independent source data",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "one-song artist profile explains scope and retains immediate song learning",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "two source phrases have aligned contour views and actual original-vocal A/B playback",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "primary empty state and one-song entry do not require corpus or annotation",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "complete song \u2192 evidenced technique \u2192 drawn, audible, edited, saved and exported idea journey",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "waveform and grid passage selection retain source seconds and handle no-note regions",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "source-backed technique bookmarks persist and do not turn the source into an idea",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "composition direct move, resize, delete and undo/redo preserve independent source data",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "one-song artist profile explains scope and retains immediate song learning",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "two source phrases have aligned contour views and actual original-vocal A/B playback",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "five-second selection survives real paused/playing playhead drags, pause/resume and zoom",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "ruler clicks, handle resizing and vocal-note clicks stay in their own lanes",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "pointer cancellation releases scrub without starting playback",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "five-second selection survives real paused/playing playhead drags, pause/resume and zoom",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "ruler clicks, handle resizing and vocal-note clicks stay in their own lanes",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "pointer cancellation releases scrub without starting playback",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "song and passage transport pause/resume exact source position, seek and stop reset with audible media",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "live waveform range, precise handles, snapping and clear selection",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "compact finding explorer keeps passage, highlights actual evidence and visualizes durations",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "composed piano pauses without sound, resumes mid-note, seeks and loops without changing notes",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "note auditions retain main position, tab switching silences audio and text entry ignores Space",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "own-note experiments update live structural checks and source return retains the idea",
+        "project": "1366x768",
+        "status": "expected"
+      },
+      {
+        "test": "song and passage transport pause/resume exact source position, seek and stop reset with audible media",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "live waveform range, precise handles, snapping and clear selection",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "compact finding explorer keeps passage, highlights actual evidence and visualizes durations",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "composed piano pauses without sound, resumes mid-note, seeks and loops without changing notes",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "note auditions retain main position, tab switching silences audio and text entry ignores Space",
+        "project": "1920x1080",
+        "status": "expected"
+      },
+      {
+        "test": "own-note experiments update live structural checks and source return retains the idea",
+        "project": "1920x1080",
+        "status": "expected"
+      }
+    ]
+  },
+  "catalog_audio": [
+    {
+      "project": "1366x768",
+      "rms": 0.12199618431469902,
+      "snapshot": "ac3ab68548cffea38e9c54ddd460f336bc9fdf8cdc4524e16d0f72c0ef719829"
+    },
+    {
+      "project": "1920x1080",
+      "rms": 0.15827236040250875,
+      "snapshot": "869242717131c08fca6e0aeb5eb63a8346d4168b2481431a694c0a0584e2c38c"
+    }
+  ],
+  "integrity": {
+    "protected_files": 809,
+    "changed_files": []
+  },
+  "url": "http://127.0.0.1:8783/",
+  "limitations": [
+    "Headless signal measurements do not verify physical speaker audibility or musical relevance.",
+    "Personal identities and human annotations were not assigned or attested."
+  ]
+}

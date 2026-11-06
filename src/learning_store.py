@@ -4,10 +4,11 @@ from datetime import datetime,timezone
 import json
 import re
 from uuid import uuid4
-from .learning import passage_study,idea_config,idea_notes,assess_idea,develop_idea
+from .learning import evidence,passage_study,idea_config,idea_notes,assess_idea,develop_idea
 from .pipeline import export_notes
-from .storage import write_json
+from .storage import write_json, key_for
 from .schema import notes_from_dicts
+from .musical_context import rhythm
 
 ACTIONS={'melody-study','melody-study-load','technique-list','technique-save','idea-list','idea-get','idea-save','idea-check','idea-develop','idea-attempt'}
 
@@ -27,6 +28,7 @@ class LearningStore:
         study=self.study(data['study_id']);finding=next((f for f in study['findings'] if f['id']==data.get('finding_id')),None)
         if not finding or not finding['technique']:raise ValueError('Choose an evidenced technique from a saved study.')
         return {'study_id':study['id'],'analysis_id':study['analysis_id'],'source':study['source'],
+            'identity_evidence':study.get('identity_evidence'),
             'finding':finding,'source_notes':study['notes']}
 
     def dispatch(self,action,data):
@@ -49,6 +51,15 @@ class LearningStore:
         if action=='melody-study':
             _,report=self.workspace.get_report(data['id'])
             result=passage_study(report,data['start'],data['end'],data.get('context'))
+            source=report['audio']['content_sha256'];grid=self.workspace.musical_context.get(source,'grid');sections=self.workspace.musical_context.get(source,'sections')
+            result['musical_context']={'grid':grid,'sections':sections};result['rhythm']=rhythm(report['notes'],grid['value'],data['start'],data['end'])
+            result['id']=key_for([result['id'],grid['revision'],sections['revision']])
+            if result['rhythm']['status']=='confirmed_grid_observations':
+                candidates=[e for e in result['rhythm']['events'] if abs(e['onset_beats']%1-.5)<.06 and e['confidence']>=.35]
+                if candidates:
+                    event=candidates[0];ns=[n for n in notes_from_dicts(report['notes']) if n.id==event['id']]
+                    result['findings'].append({'id':key_for([result['id'],'offbeat',event['id']]),'kind':'offbeat','title':'An entry between quarter-note beats','text':f"The pitched onset at {event['start']:.3f}s falls at quarter-beat {event['onset_beats']:.3f} on your confirmed grid. This is a local timing observation, not proof of intentional syncopation.",'category':'measured_property','conditions':result['rhythm']['warning'],'evidence':evidence(ns),'technique':{'type':'offbeat','title':'Try an original offbeat entry','instruction':'Draw your own melody. Put one entry halfway between quarter-note beats, then compare a version starting on the beat.','constraint':{'offbeat':.5}}})
+
             result['analysis_id']=data['id'];path=self.path('studies',result['id']).with_suffix('.json')
             if not path.exists():write_json(path,result)
             return result
@@ -87,7 +98,7 @@ class LearningStore:
                 'timebase':'quarter_note_beats; source timestamps remain in linked study','link':link,'assessment':assessment}
             path=directory/'revisions'/(revision+'.json');write_json(path,value)
             seconds=[replace(n,start=n.start*60/config['tempo'],end=n.end*60/config['tempo']) for n in notes]
-            export_notes(seconds,midi_path=path.with_suffix('.mid'),csv_path=path.with_suffix('.csv'),tempo=config['tempo'])
+            export_notes(seconds,midi_path=path.with_suffix('.mid'),csv_path=path.with_suffix('.csv'),tempo=config['tempo'],meter=config['time_signature'])
             write_json(directory/'current.json',value)
             return value
         raise ValueError('Unknown learning action')

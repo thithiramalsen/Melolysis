@@ -25,6 +25,8 @@ from .real_metrics import score_reference
 from .library import recording_groups,validate_corpus_sources
 from .learning_store import LearningStore,ACTIONS as LEARNING_ACTIONS
 from .import_jobs import ImportJobs
+from .musical_context import MusicalContext, rhythm, section_projection, section_range_summary
+from .catalog import IdentityCatalog
 
 log = logging.getLogger(__name__)
 STATIC = Path(__file__).parent / "web"
@@ -35,6 +37,8 @@ class Workspace:
         self.root = Path(root).resolve()
         self.root.mkdir(parents=True, exist_ok=True)
         self.lock = RLock()
+        self.musical_context = MusicalContext(self.root)
+        self.identities = IdentityCatalog(self)
         self.references = ReferenceStore(self.root/'references')
         self.import_jobs = ImportJobs(self.root, self.analyze_upload)
 
@@ -68,10 +72,10 @@ class Workspace:
         report = load_report(path)
         correction = latest_correction(self.root/"corrections", report["audio"]["content_sha256"])
         if correction and correction["revision"] != report["provenance"].get("correction_revision"):
-            self.update_active(path, report, correction)
+            self.update_active(path, report, correction, persist=False)
         return path, report
 
-    def update_active(self, path, report, correction):
+    def update_active(self, path, report, correction, persist=True):
         notes = assign_phrases(attach_frames(notes_from_dicts(correction["notes"]), PitchTrack(**report["raw_pitch"])),
             report["provenance"]["config"]["phrase_rest_seconds"])
         if any(n.end > report["audio"]["duration"]+.001 for n in notes):
@@ -83,14 +87,91 @@ class Workspace:
         report["motifs"] = discover_motifs(notes)
         report["provenance"]["correction_revision"] = correction["revision"]
         report["provenance"]["correction_base_prediction"] = correction["base_prediction"]
-        export_notes(notes, path.parent/"notes.csv", path.parent/"notes.mid")
-        write_json(path, report)
+        if persist:
+            export_notes(notes, path.parent/"notes.csv", path.parent/"notes.mid")
+            write_json(path, report)
 
     def dispatch(self, action, data):
+        if action in {"catalog-get", "catalog-reconcile", "corpus-save", "corpus-get"}:
+            with self.lock:
+                if action == "catalog-get": return self.identities.view()
+                if action == "catalog-reconcile": return self.identities.reconcile(data)
+                if action == "corpus-save": return self.identities.snapshot(data)
+                return self.identities.load_snapshot(data["id"])
+        if action == 'identity-compare':
+            from .melodic_identity import compare
+            # Only snapshot under the workspace lock; pair alignment must not block
+            # import status, playback requests or correction saves.
+            with self.lock:
+                sides=[]
+                for identifier in (data['a'],data['b']):
+                    _,r=self.get_report(identifier)
+                    validate_corpus_sources([r],self.references.list(),False,
+                        [json.loads(p.read_text(encoding='utf-8')) for p in self.catalog().values()])
+                    source=r['audio']['content_sha256']
+                    sides.append(json.loads(json.dumps({'analysis_id':identifier,'source_hash':source,
+                        'song':r['metadata'].get('song') or source,'artist':r['metadata'].get('artist',''),
+                        'prediction_id':r['prediction_id'],'correction_revision':r['provenance'].get('correction_revision'),
+                        'note_fingerprint':key_for(r['notes']),'notes':r['notes'],
+                        'sections':self.musical_context.get(source,'sections'),'grid':self.musical_context.get(source,'grid')})))
+            result=compare(*sides)
+            write_json(self.root/'melodic-identity'/'runs'/(result['id']+'.json'),result)
+            return result
+        if action == 'identity-study':
+            from .learning import passage_study, evidence
+            identifier=data['run_id']
+            if not re.fullmatch('[a-f0-9]{64}',identifier):raise ValueError('Invalid identity run')
+            run=json.loads((self.root/'melodic-identity'/'runs'/(identifier+'.json')).read_text(encoding='utf-8'))
+            m=next(m for m in run['matches'] if m['id']==data['match_id'])
+            saved=self.root/'learning'/'studies'/(key_for([identifier,m['id'],'study'])+'.json')
+            if saved.exists():return json.loads(saved.read_text(encoding='utf-8'))
+            side=run['sources'][0];_,report=self.get_report(side['analysis_id'])
+            report=json.loads(json.dumps(report));report['notes']=side['notes']
+            report['metadata']={'song':side['song'],'artist':side['artist']};report['context']={}
+            report['prediction_id']=side['prediction_id'];report['provenance']['correction_revision']=side['correction_revision']
+            study=passage_study(report,m['a']['start'],m['a']['end'])
+            finding={'id':key_for([identifier,m['id'],'learn']),'kind':'motif','title':'Develop a related gesture with your own notes',
+                'text':f"{m['matched_targets']} aligned targets link these recordings: "+', '.join(m['transformations'])+'.',
+                'category':'statistical_interpretation','conditions':'Local candidate; not an artist-specific signature.',
+                'evidence':evidence(notes_from_dicts(m['a']['notes'])),
+                'technique':{'type':'motif','title':'Invent a motif and vary its rhythm or ending',
+                'instruction':'Draw your own short motif, then a related answer. Change rhythm or the ending. Listen to both sources as structural examples; choose your own pitches.',
+                'constraint':{'own_motif_then_variation':True}}}
+            study['findings']=[finding];study['analysis_id']=side['analysis_id']
+            study['identity_evidence']={'run_id':identifier,'match_id':m['id'],'a':m['a'],'b':m['b']}
+            study['id']=key_for([identifier,m['id'],'study'])
+            write_json(self.root/'learning'/'studies'/(study['id']+'.json'),study)
+            return study
         if action == 'import-start':
             self.validate_upload(data)
             return self.import_jobs.submit(data)
         with self.lock:
+            if action in {'context-get','context-save'}:
+                _,r=self.get_report(data['id']);source=r['audio']['content_sha256']
+                if action=='context-save':
+                    return self.musical_context.save(source,data['kind'],data['value'],data.get('base_revision'),r['audio']['duration'])
+                return {kind:self.musical_context.get(source,kind) for kind in ('sections','grid')}
+            if action=='section-compare':
+                selected_analyses={self.get_report(i)[1]['audio']['content_sha256']:i for i in data['ids']}
+                reports=[self.get_report(i)[1] for i in data['ids']]
+                reports,scope=validate_corpus_sources(reports,self.references.list(),False)
+                if not reports:raise ValueError('Select recordings to compare in the library first.')
+                reports=self.identities.decorate(reports)
+                artist_sets=[set(r['catalog_identity']['artist_ids']) for r in reports]
+                shared_artists=set.intersection(*artist_sets) if artist_sets else set()
+                attribution='shared_catalog_artist' if shared_artists else ('unresolved_artist' if any(not a for a in artist_sets) else 'selected_cross_artist_comparison')
+                rows=[]
+                for r in reports:
+                    source=r['audio']['content_sha256'];sections=self.musical_context.get(source,'sections');grid=self.musical_context.get(source,'grid')
+                    for section in section_projection(sections['value'],data.get('layer','structure')):
+                        if section['type']!=data['type']:continue
+                        ns=[n for n in r['notes'] if section['start']<=n['start']<section['end']]
+                        rows.append({'source_hash':source,'analysis_id':selected_analyses[source],'song':r['metadata'].get('song',source),'work_id':r['catalog_identity']['work_id'],'artist_ids':r['catalog_identity']['artist_ids'],'recording_id':r['catalog_identity']['recording_id'],'section':section,'section_revision':sections['revision'],'grid_revision':grid['revision'],'grid':grid['value'],'notes':ns,'rhythm':rhythm(ns,grid['value'],section['start'],section['end'])})
+                songs={row['work_id'] or row['source_hash'] for row in rows}
+                for row in rows:
+                    ns=row['notes'];row['pitch_range']=max((n['pitch'] for n in ns),default=0)-min((n['pitch'] for n in ns),default=0)
+                mean_range=section_range_summary(rows)
+                return {'occurrences':rows,'support_songs':len(songs),'confirmed_works':len({r['work_id'] for r in rows if r['work_id']}),'support_recordings':len({r['source_hash'] for r in rows}),'section_layer':data.get('layer','structure'),'aggregation_policy':'equal work; recordings within work; overlap components and note IDs counted once','attribution':attribution,'shared_artist_ids':sorted(shared_artists),'equal_song_mean_range':mean_range,'scope':scope,'warning':('Artist identity is unresolved; these are recording-level observations. ' if attribution=='unresolved_artist' else 'Selected cross-artist comparison. ' if attribution=='selected_cross_artist_comparison' else '')+'Exploratory section comparison; this does not establish an artist signature.'}
             if action in LEARNING_ACTIONS:
                 return LearningStore(self).dispatch(action,data)
             if action=='reference-create':
@@ -149,8 +230,13 @@ class Workspace:
                 refs=self.references.list()
                 reports,scope=validate_corpus_sources(reports,refs,data.get('allow_research',False),source_context)
                 reference,reference_scope=validate_corpus_sources(reference,refs,data.get('allow_research',False),source_context)
-                profile = profile_artist(reports, data.get("artist", "Selected recordings"), reference)
+                profile = profile_artist(self.identities.decorate(reports), data.get("artist", "Selected recordings"), self.identities.decorate(reference))
                 profile['corpus_scope']=scope
+                selected_editions={self.get_report(i)[1]['audio']['content_sha256']:i for i in data['ids']}
+                snapshot=self.identities.snapshot(dict(ids=list(selected_editions.values()),
+                    catalog_revision=self.identities.current()['revision'],
+                    purpose='research' if scope['research_opt_in'] else 'artist'))
+                profile['input_snapshot_id']=snapshot['id']
                 if scope['research_opt_in'] or reference_scope['research_opt_in']:
                     profile['warnings'].append('Explicit research corpus: includes dataset recordings; do not interpret this as a single artist-specific corpus.')
                 exercises = songwriting_exercises(profile)
@@ -212,7 +298,7 @@ def make_handler(workspace):
                             'estimator':r['raw_pitch']['model'],'prediction_id':r['prediction_id'],
                             "correction_revision": r["provenance"].get("correction_revision")})
                     refs=workspace.references.list()
-                    return self.send(200, {"analyses": rows,'recordings':recording_groups(rows,refs),
+                    return self.send(200, {"analyses": rows,'recordings':workspace.identities.view()['recordings'],
                         'selection_policy':'Unique source hashes; no automatic inclusion; research datasets require explicit corpus opt-in'})
                 if parsed.path == "/api/report":
                     return self.send(200, workspace.get_report(query["id"])[1])
@@ -251,7 +337,7 @@ def make_handler(workspace):
                 files = {"/": "index.html", "/app.js": "app.js", "/style.css": "style.css",
                     '/editor-core.js':'editor-core.js','/editor.js':'editor.js','/audition.js':'audition.js','/library.js':'library.js',
                     '/learning.js':'learning.js','/learning-roll.js':'learning-roll.js','/learning.css':'learning.css',
-                    '/imports.js':'imports.js'}
+                    '/imports.js':'imports.js','/context.js':'context.js','/artist-identity.js':'artist-identity.js','/catalog.js':'catalog.js','/section-edits.js':'section-edits.js','/section-editor.js':'section-editor.js','/study-navigation.js':'study-navigation.js','/workspace-layout.js':'workspace-layout.js'}
                 if parsed.path in files:
                     path = STATIC/files[parsed.path]
                     return self.send(200, path.read_bytes(), mimetypes.guess_type(path)[0] or "text/plain")
