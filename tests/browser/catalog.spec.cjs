@@ -21,6 +21,7 @@ test('catalog reconciliation previews, groups takes, pins input and preserves ed
  await page.locator('#catalog-save').click();await expect(page.locator('#catalog-result')).toContainText('Associations saved');
  let c=await post('catalog-get',{});const artist=Object.values(c.artists).find(a=>a.name===singer).id,work=c.associations[await page.locator('#catalog-recording').inputValue()].work_id;
  const first=await page.locator('#catalog-recording').inputValue();const second=sources.find(s=>s!==first);
+ await page.locator('#catalog-recording').selectOption(second);await expect(page.locator('#catalog-artists')).toHaveValue('');await expect(page.locator('#catalog-artists option:checked')).toHaveText('Unresolved artist — choose one');
  await page.locator('#catalog-recording').selectOption(second);await page.locator('#catalog-artists').selectOption([artist]);await page.locator('#catalog-work').selectOption(work);await page.locator('#catalog-take').fill('Take 2');await page.locator('#catalog-save').click();await expect(page.locator('#catalog-result')).toContainText('1 confirmed works');
  const third=sources.find(s=>s!==first&&s!==second);await page.locator('#catalog-recording').selectOption(third);await page.locator('#catalog-artists').selectOption([artist]);await page.locator('#catalog-new-work').fill('SECOND DISTINCT WORK');await page.locator('#catalog-save').click();await expect(page.locator('#catalog-result')).toContainText('2 confirmed works');
  const preserved=await page.evaluate(()=>({id:state.id,notes:state.notes,selection:learning.selection}));expect(preserved).toEqual(initial);
@@ -29,6 +30,7 @@ test('catalog reconciliation previews, groups takes, pins input and preserves ed
  await page.screenshot({path:`.cache/m0-catalog-${info.project.name}.png`});
  await page.locator('#catalog-dialog button[value=cancel]').click();await page.locator('#study-stop').click();await page.locator('[data-tab=style]').click();await page.locator('#corpus-all').click();await expect(page.locator('#corpus-count')).toContainText('2 confirmed works');
  await page.reload();await expect(page.locator('.recording-info').filter({hasText:'CATALOG TEST SINGER'})).toHaveCount(3);
+ await page.locator('.catalog-associate').first().click();await page.locator('#catalog-recording').selectOption(second);await expect(page.locator('#catalog-artists')).toHaveValue(artist);await expect(page.locator('#catalog-work')).toHaveValue(work);await page.locator('#catalog-dialog button[value=cancel]').click();
  c=await post('catalog-get',{});const ids=c.recordings.filter(g=>g.category==='personal').map(g=>g.preferred_analysis);const snap=await post('corpus-save',{ids,catalog_revision:c.revision});expect(snap.counts.works).toBe(2);expect(snap.entries.length).toBe(3);expect(await post('corpus-get',{id:snap.id})).toEqual(snap);
  expect(errors).toEqual([]);await info.attach('catalog-audio-check',{body:JSON.stringify({rms,snapshot:snap.id}),contentType:'application/json'});
  }finally{for(const source of sources){const c=await post('catalog-get',{});await post('catalog-reconcile',{source_hash:source,base_revision:c.revision,artist_ids:[],work_id:null});}}

@@ -260,6 +260,8 @@ identityWorkspace=new window.ArtistIdentity({state,$,api,run,learning,player:()=
 const importQueue=new window.ImportQueue({$,api,run,refresh,load,state,status,
   isDirty:()=>pianoEditor.dirty||learning?.dirty,
   onAttempt:async id=>{if(state.exercise){const feedback=await api('attempt',{id,exercise:state.exercise});$('feedback').textContent=JSON.stringify(feedback,null,2);tab('compose');status('Attempt transcribed. Review its notes before interpreting constraint feedback.');}}});
+const studyNavigation=new StudyNavigation({learning,musicalWorkspace,state,$,run,status,player:()=>pianoEditor.audition});
+const workspaceLayout=new WorkspaceLayout({state,$,recordingLibrary,catalogUI,importQueue});
 tab('study');
 document.addEventListener('keydown',event=>{if(event.code!=='Space'||event.defaultPrevented||event.repeat||event.target.closest('input,textarea,select,[contenteditable=true],dialog'))return;event.preventDefault();run(()=>document.body.dataset.workspace==='compose'?learning.playIdea():document.body.dataset.workspace==='study'?learning.playStudy():document.body.dataset.workspace==='style'&&identityWorkspace?.active?identityWorkspace.play(identityWorkspace.active):pianoEditor.audition.full());});
 window.addEventListener('beforeunload',event=>{if(pianoEditor.dirty||learning?.dirty||musicalWorkspace.sectionDirty||musicalWorkspace.gridDirty){event.preventDefault();event.returnValue='';}});

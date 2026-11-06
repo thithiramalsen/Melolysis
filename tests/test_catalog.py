@@ -107,3 +107,29 @@ class CatalogTests(unittest.TestCase):
         changed=deepcopy(snap);changed['entries'][0]['notes'][0]['pitch']+=1;write_json(path,changed)
         with self.assertRaisesRegex(ValueError,'integrity check'):
             self.app.identities.load_snapshot(snap['id'])
+
+    def test_section_comparison_uses_catalog_artist_and_work_not_legacy_names(self):
+        a=self.save(self.sources[0],new_artist='Catalog singer',new_work='First')
+        artist=next(iter(a['artists']));work=next(iter(a['works']))
+        self.save(self.sources[1],artist_ids=[artist],work_id=work)
+        self.save(self.sources[2],artist_ids=[artist],new_work='Second')
+        for source in self.sources:
+            self.app.musical_context.save(source,'sections',[dict(id='chorus',type='chorus',name='Chorus',start=0,end=2)],None,3)
+        result=self.app.dispatch('section-compare',dict(ids=list(self.app.catalog()),type='chorus'))
+        self.assertEqual(result['attribution'],'shared_catalog_artist')
+        self.assertEqual(result['shared_artist_ids'],[artist])
+        self.assertEqual(result['confirmed_works'],2)
+        self.assertEqual(result['support_songs'],2)
+        self.assertEqual(result['support_recordings'],3)
+        for p,h in self.original.items():self.assertEqual(content_hash(p),h)
+
+    def test_unresolved_and_different_artists_can_compare_without_artist_claim(self):
+        ids=list(self.app.catalog())
+        result=self.app.dispatch('section-compare',dict(ids=ids,type='chorus'))
+        self.assertEqual(result['attribution'],'unresolved_artist')
+        self.assertIn('unresolved',result['warning'])
+        self.save(self.sources[0],new_artist='A')
+        self.save(self.sources[1],new_artist='B')
+        c=self.app.identities.view()
+        result=self.app.dispatch('section-compare',dict(ids=[g['preferred_analysis'] for g in c['recordings'] if g['source_hash'] in self.sources[:2]],type='chorus'))
+        self.assertEqual(result['attribution'],'selected_cross_artist_comparison')

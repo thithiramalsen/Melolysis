@@ -154,22 +154,25 @@ class Workspace:
             if action=='section-compare':
                 reports=[self.get_report(i)[1] for i in data['ids']]
                 reports,scope=validate_corpus_sources(reports,self.references.list(),False)
-                artists={r['metadata'].get('artist','').strip() for r in reports}
-                if len(artists)!=1 or not next(iter(artists),'') or next(iter(artists))=='Unspecified singer':raise ValueError('Assign the same explicit artist to the selected songs first')
+                if not reports:raise ValueError('Select recordings to compare in the library first.')
+                reports=self.identities.decorate(reports)
+                artist_sets=[set(r['catalog_identity']['artist_ids']) for r in reports]
+                shared_artists=set.intersection(*artist_sets) if artist_sets else set()
+                attribution='shared_catalog_artist' if shared_artists else ('unresolved_artist' if any(not a for a in artist_sets) else 'selected_cross_artist_comparison')
                 rows=[]
                 for r in reports:
                     source=r['audio']['content_sha256'];sections=self.musical_context.get(source,'sections');grid=self.musical_context.get(source,'grid')
                     for section in sections['value']:
                         if section['type']!=data['type']:continue
                         ns=[n for n in r['notes'] if section['start']<=n['start']<section['end']]
-                        rows.append({'source_hash':source,'analysis_id':next(i for i in data['ids'] if self.get_report(i)[1]['audio']['content_sha256']==source),'song':r['metadata'].get('song',source),'section':section,'section_revision':sections['revision'],'grid_revision':grid['revision'],'grid':grid['value'],'notes':ns,'rhythm':rhythm(ns,grid['value'],section['start'],section['end'])})
-                songs={row['song'] for row in rows}
+                        rows.append({'source_hash':source,'analysis_id':next(i for i in data['ids'] if self.get_report(i)[1]['audio']['content_sha256']==source),'song':r['metadata'].get('song',source),'work_id':r['catalog_identity']['work_id'],'artist_ids':r['catalog_identity']['artist_ids'],'recording_id':r['catalog_identity']['recording_id'],'section':section,'section_revision':sections['revision'],'grid_revision':grid['revision'],'grid':grid['value'],'notes':ns,'rhythm':rhythm(ns,grid['value'],section['start'],section['end'])})
+                songs={row['work_id'] or row['source_hash'] for row in rows}
                 per_song={}
                 for row in rows:
                     ns=row['notes'];row['pitch_range']=max((n['pitch'] for n in ns),default=0)-min((n['pitch'] for n in ns),default=0)
-                    per_song.setdefault(row['song'],[]).append(row['pitch_range'])
+                    per_song.setdefault(row['work_id'] or row['source_hash'],[]).append(row['pitch_range'])
                 mean_range=sum(sum(v)/len(v) for v in per_song.values())/len(per_song) if per_song else None
-                return {'occurrences':rows,'support_songs':len(songs),'equal_song_mean_range':mean_range,'scope':scope,'warning':'Exploratory section comparison; two songs do not establish an artist signature.'}
+                return {'occurrences':rows,'support_songs':len(songs),'confirmed_works':len({r['work_id'] for r in rows if r['work_id']}),'support_recordings':len({r['source_hash'] for r in rows}),'attribution':attribution,'shared_artist_ids':sorted(shared_artists),'equal_song_mean_range':mean_range,'scope':scope,'warning':('Artist identity is unresolved; these are recording-level observations. ' if attribution=='unresolved_artist' else 'Selected cross-artist comparison. ' if attribution=='selected_cross_artist_comparison' else '')+'Exploratory section comparison; this does not establish an artist signature.'}
             if action in LEARNING_ACTIONS:
                 return LearningStore(self).dispatch(action,data)
             if action=='reference-create':
@@ -335,7 +338,7 @@ def make_handler(workspace):
                 files = {"/": "index.html", "/app.js": "app.js", "/style.css": "style.css",
                     '/editor-core.js':'editor-core.js','/editor.js':'editor.js','/audition.js':'audition.js','/library.js':'library.js',
                     '/learning.js':'learning.js','/learning-roll.js':'learning-roll.js','/learning.css':'learning.css',
-                    '/imports.js':'imports.js','/context.js':'context.js','/artist-identity.js':'artist-identity.js','/catalog.js':'catalog.js'}
+                    '/imports.js':'imports.js','/context.js':'context.js','/artist-identity.js':'artist-identity.js','/catalog.js':'catalog.js','/study-navigation.js':'study-navigation.js','/workspace-layout.js':'workspace-layout.js'}
                 if parsed.path in files:
                     path = STATIC/files[parsed.path]
                     return self.send(200, path.read_bytes(), mimetypes.guess_type(path)[0] or "text/plain")

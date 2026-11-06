@@ -5,7 +5,7 @@ Open **http://127.0.0.1:8783/**. The catalog is an independent sidecar; it does 
 ## Associate your recordings
 
 1. In the song library, click **Song / artist associations** beneath a recording. This does not switch your open editor or stop its audio.
-2. Enter **Add artist** to create a named artist, or choose an existing performer. Ctrl/Cmd supports multiple performers. **Leave artist unknown** clears the selection.
+2. Enter **Add artist** to create a named artist, or choose an existing performer in **Artist / performer**. The default is explicitly **Unresolved artist — choose one**. Optional additional performers are in a separate expandable control. **Leave artist unknown** clears both selections.
 3. Enter **Add a different work** for a new song, or choose an existing **Musical work**. Choose the same work for two takes, versions or excerpts of one song. Give each recording an optional **Take / version** label.
 4. Choose its **Primary analysis edition**. Model variants remain under one source recording and never become additional songs.
 5. Click **Preview count changes**, then **Save associations**. Preview writes nothing. Existing titles/artist metadata are shown as unconfirmed suggestions and are never automatically accepted.
@@ -32,6 +32,12 @@ Research material is excluded from ordinary snapshots. Explicit research-corpus 
 - Stale catalog revisions reject a save; reload the association dialog and review before saving again. Existing entities/revisions are not destructively merged or deleted.
 
 M0 does not infer duplicate encodings, covers or excerpt offsets. Different files remain different recordings until the user associates their work. Catalog-wide motif discovery, family clustering and fingerprints belong to later milestones. No M1 functionality is added here.
+
+### Comparing sections after catalog association
+
+The 2026-11-06 integration fix makes section comparison read the saved catalog artist/work identities instead of requiring matching legacy artist text. Unknown or different artists do not block an explicitly selected recording comparison; the result labels the attribution limitation and makes no artist-style claim. Multiple takes aggregate by work ID. If the chosen section type has no saved labels, the comparison explains how to label passages in Study Song. For an immediate comparison without section labels, use **Explore melodic relationships → Find related passages**.
+
+Fix verification: 112 Python regressions and 18 focused browser checks passed at both desktop sizes, including original-audio signal checks. The actual two personal recordings displayed their saved chorus sections and comparison rolls without the artist error. All 800 protected existing audio/data/result files retained their hashes. [Actual comparison screenshot](catalog/section-comparison-fixed.png).
 
 ## Verification
 

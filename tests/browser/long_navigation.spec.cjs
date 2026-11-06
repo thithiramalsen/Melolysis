@@ -1,0 +1,30 @@
+const {test,expect}=require('@playwright/test'),fs=require('node:fs');
+test.beforeEach(async({request})=>{const headers={Origin:'http://127.0.0.1:8773'},id=fixture().id;const c=await (await request.post('/api/context-get',{headers,data:{id}})).json();await request.post('/api/context-save',{headers,data:{id,kind:'sections',base_revision:c.sections.revision,value:[]}});});
+const fixture=()=>JSON.parse(fs.readFileSync('.cache/long-fixture.json'));
+async function drag(page,node,from,to){await node.scrollIntoViewIfNeeded();const b=await node.boundingBox();await page.mouse.move(b.x+b.width*from,b.y+b.height/2);await page.mouse.down();await page.mouse.move(b.x+b.width*to,b.y+b.height/2,{steps:15});await page.mouse.up();}
+test('232 second timeline: navigation, independent scrub, precise sections, sidebar and persisted bounds',async({page},info)=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/?analysis='+fixture().id);await expect(page.locator('#navigator-window')).toBeVisible();
+ expect(await page.evaluate(()=>state.report.audio.duration)).toBe(232);
+ await drag(page,page.locator('#song-navigator'),.39,.39);await expect.poll(()=>page.evaluate(()=>learning.sourceRoll.start)).toBeGreaterThan(75);
+ // Zoom by resizing the overview viewport, using the same visible bounds as the roll.
+ const start=await page.evaluate(()=>learning.sourceRoll.start);const nav=await page.locator('#song-navigator').boundingBox(),edge=page.locator('#navigator-window [data-edge=end]');const box=await edge.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(nav.x+(start+10)/232*nav.width,box.y+box.height/2,{steps:15});await page.mouse.up();
+ await expect.poll(()=>page.evaluate(()=>learning.sourceRoll.end-learning.sourceRoll.start)).toBeCloseTo(10,0);
+ await drag(page,page.locator('#passage-overview'),.2,.5);const selection=await page.evaluate(()=>[...learning.selection]);expect(selection[1]-selection[0]).toBeCloseTo(3,0);
+ for(const [a,b]of [[.1,.7],[.7,.3],[.3,.8]])await drag(page,page.locator('#detail-ruler'),a,b);
+ expect(await page.evaluate(()=>learning.selection)).toEqual(selection);
+ await page.locator('#section-type').selectOption('pre-chorus');await page.locator('#section-name').fill('Pre-chorus 1');await page.locator('#section-add').click();const id=await page.evaluate(()=>musicalWorkspace.sections.at(-1).id);
+ await page.locator('#study-fit-song').click();await expect.poll(()=>page.evaluate(()=>learning.sourceRoll.end-learning.sourceRoll.start)).toBe(232);await page.locator('#fit-active-section').click();await expect.poll(()=>page.evaluate(()=>learning.sourceRoll.start)).toBeCloseTo(selection[0],5);
+ // Widen slightly before resizing the section's visible end handle.
+ await page.locator('#study-zoom-out').click();const lane=page.locator('#detail-sections'),handle=lane.locator(`[data-section-id="${id}"] .end`);const hb=await handle.boundingBox();await page.mouse.move(hb.x+hb.width/2,hb.y+hb.height/2);await page.mouse.down();await page.mouse.move(hb.x-20,hb.y+hb.height/2,{steps:8});await page.mouse.up();
+ const saved=await page.evaluate(()=>structuredClone(musicalWorkspace.sections));await page.locator('#section-save').click();await expect(page.locator('#status')).toContainText('Section revision saved');
+ const view=await page.evaluate(()=>({a:learning.sourceRoll.start,b:learning.sourceRoll.end,selection:learning.selection,time:document.querySelector('#audio').currentTime}));
+ const divider=page.locator('#library-divider');await drag(page,divider,.5,10); // Explicit pixel movement below for a real resize.
+ const db=await divider.boundingBox();await page.mouse.move(db.x+2,db.y+60);await page.mouse.down();await page.mouse.move(db.x+82,db.y+60,{steps:10});await page.mouse.up();
+ await page.locator('#library-collapse').click();await expect(page.locator('aside')).toHaveClass(/library-collapsed/);await page.locator('#library-collapse').click();expect(await page.evaluate(()=>({a:learning.sourceRoll.start,b:learning.sourceRoll.end,selection:learning.selection,time:document.querySelector('#audio').currentTime}))).toEqual(view);
+ const width=await page.evaluate(()=>workspaceLayout.width);await page.locator('#open-uploads').click();await expect(page.locator('#upload-manager')).toBeVisible();await page.locator('#uploads-close').click();await page.locator('[data-tab=style]').click();await expect(page.locator('#collection-manager')).toBeVisible();await page.locator('#corpus-all').click();await page.locator('[data-tab=study]').click();expect(await page.evaluate(()=>learning.selection)).toEqual(selection);
+ await page.reload();await expect.poll(()=>page.evaluate(()=>musicalWorkspace.sections.length)).toBe(saved.length);expect(await page.evaluate(()=>musicalWorkspace.sections)).toEqual(saved);expect(await page.evaluate(()=>workspaceLayout.width)).toBe(width);
+ await page.locator('#library-search').fill('LONG SYNTHETIC');await expect(page.locator('.recording-title')).toHaveCount(1);await page.locator('.catalog-associate').click();await expect(page.locator('#catalog-dialog')).toBeVisible();await page.locator('#catalog-dialog button[value=cancel]').click();
+ await page.locator('#fit-active-section').click();await page.locator('#library-collapse').click();await page.screenshot({path:`.cache/long-workspace-${info.project.name}.png`});
+ const perf=await page.evaluate(async()=>{studyNavigation.samples=[];const latencies=[];for(let i=0;i<40;i++){const t=performance.now();learning.sourceRoll.pan(i%2?.1:-.1);await new Promise(requestAnimationFrame);latencies.push(performance.now()-t);}return {render_ms:studyNavigation.samples,pointer_to_frame_ms:latencies,heap_bytes:performance.memory?.usedJSHeapSize};});await info.attach('measured-232s-performance',{body:JSON.stringify(perf),contentType:'application/json'});
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);
+});
