@@ -48,7 +48,23 @@ class EditorPersistenceTests(unittest.TestCase):
         current=self.app.references.save(self.ref['id'],self.ref['notes'],[],self.ref['annotator'])
         with self.assertRaisesRegex(ValueError,'changed'):
             self.app.references.restore(self.ref['id'],self.ref['revision'],self.ref['revision'])
+
         self.assertEqual(self.app.references.load(self.ref['id'])['revision'],current['revision'])
+
+    def test_catalog_read_resolves_new_correction_without_materializing_old_report(self):
+        from src.storage import save_correction
+        path=self.app.catalog()[self.id]
+        original=content_hash(path)
+        notes=deepcopy(self.report['notes']);notes[0]['pitch']+=.25
+        correction=save_correction(self.root/'workspace'/'corrections',
+            self.report['audio']['content_sha256'],notes,self.report['prediction_id'])
+        view=self.app.identities.view()
+        edition=view['recordings'][0]['editions'][0]
+        self.assertEqual(edition['correction_revision'],correction['revision'])
+        self.assertEqual(content_hash(path),original)
+        snapshot=self.app.identities.snapshot(dict(ids=[self.id],catalog_revision=None,dry_run=True))
+        self.assertEqual(snapshot['entries'][0]['notes'][0]['pitch'],notes[0]['pitch'])
+        self.assertEqual(content_hash(path),original)
 
     def test_working_revision_restore_does_not_touch_reference_or_raw_prediction(self):
         path,_=self.app.get_report(self.id);prediction=path.parent/'prediction.json';sha=content_hash(prediction)

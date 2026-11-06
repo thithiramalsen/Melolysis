@@ -26,6 +26,7 @@ from .library import recording_groups,validate_corpus_sources
 from .learning_store import LearningStore,ACTIONS as LEARNING_ACTIONS
 from .import_jobs import ImportJobs
 from .musical_context import MusicalContext, rhythm
+from .catalog import IdentityCatalog
 
 log = logging.getLogger(__name__)
 STATIC = Path(__file__).parent / "web"
@@ -37,6 +38,7 @@ class Workspace:
         self.root.mkdir(parents=True, exist_ok=True)
         self.lock = RLock()
         self.musical_context = MusicalContext(self.root)
+        self.identities = IdentityCatalog(self)
         self.references = ReferenceStore(self.root/'references')
         self.import_jobs = ImportJobs(self.root, self.analyze_upload)
 
@@ -70,10 +72,10 @@ class Workspace:
         report = load_report(path)
         correction = latest_correction(self.root/"corrections", report["audio"]["content_sha256"])
         if correction and correction["revision"] != report["provenance"].get("correction_revision"):
-            self.update_active(path, report, correction)
+            self.update_active(path, report, correction, persist=False)
         return path, report
 
-    def update_active(self, path, report, correction):
+    def update_active(self, path, report, correction, persist=True):
         notes = assign_phrases(attach_frames(notes_from_dicts(correction["notes"]), PitchTrack(**report["raw_pitch"])),
             report["provenance"]["config"]["phrase_rest_seconds"])
         if any(n.end > report["audio"]["duration"]+.001 for n in notes):
@@ -85,10 +87,17 @@ class Workspace:
         report["motifs"] = discover_motifs(notes)
         report["provenance"]["correction_revision"] = correction["revision"]
         report["provenance"]["correction_base_prediction"] = correction["base_prediction"]
-        export_notes(notes, path.parent/"notes.csv", path.parent/"notes.mid")
-        write_json(path, report)
+        if persist:
+            export_notes(notes, path.parent/"notes.csv", path.parent/"notes.mid")
+            write_json(path, report)
 
     def dispatch(self, action, data):
+        if action in {"catalog-get", "catalog-reconcile", "corpus-save", "corpus-get"}:
+            with self.lock:
+                if action == "catalog-get": return self.identities.view()
+                if action == "catalog-reconcile": return self.identities.reconcile(data)
+                if action == "corpus-save": return self.identities.snapshot(data)
+                return self.identities.load_snapshot(data["id"])
         if action == 'identity-compare':
             from .melodic_identity import compare
             # Only snapshot under the workspace lock; pair alignment must not block
@@ -219,8 +228,13 @@ class Workspace:
                 refs=self.references.list()
                 reports,scope=validate_corpus_sources(reports,refs,data.get('allow_research',False),source_context)
                 reference,reference_scope=validate_corpus_sources(reference,refs,data.get('allow_research',False),source_context)
-                profile = profile_artist(reports, data.get("artist", "Selected recordings"), reference)
+                profile = profile_artist(self.identities.decorate(reports), data.get("artist", "Selected recordings"), self.identities.decorate(reference))
                 profile['corpus_scope']=scope
+                selected_editions={self.get_report(i)[1]['audio']['content_sha256']:i for i in data['ids']}
+                snapshot=self.identities.snapshot(dict(ids=list(selected_editions.values()),
+                    catalog_revision=self.identities.current()['revision'],
+                    purpose='research' if scope['research_opt_in'] else 'artist'))
+                profile['input_snapshot_id']=snapshot['id']
                 if scope['research_opt_in'] or reference_scope['research_opt_in']:
                     profile['warnings'].append('Explicit research corpus: includes dataset recordings; do not interpret this as a single artist-specific corpus.')
                 exercises = songwriting_exercises(profile)
@@ -282,7 +296,7 @@ def make_handler(workspace):
                             'estimator':r['raw_pitch']['model'],'prediction_id':r['prediction_id'],
                             "correction_revision": r["provenance"].get("correction_revision")})
                     refs=workspace.references.list()
-                    return self.send(200, {"analyses": rows,'recordings':recording_groups(rows,refs),
+                    return self.send(200, {"analyses": rows,'recordings':workspace.identities.view()['recordings'],
                         'selection_policy':'Unique source hashes; no automatic inclusion; research datasets require explicit corpus opt-in'})
                 if parsed.path == "/api/report":
                     return self.send(200, workspace.get_report(query["id"])[1])
@@ -321,7 +335,7 @@ def make_handler(workspace):
                 files = {"/": "index.html", "/app.js": "app.js", "/style.css": "style.css",
                     '/editor-core.js':'editor-core.js','/editor.js':'editor.js','/audition.js':'audition.js','/library.js':'library.js',
                     '/learning.js':'learning.js','/learning-roll.js':'learning-roll.js','/learning.css':'learning.css',
-                    '/imports.js':'imports.js','/context.js':'context.js','/artist-identity.js':'artist-identity.js'}
+                    '/imports.js':'imports.js','/context.js':'context.js','/artist-identity.js':'artist-identity.js','/catalog.js':'catalog.js'}
                 if parsed.path in files:
                     path = STATIC/files[parsed.path]
                     return self.send(200, path.read_bytes(), mimetypes.guess_type(path)[0] or "text/plain")

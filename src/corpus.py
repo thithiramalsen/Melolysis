@@ -17,7 +17,8 @@ def profile_artist(reports, artist="Unspecified", reference_reports=None):
         if not ns:
             continue
         song_name = r.get("metadata", {}).get("song") or r["audio"]["content_sha256"]
-        song_key = (r.get("metadata", {}).get("artist", artist), song_name)
+        identity = r.get("catalog_identity")
+        song_key = ("catalog", identity.get("work_id") or r["audio"]["content_sha256"]) if identity is not None else (r.get("metadata", {}).get("artist", artist), song_name)
         row = {"song": song_name,
             "source_hash": r["audio"]["content_sha256"], "source_path": r["audio"]["source_path"],
             "section": r.get("metadata", {}).get("section", "unknown"),
@@ -88,6 +89,12 @@ def profile_artist(reports, artist="Unspecified", reference_reports=None):
             "Recordings are averaged within a song before equal-song weighting",
             "Uncorrected transcription errors propagate into every reported tendency",
             "Bootstrap intervals describe this corpus, not an artist population"]}
+    if any("catalog_identity" in r for r in reports):
+        result["aggregation_units"] = size
+        result["confirmed_works"] = len({r["catalog_identity"]["work_id"] for r in reports if r["catalog_identity"].get("work_id")})
+        result["songs"] = result["confirmed_works"]
+        result["unresolved_recordings"] = sum(not r["catalog_identity"].get("work_id") for r in reports)
+        result["warnings"].append("Catalog work identities define aggregation; unresolved recordings remain separate provisional units. Support counts are aggregation units, not verified independent songs.")
     if reference_reports:
         reference = profile_artist(reference_reports, "reference")
         result["reference_comparison"] = [{"feature": c["feature"],

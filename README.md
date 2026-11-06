@@ -1,6 +1,9 @@
 # Melolysis
 
 Learn a singer's melodic decisions and use the principles to make your own music.
+Use [Song / artist associations](docs/CATALOG_IDENTITY.md) in the recording library
+to confirm artists, musical works and takes without rewriting original reports.
+Unresolved identities stay explicit; model variants are one source recording.
 The primary workflow is **Study song → understand a technique → create your own
 melody**. Start with one recording: choose a phrase, hear its vocal and pitch
 contour, analyze the actual note events, then choose **Try this technique**. Draw

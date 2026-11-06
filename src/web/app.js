@@ -7,6 +7,7 @@ let pianoEditor=null;
 let recordingLibrary=null;
 let learning=null;
 let identityWorkspace=null;
+let catalogUI=null;
 const launchParams=new URLSearchParams(location.search);
 function element(tag, text, cls) {const e=document.createElement(tag); if(text!==undefined)e.textContent=text; if(cls)e.className=cls; return e;}
 function status(text, error=false) {$('status').textContent=text; $('status').classList.toggle('error',error);}
@@ -120,9 +121,9 @@ function distribution(container,weights) {
   for(const [key,value] of Object.entries(weights).sort((a,b)=>+a[0]- +b[0])){const row=element('div',undefined,'barrow');const p=element('progress');p.max=1;p.value=value;row.append(element('span',key+' st'),p,element('span',(value*100).toFixed(1)+'%'));container.append(row);}
 }
 $('profile').onclick=()=>run(async()=>{if(!state.selected.size)throw new Error('Select at least one recording.');status('Building a recording-balanced profile…');state.profile=await api('profile',{ids:recordingLibrary.corpusIds(),artist:$('artist').value,allow_research:recordingLibrary.allowedResearch()});renderProfile();renderExercises();tab('style');status(state.profile.corpus_scope?.research_opt_in?'Explicit research corpus · dataset recordings included':'Style profile ready. Evidence and limited sample sizes are visible in every conclusion.');});
-function renderProfile(){if($('identity-advanced'))$('identity-advanced').open=true;const p=state.profile,root=$('stylecontent');root.replaceChildren();if(p.songs<2){root.append(element('h3','One song: local findings, not an artist signature'),element('p','Study this song now. Add different songs by the same singer to compare recurring decisions.','muted'));const study=element('button','Study this song','primary');study.onclick=()=>tab('study');root.append(study);}const stats=element('div',undefined,'statgrid');for(const [v,label] of [[p.songs,`songs / ${p.recordings} recordings`],[p.phrases,'rest-delimited phrases'],[p.notes,'note events']]){const e=element('div',undefined,'stat');e.append(element('strong',v),element('span',label));stats.append(e);}root.append(stats);
+function renderProfile(){if($('identity-advanced'))$('identity-advanced').open=true;const p=state.profile,root=$('stylecontent');root.replaceChildren();if(p.songs<2){root.append(element('h3','One song: local findings, not an artist signature'),element('p','Study this song now. Add different songs by the same singer to compare recurring decisions.','muted'));const study=element('button','Study this song','primary');study.onclick=()=>tab('study');root.append(study);}const stats=element('div',undefined,'statgrid');for(const [v,label] of [[p.songs,`confirmed works / ${p.recordings} recordings${p.unresolved_recordings?" / "+p.unresolved_recordings+" unresolved works":""}`],[p.phrases,'rest-delimited phrases'],[p.notes,'note events']]){const e=element('div',undefined,'stat');e.append(element('strong',v),element('span',label));stats.append(e);}root.append(stats);
   const intervals=element('div',undefined,'card');intervals.append(element('h3','Measured property · within-phrase interval distribution'),element('p','Recordings are averaged within each song; songs contribute equal weight. Transposition is normalized through relative intervals.','muted'));distribution(intervals,p.interval_weights);root.append(intervals);
-  for(const c of p.conclusions){const card=element('div',undefined,'card');card.append(element('span','MEASURED MUSICAL PROPERTY','eyebrow'),element('h3',c.description),element('p',`${(c.equal_song_mean*100).toFixed(1)}% · ${c.support_songs} songs · ${c.support_recordings} recordings · ${c.support_notes} notes`));
+  for(const c of p.conclusions){const card=element('div',undefined,'card');card.append(element('span','MEASURED MUSICAL PROPERTY','eyebrow'),element('h3',c.description),element('p',`${(c.equal_song_mean*100).toFixed(1)}% · ${c.support_songs} ${p.aggregation_units!==undefined?"work / provisional units":"songs"} · ${c.support_recordings} recordings · ${c.support_notes} notes`));
     card.append(element('p',c.song_bootstrap_95_interval?`Song bootstrap interval: ${c.song_bootstrap_95_interval.map(v=>(v*100).toFixed(1)+'%').join(' – ')}`:'Too few recordings for a bootstrap interval.','muted'));
     for(const ev of c.evidence){card.append(element('p',`${ev.song}: ${ev.value===null?'no transitions':(ev.value*100).toFixed(1)+'%'}`));for(const ph of ev.phrases)card.append(evidenceButton(`${ph.start.toFixed(2)}–${ph.end.toFixed(2)} s · ${ph.notes} notes`,ev.source_hash,ph.start,ph.end));}
     const detail=element('details');detail.append(element('summary','Inspect support and exceptions'),element('pre',JSON.stringify(c,null,2)));card.append(detail);root.append(card);}
@@ -251,7 +252,8 @@ $('reference-export').onclick=()=>run(async()=>{
   status('Reviewed manifest saved at outputs/real-validation/reviewed.manifest.json. Exact annotation revisions and checksums are frozen.');
 });
 pianoEditor=new window.MelodyEditor({state,$,api,status,run,renderNotes,referenceModeStatus,enterReference});
-recordingLibrary=new window.RecordingLibrary({state,$,api,status,run,load,openReference,tab});
+catalogUI=new window.CatalogUI({state,$,api,status,run,refresh});
+recordingLibrary=new window.RecordingLibrary({state,$,api,status,run,load,openReference,tab,catalog:source=>catalogUI.open(source)});
 learning=new window.MelodyLearning({state,$,api,status,run,load,tab,player:()=>pianoEditor.audition,editor:()=>pianoEditor});
 const musicalWorkspace=new window.MusicalWorkspace({$,api,run,state,load,status,learning,player:()=>pianoEditor.audition});
 identityWorkspace=new window.ArtistIdentity({state,$,api,run,learning,player:()=>pianoEditor.audition});
