@@ -1,0 +1,82 @@
+{
+  "python_passed": 112,
+  "javascript_passed": 11,
+  "browser": {
+    "long": {
+      "startTime": "2026-11-06T15:25:40.980Z",
+      "duration": 28823.514,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "transport": {
+      "startTime": "2026-11-06T15:20:34.568Z",
+      "duration": 42844.402,
+      "expected": 18,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "uploads": {
+      "startTime": "2026-11-06T15:21:40.522Z",
+      "duration": 12101.498,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "integrity": {
+    "protected_files": 825,
+    "changed": []
+  },
+  "performance": [
+    {
+      "width": 1366,
+      "duration": 232.04678004535148,
+      "notes": 449,
+      "f0_frames": 23258,
+      "render_ms": {
+        "n": 71,
+        "p50": 5.300000071525574,
+        "p95": 8.899999976158142,
+        "max": 11.700000047683716
+      },
+      "pointer_event_to_frame_ms": {
+        "n": 31,
+        "p50": 12,
+        "p95": 20.199999928474426,
+        "max": 24
+      },
+      "js_heap_bytes": 19300000,
+      "errors": []
+    },
+    {
+      "width": 1920,
+      "duration": 232.04678004535148,
+      "notes": 449,
+      "f0_frames": 23258,
+      "render_ms": {
+        "n": 71,
+        "p50": 8,
+        "p95": 9.799999952316284,
+        "max": 12.100000023841858
+      },
+      "pointer_event_to_frame_ms": {
+        "n": 31,
+        "p50": 11.899999976158142,
+        "p95": 23.700000047683716,
+        "max": 25.200000047683716
+      },
+      "js_heap_bytes": 19300000,
+      "errors": []
+    }
+  ],
+  "url": "http://127.0.0.1:8784/",
+  "limitations": [
+    "Focused browser suite only; full historical UI suite not rerun.",
+    "Timing is event-to-frame, not physical latency; memory is JS heap only.",
+    "Synthetic long fixture is a UI contract, not a transcription benchmark."
+  ]
+}

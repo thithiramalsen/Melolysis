@@ -20,7 +20,7 @@ class MusicalWorkspace {
  // Grid movement is an explicit alignment gesture; ordinary ruler/selection never need modes.
  const down=this.$('passage-overview').onpointerdown,move=this.$('passage-overview').onpointermove,up=this.$('passage-overview').onpointerup;
  this.$('passage-overview').onpointerdown=e=>{if(e.altKey&&e.button===0&&!e.target.dataset.edge){this.gridDrag={x:e.clientX,origin:+this.$('beat-origin').value};e.currentTarget.setPointerCapture(e.pointerId);e.preventDefault();return;}down(e);};
- this.$('passage-overview').onpointermove=e=>{if(this.gridDrag){this.offset(this.gridDrag.origin+(e.clientX-this.gridDrag.x)/this.$('song-overview').clientWidth*h.state.report.audio.duration);return;}move(e);};
+ this.$('passage-overview').onpointermove=e=>{if(this.gridDrag){this.offset(this.gridDrag.origin+(e.clientX-this.gridDrag.x)/this.$('song-overview').clientWidth*(this.l.sourceRoll.end-this.l.sourceRoll.start));return;}move(e);};
  this.$('passage-overview').onpointerup=e=>{if(this.gridDrag){this.gridDrag=null;if(e.currentTarget.hasPointerCapture(e.pointerId))e.currentTarget.releasePointerCapture(e.pointerId);return;}up(e);};
  this.$('passage-overview').addEventListener('pointercancel',()=>{this.gridDrag=null;});
  const oldLoaded=this.l.loaded.bind(this.l);this.l.loaded=()=>{oldLoaded();h.run(()=>this.loaded());};

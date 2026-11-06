@@ -17,7 +17,7 @@ test('song and passage transport pause/resume exact source position, seek and st
   await info.attach('resumable-vocal',{body:JSON.stringify({bounds,paused,resumed,song}),contentType:'application/json'});
 });
 
-test('live waveform range, precise handles, snapping and clear selection',async({page})=>{
+test('live waveform range, precise handles, snapping and clear selection',async({page})=>{await page.locator('#study-fit-song').click();
   const box=await page.locator('#song-overview').boundingBox(),duration=await page.evaluate(()=>state.report.audio.duration),old=await page.evaluate(()=>learning.selection);
   expect(await page.locator('#song-overview').evaluate(e=>getComputedStyle(e).cursor)).toBe('crosshair');await page.mouse.move(box.x+box.width*.1,box.y+25);await page.mouse.down();await page.mouse.move(box.x+box.width*.6,box.y+25,{steps:5});
   const preview=await page.evaluate(()=>learning.rangePreview);expect(preview[0]).toBeCloseTo(duration*.1,1);expect(preview[1]).toBeCloseTo(duration*.6,1);expect(await page.evaluate(()=>learning.selection)).toEqual(old);await expect(page.locator('#study-range-label')).toContainText('selecting');expect(await page.locator('#passage-selection').evaluate(e=>parseFloat(e.style.width))).toBeGreaterThan(45);await page.mouse.up();expect(await page.evaluate(()=>learning.selection)).toEqual(preview);

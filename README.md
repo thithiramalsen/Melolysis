@@ -1,6 +1,7 @@
 # Melolysis
 
 Learn a singer's melodic decisions and use the principles to make your own music.
+For long songs, see the [linked overview/detail timeline and library guide](docs/NAVIGATION_WORKSPACE.md).
 Use [Song / artist associations](docs/CATALOG_IDENTITY.md) in the recording library
 to confirm artists, musical works and takes without rewriting original reports.
 Unresolved identities stay explicit; model variants are one source recording.
