@@ -1,0 +1,30 @@
+[
+  {
+    "width": 1366,
+    "duration": 232.04678004535148,
+    "fit": "25-second passage; no 20–30-second saved section available, no annotation invented",
+    "section_count": 0,
+    "vocal_rms": 0.13674947435498822,
+    "selection_preserved": true,
+    "source_sections_unchanged": true,
+    "viewport": [
+      46.26586350275251,
+      66.7341294265514
+    ],
+    "errors": []
+  },
+  {
+    "width": 1920,
+    "duration": 232.04678004535148,
+    "fit": "25-second passage; no 20–30-second saved section available, no annotation invented",
+    "section_count": 0,
+    "vocal_rms": 0.1152306787943962,
+    "selection_preserved": true,
+    "source_sections_unchanged": true,
+    "viewport": [
+      46.26586574155037,
+      66.73413735786235
+    ],
+    "errors": []
+  }
+]

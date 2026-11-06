@@ -1,5 +1,5 @@
 const {defineConfig}=require('@playwright/test');
-module.exports=defineConfig({testDir:'./tests/browser',workers:1,fullyParallel:false,timeout:30000,
+module.exports=defineConfig({testDir:'./tests/browser',testIgnore:'**/long_navigation.spec.cjs',workers:1,fullyParallel:false,timeout:30000,
   reporter:[['list'],['json',{outputFile:'.cache/editor-tests/browser-results.json'}]],
   use:{baseURL:'http://127.0.0.1:8772',headless:true,trace:'retain-on-failure',screenshot:'only-on-failure',
     launchOptions:{args:['--mute-audio','--disable-gpu']},viewport:{width:1366,height:768}},

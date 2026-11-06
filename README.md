@@ -28,6 +28,8 @@ receive live structural feedback.
 
 [Sections and manual beat alignment](docs/SECTION_BEAT_USAGE.md): label timed sections, align a vocal to an audible metronome, inspect saved-grid timing, compare section occurrences and carry a timing principle into an original idea. This is a fixed-tempo increment; the guide lists remaining plan work.
 
+[Section editing guide](docs/SECTION_EDITING.md): unified two-level Study timeline, fresh type-based names, explicit analytical overlaps, shared-boundary editing, revision-safe undo/redo and comparison-layer policy.
+
 This overhaul fixes the original loss of rests, frame-based note fragmentation and
 missing timestamps. Phase 2 measured actual pretrained GAME Small and TorchCREPE
 Tiny inference against two published human annotation editions of eight Vocadito

@@ -4,7 +4,7 @@ Open http://127.0.0.1:8784/. This update changes navigation, section editing and
 
 ## Navigate and select
 
-The upper ruler and compact waveform always represent the full source recording. Click or drag the ruler/playhead to seek. The blue rectangle represents the detailed editor's viewport: drag it to pan, or drag its ends to zoom. Gold section highlighting identifies the active section independently of the blue viewport.
+The compact overview waveform always represents the full source recording. Its top edge seeks/scrubs. The blue rectangle represents the detailed editor's viewport: drag it to pan, or drag its ends to zoom. Gold section highlighting identifies the active section independently of the blue viewport.
 
 The lower ruler, section lane, waveform and piano roll share the LearningRoll source-second viewport. The detailed ruler seeks/scrubs; the waveform's **Select range** tool selects passages. **Move / pan** and middle-mouse drag navigate without selecting. Ctrl+wheel zooms time around the cursor, Alt+wheel changes pitch zoom, and Shift+wheel scrolls time. The horizontal range slider provides discoverable navigation. Time +/−, Fit selection, Fit section and Fit song use the same viewport.
 
@@ -13,12 +13,12 @@ On recordings longer than 30 seconds, the initial detailed view spans 20 seconds
 ## Label and edit sections
 
 1. Navigate near the desired time in the overview and zoom into a short region.
-2. Drag a passage on the detailed waveform. Choose its type, enter a name, and click **Label selected passage**.
+2. Drag a passage on the detailed waveform. Choose its type and click **Label selected passage**. The preview shows the automatically generated occurrence name. Optional custom naming is under **Name / precise bounds**.
 3. Click **Save sections** to persist a new revision. Empty names receive type-based numbered labels; type and display name remain separate fields.
 4. Double-click a section block to focus it and open precise controls. Drag its left/right handles to resize, or enter `mm:ss.sss` / source seconds, then **Update selected section** and **Save sections**.
 5. Previous/Next section and Fit section navigate without rewriting times. Section undo/redo uses the existing history. Existing IDs and context revisions are retained.
 
-Overlapping sections are rejected. The status bar reports save errors; the section editor distinguishes unsaved changes from saved sections. Precise property edits must be applied before saving. The expandable all-properties list retains removal, reordering and the earlier editing controls. Beat alignment remains under **Sections & beat alignment**; moving the grid uses the detailed viewport's time scale.
+Structural sections use tidy adjacent boundaries. Intentional overlaps are explicit analytical annotations, shown on separate tracks. Conflicts offer shared-boundary adjustment, analytical overlap, or confirmed trim/replacement; nothing is silently deleted. Inline feedback distinguishes unapplied fields, unsaved transactions and saved revisions. See [section editing and schema policy](SECTION_EDITING.md). Beat alignment remains under **Sections & beat alignment**; moving the grid uses the detailed viewport's time scale.
 
 ## Library, collections and uploads
 
@@ -35,9 +35,9 @@ The 232-second browser fixture is synthetic UI contract data, not pretrained inf
 
 Reported render timings measure the draw/update callback; pointer timings measure DOM pointer-event timestamp to animation-frame callback, not physical display latency. Heap figures are Chrome's reported JavaScript heap, not total browser/process memory. No old-UI benchmark was taken, so these numbers do not establish a speedup. Source loading and transcription processing are separate from navigation timing. Large catalogs, substantially longer audio and very large note/F0 arrays require further benchmarking.
 
-Final measured p95 draw callbacks: 8.9 ms at 1366×768 and 9.8 ms at 1920×1080. Pointer-event-to-frame p95: 20.2 / 23.7 ms respectively. Chrome reported about 19.3 MB of JavaScript heap in both sizes on the same loaded recording. Values are environment-specific samples (71 renders and 31 pointer events per size), not guarantees.
+The earlier navigation release measured p95 draw callbacks of 8.9 ms at 1366×768 and 9.8 ms at 1920×1080, and pointer-event-to-frame p95 of 20.2 / 23.7 ms. Chrome reported about 19.3 MB of JavaScript heap in both sizes. These are historical samples (71 renders and 31 pointer events per size), not a fresh benchmark of the section reliability follow-up or a performance guarantee.
 
-Validation: 112 Python and 11 JavaScript tests passed. The focused browser runs passed 2 long-timeline/sidebar tests, 18 existing transport/playhead tests and 6 upload tests, across the two sizes. Those runs include pointer dragging, section IDs/times/save/reload, sidebar preferences, transcription transport/zoom, measured original/piano buses, upload/retry/progress and preserved edits. The complete historical browser suite was not rerun; some old sidebar tests target controls intentionally relocated by this release.
+The preceding navigation release passed 112 Python and 11 JavaScript tests plus focused browser tests. The section reliability follow-up reruns the full historical gate with selectors updated for deliberately relocated controls; see its [current validation summary](sections/validation.json) for exact results rather than treating the preceding focused run as full coverage.
 
 Reproduce the focused browser suite with `node tools/run_browser_tests.cjs --config playwright.navigation.config.cjs`. The server uses only disposable synthetic data. The real-recording capture script is `tools/capture_long_workspace.cjs`; it navigates and listens but does not save edits. Existing protected file hashes are checked independently. See [validation summary](navigation/validation.json) and [real performance](navigation/real-performance.json).
 

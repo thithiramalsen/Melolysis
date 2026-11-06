@@ -1,11 +1,11 @@
 # Sections and manual beat alignment
 
-Implemented increment, 2026-11-05. Open the updated server at http://127.0.0.1:8779/.
+Updated section workflow: open http://127.0.0.1:8784/. See [the section editing guide](SECTION_EDITING.md) for the unified timeline, naming, overlap policy and current validation.
 
 ## Study one recording
 
 1. Open a song. Use the permanently available timeline ruler to click-seek or drag the yellow playhead. Drag in the separate waveform lane to select a passage; its edge handles resize the passage. Seeking never changes the selected passage. No gesture-mode dropdown is required.
-2. Expand **Sections & beat alignment**. Select a passage, choose its type/name and click **Label selected passage**. Drag the yellow section edges or edit the precise boundary fields. Sections may have gaps but cannot overlap. Repeated choruses have distinct IDs. Rename, remove or change navigation order, then **Save sections**. Undo/redo applies to section edits; saves append independent revisions.
+2. Select a passage, choose its canonical type and click **Label selected passage**. Its generated name is previewed before applying. **Name / precise bounds** exposes optional naming and exact times. Structural sections remain non-overlapping; explicit analytical regions may overlap on separate tracks. Conflict resolution never silently removes another section. Repeated choruses have distinct IDs. **Save sections** appends an independent revision; undo/redo applies to section transactions.
 3. Use **Open** or **Loop** for a section. Analyze this melody uses the selected region. Section labels never change model notes or transcription references.
 4. Use Time/Pitch zoom buttons, Ctrl+wheel for time, Alt+wheel for pitch, Shift+wheel for time pan, and middle drag to pan. **Fit excerpt** and **Fit song** change the roll viewport without changing the selected passage. The entire-song overview remains a fixed navigation reference.
 
@@ -23,15 +23,15 @@ The rhythmic evidence table lists source onset, bar, within-bar position in quar
 
 ## Compare sections and write an original idea
 
-In Artist patterns, use **Compare musical sections across selected songs**. Select unique personal recordings using existing corpus controls. Assign the same explicit artist using recording metadata first. Blank or unspecified singers and research material are rejected by this comparison path. Types filter actual saved section occurrences, not the recording-level legacy section field.
+In Artist patterns, use **Compare musical sections across selected songs**. Select personal recordings through **Collection manager**. Types filter saved canonical section types, not display names or the recording-level legacy field. The default layer is structural; analytical/all-layer comparison is explicit. Catalog artist/work associations establish attribution. Unresolved or different artists remain recording-level/cross-artist observations with a warning; research material is excluded.
 
-The comparison offers source section playback, two selectable pitch-normalized rolls and original-tempo A/B. Confirmed-grid views use quarter-note units; otherwise the view uses seconds. Each starts at its section boundary and normalizes its first pitch to C4 for display. Original audio stays unchanged. No event-to-event correspondence is asserted. The API provides per-occurrence range and an equal-song mean range, averaging occurrences within each song first. Two songs remain exploratory evidence.
+The comparison offers source section playback, two selectable pitch-normalized rolls and original-tempo A/B. Confirmed-grid views use quarter-note units; otherwise the view uses seconds. Each starts at its section boundary and normalizes its first pitch to C4 for display. Original audio stays unchanged. No event-to-event correspondence is asserted by this section view. Range aggregation unions note IDs in overlapping components, averages within recording/work, then gives each work equal weight. Two songs remain exploratory evidence.
 
 A confirmed half-quarter-beat entry can produce **An entry between quarter-note beats** in the technique explorer. Try this technique starts a blank independent idea and offers the source tempo/meter as a creative reference. Draw your own pitches and rhythm. The check reports an offbeat entry against your chosen idea grid; it does not grade artistic quality. Create Melody supports 4/4, 3/4, 6/8 and 2/4, meter-aware phrase bounds and a shared metronome bus. Saved new ideas and MIDI exports retain meter. Old ideas default to 4/4.
 
 ## Preserved data and implementation boundaries
 
-Context files live in `outputs/musical-context/<source_hash>/sections` and `grid`, with independent current pointers and append-only revisions. Stale saves fail instead of replacing newer work. No original recording, human reference, correction or frozen score is migrated. Re-encoded audio gets a different source identity. Existing source-title/artist grouping remains the song identity mechanism; stable catalog IDs from the larger plan are not implemented yet.
+Context files live in `outputs/musical-context/<source_hash>/sections` and `grid`, with independent current pointers and append-only revisions. Stale saves fail instead of replacing newer work. No original recording, human reference, correction or frozen score is migrated. Re-encoded audio gets a different source identity. Stable catalog artist/work/recording identities are independent from section labels; unresolved relationships are not inferred from filenames.
 
 This increment implements manual sections, fixed-tempo grids, metronome/count-in, event timing projection, section-filtered comparison and a beat-aware technique handoff. It does **not** complete every proposed phase. Remaining work includes stable artist/song IDs; context revision restore UI; multiple candidate maps; variable tempo anchors; reference accompaniment import; subdivision click options; compound-meter accent grouping; calibrated timing uncertainty; richer phrase/rest rhythm features; motif alignment traceback; paired adjacent-section transition findings; and the full default Artist Patterns redesign. Existing detailed artist statistics remain available in their current interface.
 

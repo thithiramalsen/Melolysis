@@ -1,7 +1,26 @@
 import tempfile,unittest
 from pathlib import Path
-from src.musical_context import MusicalContext,validate_grid,beat,rhythm
+from src.musical_context import MusicalContext,validate_grid,beat,rhythm,section_projection,section_range_summary
 class ContextTests(unittest.TestCase):
+ def test_layers_legacy_precision_and_explicit_overlap(self):
+  with tempfile.TemporaryDirectory(dir='.cache/tests') as d:
+   c=MusicalContext(Path(d));source='a'*64
+   legacy={'id':'v','name':'My preserved custom title','type':'verse','start':0.,'end':4.}
+   adjacent={'id':'c','name':'Chorus 1','type':'chorus','start':4.-1e-8,'end':8.}
+   first=c.save(source,'sections',[legacy,adjacent],None,10)
+   self.assertEqual(first['value'][0],legacy)
+   analysis=dict(legacy,id='a',start=2,end=6,layer='analysis',overlap_policy='allow')
+   saved=c.save(source,'sections',[legacy,adjacent,analysis],first['revision'],10)
+   self.assertEqual(len(section_projection(saved['value'])),2)
+   self.assertEqual(len(section_projection(saved['value'],'all')),3)
+   with self.assertRaisesRegex(ValueError,'explicit'):c.save(source,'sections',[dict(analysis,overlap_policy='reject')],saved['revision'],10)
+   with self.assertRaisesRegex(ValueError,'overlap'):c.save(source,'sections',[legacy,dict(adjacent,start=3.5)],saved['revision'],10)
+   self.assertEqual(c.get(source,'sections'),saved)
+ def test_overlap_summary_and_type_projection_do_not_duplicate_support(self):
+  ns=[{'id':'n','pitch':60},{'id':'m','pitch':64}]
+  row={'work_id':'work','source_hash':'source','notes':ns,'section':{'id':'a','start':0,'end':4}}
+  duplicate={**row,'section':{'id':'b','start':1,'end':3}}
+  self.assertEqual(section_range_summary([row,duplicate]),section_range_summary([row]))
  def test_revision_validation_and_source_separation(self):
   with tempfile.TemporaryDirectory() as d:
    c=MusicalContext(Path(d));h='a'*64

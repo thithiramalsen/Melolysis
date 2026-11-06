@@ -12,8 +12,9 @@ test.beforeEach(async({page})=>{page.errors=[];page.on('pageerror',e=>page.error
 test.afterEach(async({page})=>{expect(page.errors).toEqual([]);expect(hash(fixture.audio_path)).toBe(fixture.audio_sha256);expect(hash(fixture.prediction_path)).toBe(fixture.prediction_sha256);});
 
 test('primary empty state and one-song entry do not require corpus or annotation',async({page})=>{
+  let releaseLibrary;const ready=new Promise(resolve=>releaseLibrary=resolve);await page.route('**/api/state',async route=>{await ready;await route.continue();});
   await page.goto('/');await expect(page.locator('#study-empty')).toBeVisible();await expect(page.locator('#study-title')).toHaveText('Choose a song to study its melody');expect(await page.locator('.corpus-controls').isVisible()).toBe(false);expect(await page.locator('#estimator').isVisible()).toBe(false);expect(await page.locator('#library-model').isVisible()).toBe(false);
-  await page.locator('#study-choose').click();await expect(page.locator('#study-workspace')).toBeVisible();expect(await page.evaluate(()=>state.selected.size)).toBe(0);expect(await page.evaluate(()=>state.reference)).toBeNull();await analyze(page);await expect(page.locator('#study-findings')).toContainText('one-song observations');
+  await expect(page.locator('#study-choose')).toBeDisabled();releaseLibrary();await page.locator('#study-choose').click();await expect(page.locator('#study-workspace')).toBeVisible();expect(await page.evaluate(()=>state.selected.size)).toBe(0);expect(await page.evaluate(()=>state.reference)).toBeNull();await analyze(page);await expect(page.locator('#study-findings')).toContainText('one-song observations');
 });
 
 test('complete song → evidenced technique → drawn, audible, edited, saved and exported idea journey',async({page,request},info)=>{
@@ -30,12 +31,12 @@ test('complete song → evidenced technique → drawn, audible, edited, saved an
 });
 
 test('waveform and grid passage selection retain source seconds and handle no-note regions',async({page})=>{
-  await openSong(page);const b=await page.locator('#song-overview').boundingBox(),duration=await page.evaluate(()=>state.report.audio.duration);await page.mouse.move(b.x+b.width*.2,b.y+25);await page.mouse.down();await page.mouse.move(b.x+b.width*.8,b.y+25,{steps:5});await page.mouse.up();expect((await page.evaluate(()=>learning.selection))[0]).toBeCloseTo(duration*.2,1);
+  await openSong(page);await page.locator('#study-fit-song').click();const b=await page.locator('#song-overview').boundingBox(),duration=await page.evaluate(()=>state.report.audio.duration);await page.mouse.move(b.x+b.width*.2,b.y+25);await page.mouse.down();await page.mouse.move(b.x+b.width*.8,b.y+25,{steps:5});await page.mouse.up();expect((await page.evaluate(()=>learning.selection))[0]).toBeCloseTo(duration*.2,1);
   await page.locator('#study-context>summary').click();await page.locator('#study-start').fill('0');await page.locator('#study-end').fill('.1');await page.locator('#study-end').press('Tab');await page.locator('#study-analyze').click();await expect(page.locator('#study-findings')).toContainText('needs a closer listen');await expect(page.locator('#study-findings button')).toHaveText('Review this transcription');
 });
 
 test('source-backed technique bookmarks persist and do not turn the source into an idea',async({page})=>{
-  await openSong(page);await analyze(page);await page.locator('.keep-technique').first().click();await page.locator('#technique-library>summary').click();await expect(page.locator('.technique-bookmark').first()).toBeVisible();const source=await page.evaluate(()=>learning.study.source.source_hash);await page.reload();await page.locator('#technique-library>summary').click();await expect(page.locator('.technique-bookmark').first()).toBeVisible();await page.locator('.technique-bookmark').first().getByRole('button',{name:'Try this technique',exact:true}).click();expect(await page.evaluate(()=>learning.ideaNotes)).toEqual([]);expect(await page.evaluate(()=>learning.link.study.source.source_hash)).toBe(source);
+  await openSong(page);await analyze(page);await page.locator('.keep-technique').first().click();await page.locator('#technique-library>summary').click();await expect(page.locator('.technique-bookmark').first()).toBeVisible();const source=await page.evaluate(()=>learning.study.source.source_hash);await page.reload();await page.locator('#technique-library>summary').click();await expect(page.locator('.technique-bookmark').first()).toBeVisible();await page.locator('.technique-bookmark').first().getByRole('button',{name:'Try this technique',exact:true}).click();await expect(page.locator('#compose')).toBeVisible();expect(await page.evaluate(()=>learning.ideaNotes)).toEqual([]);expect(await page.evaluate(()=>learning.link.study.source.source_hash)).toBe(source);
 });
 
 test('composition direct move, resize, delete and undo/redo preserve independent source data',async({page})=>{
@@ -45,7 +46,7 @@ test('composition direct move, resize, delete and undo/redo preserve independent
 });
 
 test('one-song artist profile explains scope and retains immediate song learning',async({page})=>{
-  await openSong(page);await page.getByRole('button',{name:'Artist patterns',exact:true}).click();await expect(page.locator('#stylecontent')).toContainText('One song can reveal local decisions');const hash=await page.evaluate(()=>state.report.audio.content_sha256);await page.locator(`.recording-group[data-source-hash="${hash}"] .recording-heading input`).check();await page.locator('#profile').click();await expect(page.locator('#stylecontent')).toContainText('One song: local findings, not an artist signature');await page.locator('#stylecontent').getByRole('button',{name:'Study this song',exact:true}).click();await expect(page.locator('#study')).toBeVisible();await analyze(page);
+  await openSong(page);await page.getByRole('button',{name:'Artist patterns',exact:true}).click();await expect(page.locator('#stylecontent')).toContainText('One song can reveal local decisions');const hash=await page.evaluate(()=>state.report.audio.content_sha256);await page.locator(`#collection-recordings [data-source-hash="${hash}"] input`).check();await page.locator('#profile').click();await expect(page.locator('#stylecontent')).toContainText('One song: local findings, not an artist signature');await page.locator('#stylecontent').getByRole('button',{name:'Study this song',exact:true}).click();await expect(page.locator('#study')).toBeVisible();await analyze(page);
 });
 
 test('two source phrases have aligned contour views and actual original-vocal A/B playback',async({page},info)=>{

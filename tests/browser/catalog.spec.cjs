@@ -12,7 +12,7 @@ test('catalog reconciliation previews, groups takes, pins input and preserves ed
  try{
  await page.locator('.recording-title').first().click();await expect(page.locator('#study-roll')).toBeVisible();
  const initial=await page.evaluate(()=>({id:state.id,notes:state.notes,selection:learning.selection}));
- await page.locator('#study-play-song').click();await page.waitForTimeout(200);
+ await page.locator('#study-loop').check();await page.locator('#study-play-song').click();await page.waitForTimeout(200);
  await page.locator('.catalog-associate').first().click();await expect(page.locator('#catalog-dialog')).toBeVisible();
  const beforeCatalog=await post('catalog-get',{});const singer='CATALOG TEST SINGER '+info.project.name;
  await page.locator('#catalog-new-artist').fill(singer);await page.locator('#catalog-new-work').fill('CATALOG TEST WORK');await page.locator('#catalog-take').fill('Take 1');
@@ -26,7 +26,8 @@ test('catalog reconciliation previews, groups takes, pins input and preserves ed
  const third=sources.find(s=>s!==first&&s!==second);await page.locator('#catalog-recording').selectOption(third);await page.locator('#catalog-artists').selectOption([artist]);await page.locator('#catalog-new-work').fill('SECOND DISTINCT WORK');await page.locator('#catalog-save').click();await expect(page.locator('#catalog-result')).toContainText('2 confirmed works');
  const preserved=await page.evaluate(()=>({id:state.id,notes:state.notes,selection:learning.selection}));expect(preserved).toEqual(initial);
  expect(await page.locator('#audio').evaluate(a=>a.paused)).toBe(false);
- const rms=await page.evaluate(()=>{const p=pianoEditor.audition,x=new Float32Array(p.vocalMeter.fftSize);p.vocalMeter.getFloatTimeDomainData(x);return Math.sqrt(x.reduce((s,v)=>s+v*v,0)/x.length);});expect(rms).toBeGreaterThan(.0001);
+ // This fixture contains real rests: sample a short listening window, not one arbitrary silent frame.
+ let rms=0;await expect.poll(async()=>rms=await page.evaluate(()=>{const p=pianoEditor.audition,x=new Float32Array(p.vocalMeter.fftSize);p.vocalMeter.getFloatTimeDomainData(x);return Math.sqrt(x.reduce((s,v)=>s+v*v,0)/x.length);}),{timeout:1500}).toBeGreaterThan(.0001);
  await page.screenshot({path:`.cache/m0-catalog-${info.project.name}.png`});
  await page.locator('#catalog-dialog button[value=cancel]').click();await page.locator('#study-stop').click();await page.locator('[data-tab=style]').click();await page.locator('#corpus-all').click();await expect(page.locator('#corpus-count')).toContainText('2 confirmed works');
  await page.reload();await expect(page.locator('.recording-info').filter({hasText:'CATALOG TEST SINGER'})).toHaveCount(3);

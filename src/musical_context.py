@@ -5,6 +5,29 @@ from datetime import datetime, timezone
 from .storage import write_json, key_for
 
 TYPES={'verse','pre-chorus','chorus','post-chorus','bridge','intro','outro','instrumental','custom'}
+SECTION_EPSILON=1e-6
+
+def section_projection(sections, layer='structure'):
+    """Legacy records are structural. Never infer classification from a name."""
+    if layer not in ('structure','analysis','all'):raise ValueError('Unknown section layer')
+    return sorted((s for s in sections if layer=='all' or s.get('layer','structure')==layer),
+                  key=lambda s:(s['start'],s['end'],s['id']))
+
+def section_range_summary(rows):
+    """Overlap components contribute once; source/work support stays independent."""
+    sources={}
+    for row in rows:sources.setdefault((row['work_id'] or row['source_hash'],row['source_hash']),[]).append(row)
+    works={}
+    for (work,source),rs in sources.items():
+        components=[]
+        for row in sorted(rs,key=lambda r:(r['section']['start'],r['section']['end'],r['section']['id'])):
+            start,end=row['section']['start'],row['section']['end']
+            if components and start<components[-1][0]-SECTION_EPSILON:
+                components[-1][0]=max(end,components[-1][0]);components[-1][1].update({n['id']:n for n in row['notes']})
+            else:components.append([end,{n['id']:n for n in row['notes']}])
+        ranges=[max(n['pitch'] for n in ns.values())-min(n['pitch'] for n in ns.values()) for _,ns in components if ns]
+        if ranges:works.setdefault(work,[]).append(sum(ranges)/len(ranges))
+    return sum(sum(v)/len(v) for v in works.values())/len(works) if works else None
 
 def validate_grid(g):
     g=dict(g)
@@ -48,12 +71,18 @@ class MusicalContext:
             if len(validity)!=2 or not all(math.isfinite(v) for v in validity) or not 0<=validity[0]<validity[1]<=duration:raise ValueError('Invalid grid validity interval')
             value['validity']=validity
         else:
-            value=sorted(value,key=lambda s:s['start']);ids=set()
+            value=json.loads(json.dumps(value));value=sorted(value,key=lambda s:(s['start'],s['end'],s['id']));ids=set();structural=[]
             for i,s in enumerate(value):
                 if s['id'] in ids or s['type'] not in TYPES or not all(math.isfinite(s[k]) for k in ('start','end')) or not 0<=s['start']<s['end']<=duration:raise ValueError('Invalid section boundaries, type or identity')
-                if i and value[i-1]['end']>s['start']+1e-9:raise ValueError('Sections cannot overlap')
-                ids.add(s['id']);s['name']=str(s['name'])[:160]
+                layer=s.get('layer','structure')
+                if layer not in ('structure','analysis'):raise ValueError('Unknown section layer')
+                if layer=='analysis' and s.get('overlap_policy')!='allow':raise ValueError('Analytical annotations require explicit overlap_policy=allow')
+                if layer=='structure':
+                    if any(o['end']>s['start']+SECTION_EPSILON for o in structural):raise ValueError('Structural sections overlap: adjust a shared boundary or explicitly keep an analytical annotation')
+                    structural.append(s)
+                if s.get('name_mode','custom') not in ('auto','custom'):raise ValueError('Invalid section name mode')
+                ids.add(s['id']);s['name']=str(s.get('name') or s['type'].capitalize()+' '+str(sum(o['type']==s['type'] for o in value[:i])+1))[:160]
         revision=uuid4().hex
-        row={'format':'melolysis-musical-context-v1','author':'local user','source_hash':source,'revision':revision,'parent_revision':base,'value':value,'updated':datetime.now(timezone.utc).isoformat()}
+        row={'format':'melolysis-musical-context-v2' if kind=='sections' else 'melolysis-musical-context-v1','author':'local user','source_hash':source,'revision':revision,'parent_revision':base,'value':value,'updated':datetime.now(timezone.utc).isoformat()}
         directory=self.directory(source,kind);write_json(directory/'revisions'/(revision+'.json'),row);write_json(directory/'current.json',row)
         return row

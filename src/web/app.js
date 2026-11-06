@@ -22,7 +22,7 @@ function config() {return {estimator:$('estimator').value,fmin:+$('fmin').value,
   confidence:+$('confidence').value,min_note_seconds:+$('minnote').value,transition_seconds:+$('hold').value,input_kind:$('kind').value};}
 async function refresh() {
   const result=await api('state');state.library=result.analyses;state.recordings=result.recordings||[];
-  recordingLibrary?.refreshFilters();identityWorkspace?.choices();renderLibrary();status(`${state.recordings.length} recordings · ${state.library.length} preserved analysis versions · corpus inclusion is explicit`);
+  recordingLibrary?.refreshFilters();identityWorkspace?.choices();renderLibrary();$('study-choose').disabled=false;status(`${state.recordings.length} recordings · ${state.library.length} preserved analysis versions · corpus inclusion is explicit`);
 }
 function renderLibrary() {
   recordingLibrary?.render();
@@ -35,7 +35,7 @@ $('files').onchange=()=>run(async()=>{const files=[...$('files').files];$('files
 $('attemptfile').onchange=()=>run(async()=>{const file=$('attemptfile').files[0];$('attemptfile').value='';if(file)await importAudio(file,true);});
 $('refresh').onclick=()=>run(refresh);
 async function load(id) {
-  if(typeof musicalWorkspace!=='undefined'&&(musicalWorkspace.sectionDirty||musicalWorkspace.gridDirty)&&!confirm('Discard unsaved section or beat-grid edits before changing recordings?'))return false;
+  if(typeof musicalWorkspace!=='undefined'&&(musicalWorkspace.sectionDirty||musicalWorkspace.sectionFormDirty||musicalWorkspace.gridDirty)&&!confirm('Discard unsaved section or beat-grid edits before changing recordings?'))return false;
   if(pianoEditor?.dirty&&!confirm('Discard unsaved edits before changing recordings?'))return false;
   pianoEditor?.stashView();
   pianoEditor?.audition.stop();
@@ -264,5 +264,5 @@ const studyNavigation=new StudyNavigation({learning,musicalWorkspace,state,$,run
 const workspaceLayout=new WorkspaceLayout({state,$,recordingLibrary,catalogUI,importQueue});
 tab('study');
 document.addEventListener('keydown',event=>{if(event.code!=='Space'||event.defaultPrevented||event.repeat||event.target.closest('input,textarea,select,[contenteditable=true],dialog'))return;event.preventDefault();run(()=>document.body.dataset.workspace==='compose'?learning.playIdea():document.body.dataset.workspace==='study'?learning.playStudy():document.body.dataset.workspace==='style'&&identityWorkspace?.active?identityWorkspace.play(identityWorkspace.active):pianoEditor.audition.full());});
-window.addEventListener('beforeunload',event=>{if(pianoEditor.dirty||learning?.dirty||musicalWorkspace.sectionDirty||musicalWorkspace.gridDirty){event.preventDefault();event.returnValue='';}});
+window.addEventListener('beforeunload',event=>{if(pianoEditor.dirty||learning?.dirty||musicalWorkspace.sectionDirty||musicalWorkspace.sectionFormDirty||musicalWorkspace.gridDirty){event.preventDefault();event.returnValue='';}});
 run(async()=>{await refresh();const params=launchParams,id=params.get('analysis'),ref=params.get('reference');if(id&&state.library.some(r=>r.id===id)){await load(id);if(ref){enterReference(await api('reference?reference_id='+encodeURIComponent(ref)));tab('review');}else if(params.get('workspace')==='review')tab('review');}if(params.get('idea'))await learning.loadIdea(params.get('idea'));});

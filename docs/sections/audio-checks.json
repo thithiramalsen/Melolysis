@@ -1,0 +1,1768 @@
+[
+  {
+    "test": "catalog reconciliation previews, groups takes, pins input and preserves editor/audio",
+    "viewport": "1366x768",
+    "name": "catalog-audio-check",
+    "measurement": {
+      "rms": 0.15837527767202036,
+      "snapshot": "14f95bc17bd2468be656bb32c2ac88d5a160c9e7616702e202b3e62bcf8cd52b"
+    }
+  },
+  {
+    "test": "catalog reconciliation previews, groups takes, pins input and preserves editor/audio",
+    "viewport": "1920x1080",
+    "name": "catalog-audio-check",
+    "measurement": {
+      "rms": 0.08742573445588801,
+      "snapshot": "bd6be485df46210b3c952c9784ca637d94420b38a9daedba5e72078c398965f4"
+    }
+  },
+  {
+    "test": "piano keys generate measured A4 and A sharp frequencies without starting vocal audio",
+    "viewport": "1366x768",
+    "name": "measured-reference-audio",
+    "measurement": {
+      "A4": {
+        "rms": 0.01522050111645017,
+        "peak_hz": 441.4306640625,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 69,
+          "frequency": 440,
+          "scheduled_context_time": 0,
+          "duration": 0.65
+        },
+        "media_sources": 1,
+        "segment": null,
+        "source_time": 0,
+        "speed": 1
+      },
+      "Asharp4": {
+        "rms": 0.01450391010865689,
+        "peak_hz": 468.34716796875,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 70,
+          "frequency": 466.1637615180899,
+          "scheduled_context_time": 0.2815419501133787,
+          "duration": 0.65
+        },
+        "media_sources": 1,
+        "segment": null,
+        "source_time": 0,
+        "speed": 1
+      }
+    }
+  },
+  {
+    "test": "vocal segment audition uses edited source boundaries with preroll/postroll and loop",
+    "viewport": "1366x768",
+    "name": "measured-vocal-audio",
+    "measurement": {
+      "rms": 0.13131626433340643,
+      "peak_hz": 441.4306640625,
+      "piano_gain": 0.054999999701976776,
+      "vocal_gain": 0.800000011920929,
+      "sample_rate": 44100,
+      "last_tone": null,
+      "media_sources": 1,
+      "segment": {
+        "start": 0.1994331065759637,
+        "end": 0.9979138321995464,
+        "note": {
+          "id": "n00000",
+          "start": 0.2594331065759637,
+          "end": 0.9179138321995465,
+          "pitch": 69.37,
+          "confidence": 0.9841227996546346,
+          "frame_start": 0,
+          "frame_end": 0,
+          "phrase": 0,
+          "flags": [
+            "unreviewed_model_seed",
+            "human_corrected"
+          ],
+          "duration": 0.6584807256235827
+        },
+        "loop": false,
+        "mode": "vocal"
+      },
+      "source_time": 0.388095,
+      "speed": 1
+    }
+  },
+  {
+    "test": "Both mode has one vocal source, simultaneous audible buses and independent volumes",
+    "viewport": "1366x768",
+    "name": "both-buses",
+    "measurement": {
+      "piano": {
+        "rms": 0.020739593808801797,
+        "peak_hz": 446.81396484375,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 69.37,
+          "frequency": 449.5049045517767,
+          "scheduled_context_time": 0.1122450045351474,
+          "duration": 0.6684807256235827
+        },
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": true,
+          "mode": "both"
+        },
+        "source_time": 0.439048,
+        "speed": 1
+      },
+      "vocal": {
+        "rms": 0.15789722131410322,
+        "peak_hz": 441.4306640625,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 69.37,
+          "frequency": 449.5049045517767,
+          "scheduled_context_time": 0.1122450045351474,
+          "duration": 0.6684807256235827
+        },
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": true,
+          "mode": "both"
+        },
+        "source_time": 0.447755,
+        "speed": 1
+      },
+      "mutedPiano": {
+        "rms": 0,
+        "peak_hz": 107.666015625,
+        "piano_gain": 0,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 69.37,
+          "frequency": 449.5049045517767,
+          "scheduled_context_time": 0.1122450045351474,
+          "duration": 0.6684807256235827
+        },
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": true,
+          "mode": "both"
+        },
+        "source_time": 0.749614,
+        "speed": 1
+      },
+      "stillVocal": {
+        "rms": 0.15809047990726469,
+        "peak_hz": 441.4306640625,
+        "piano_gain": 0,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 69.37,
+          "frequency": 449.5049045517767,
+          "scheduled_context_time": 0.1122450045351474,
+          "duration": 0.6684807256235827
+        },
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": true,
+          "mode": "both"
+        },
+        "source_time": 0.758322,
+        "speed": 1
+      },
+      "mutedBoth": {
+        "rms": 5.215208864814649e-06,
+        "peak_hz": 441.4306640625,
+        "piano_gain": 0,
+        "vocal_gain": 0,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 69.37,
+          "frequency": 449.5049045517767,
+          "scheduled_context_time": 0.9237954058956915,
+          "duration": 0.6684807256235827
+        },
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": true,
+          "mode": "both"
+        },
+        "source_time": 0.247013,
+        "speed": 1
+      }
+    }
+  },
+  {
+    "test": "slow playback preserves source timestamps and requested pitch, with synchronized playhead",
+    "viewport": "1366x768",
+    "name": "slow-vocal-measurement",
+    "measurement": {
+      "half": {
+        "rms": 0.15813223140264873,
+        "peak_hz": 441.4306640625,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": null,
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": false,
+          "mode": "vocal"
+        },
+        "source_time": 0.379478,
+        "speed": 0.5
+      },
+      "threeQuarter": {
+        "rms": 0.15786471643860978,
+        "peak_hz": 441.4306640625,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": null,
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": false,
+          "mode": "vocal"
+        },
+        "source_time": 0.387867,
+        "speed": 0.75
+      }
+    }
+  },
+  {
+    "test": "A/B plays original vocal then reference, with no vocal pitch-shift claim",
+    "viewport": "1366x768",
+    "name": "A-B-sequence",
+    "measurement": {
+      "rms": 0.016863327206458112,
+      "peak_hz": 446.81396484375,
+      "piano_gain": 0.054999999701976776,
+      "vocal_gain": 0.800000011920929,
+      "sample_rate": 44100,
+      "last_tone": {
+        "pitch": 69.37,
+        "frequency": 449.5049045517767,
+        "scheduled_context_time": 0.8707482993197279,
+        "duration": 0.65
+      },
+      "media_sources": 1,
+      "segment": null,
+      "source_time": 1.007936,
+      "speed": 1
+    }
+  },
+  {
+    "test": "Auto routes annotation clicks to original vocal and every keyboard override to clean piano",
+    "viewport": "1366x768",
+    "name": "contextual-click-audio",
+    "measurement": {
+      "voice": {
+        "rms": 0.13223703658435224,
+        "peak_hz": 441.4306640625,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": null,
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": false,
+          "mode": "vocal"
+        },
+        "source_time": 0.389705,
+        "speed": 1
+      },
+      "keyboard": [
+        {
+          "mode": "auto",
+          "rms": 0.02075484067712739,
+          "peak_hz": 441.4306640625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69,
+            "frequency": 440,
+            "scheduled_context_time": 0.42086167800453517,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": null,
+          "source_time": 0.1,
+          "speed": 1
+        },
+        {
+          "mode": "piano",
+          "rms": 0.020754840668993444,
+          "peak_hz": 441.4306640625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69,
+            "frequency": 440,
+            "scheduled_context_time": 0.7807709750566894,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": null,
+          "source_time": 0.1,
+          "speed": 1
+        },
+        {
+          "mode": "vocal",
+          "rms": 0.02049982250237624,
+          "peak_hz": 441.4306640625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69,
+            "frequency": 440,
+            "scheduled_context_time": 1.1319727891156464,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": null,
+          "source_time": 0.1,
+          "speed": 1
+        },
+        {
+          "mode": "both",
+          "rms": 0.020500282444588878,
+          "peak_hz": 441.4306640625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69,
+            "frequency": 440,
+            "scheduled_context_time": 1.47156462585034,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": null,
+          "source_time": 0.1,
+          "speed": 1
+        }
+      ]
+    }
+  },
+  {
+    "test": "Audition on click can be disabled; manual note overrides preserve their separate routes",
+    "viewport": "1366x768",
+    "name": "manual-click-overrides",
+    "measurement": [
+      {
+        "mode": "piano",
+        "piano": {
+          "rms": 0.024842570703206286,
+          "peak_hz": 446.81396484375,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69.37,
+            "frequency": 449.5049045517767,
+            "scheduled_context_time": 0.020317460317460317,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": null,
+          "source_time": 0.1,
+          "speed": 1
+        },
+        "vocal": {
+          "rms": 0,
+          "peak_hz": 107.666015625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69.37,
+            "frequency": 449.5049045517767,
+            "scheduled_context_time": 0.020317460317460317,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": null,
+          "source_time": 0.1,
+          "speed": 1
+        }
+      },
+      {
+        "mode": "vocal",
+        "piano": {
+          "rms": 0,
+          "peak_hz": 107.666015625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69.37,
+            "frequency": 449.5049045517767,
+            "scheduled_context_time": 0.020317460317460317,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": {
+            "start": 0.1894331065759637,
+            "end": 0.9979138321995464,
+            "note": {
+              "id": "n00000",
+              "start": 0.2494331065759637,
+              "end": 0.9179138321995465,
+              "pitch": 69.37,
+              "confidence": 0.9841227996546346,
+              "frame_start": 0,
+              "frame_end": 0,
+              "phrase": 0,
+              "flags": [
+                "unreviewed_model_seed"
+              ],
+              "duration": 0.6684807256235827
+            },
+            "loop": false,
+            "mode": "vocal"
+          },
+          "source_time": 0.369142,
+          "speed": 1
+        },
+        "vocal": {
+          "rms": 0.1262894072993804,
+          "peak_hz": 441.4306640625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69.37,
+            "frequency": 449.5049045517767,
+            "scheduled_context_time": 0.020317460317460317,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": {
+            "start": 0.1894331065759637,
+            "end": 0.9979138321995464,
+            "note": {
+              "id": "n00000",
+              "start": 0.2494331065759637,
+              "end": 0.9179138321995465,
+              "pitch": 69.37,
+              "confidence": 0.9841227996546346,
+              "frame_start": 0,
+              "frame_end": 0,
+              "phrase": 0,
+              "flags": [
+                "unreviewed_model_seed"
+              ],
+              "duration": 0.6684807256235827
+            },
+            "loop": false,
+            "mode": "vocal"
+          },
+          "source_time": 0.376555,
+          "speed": 1
+        }
+      },
+      {
+        "mode": "both",
+        "piano": {
+          "rms": 0.016417567980919756,
+          "peak_hz": 446.81396484375,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69.37,
+            "frequency": 449.5049045517767,
+            "scheduled_context_time": 0.7624037346938775,
+            "duration": 0.6684807256235827
+          },
+          "media_sources": 1,
+          "segment": {
+            "start": 0.1894331065759637,
+            "end": 0.9979138321995464,
+            "note": {
+              "id": "n00000",
+              "start": 0.2494331065759637,
+              "end": 0.9179138321995465,
+              "pitch": 69.37,
+              "confidence": 0.9841227996546346,
+              "frame_start": 0,
+              "frame_end": 0,
+              "phrase": 0,
+              "flags": [
+                "unreviewed_model_seed"
+              ],
+              "duration": 0.6684807256235827
+            },
+            "loop": false,
+            "mode": "both"
+          },
+          "source_time": 0.328753,
+          "speed": 1
+        },
+        "vocal": {
+          "rms": 0.09608793132480599,
+          "peak_hz": 441.4306640625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69.37,
+            "frequency": 449.5049045517767,
+            "scheduled_context_time": 0.7624037346938775,
+            "duration": 0.6684807256235827
+          },
+          "media_sources": 1,
+          "segment": {
+            "start": 0.1894331065759637,
+            "end": 0.9979138321995464,
+            "note": {
+              "id": "n00000",
+              "start": 0.2494331065759637,
+              "end": 0.9179138321995465,
+              "pitch": 69.37,
+              "confidence": 0.9841227996546346,
+              "frame_start": 0,
+              "frame_end": 0,
+              "phrase": 0,
+              "flags": [
+                "unreviewed_model_seed"
+              ],
+              "duration": 0.6684807256235827
+            },
+            "loop": false,
+            "mode": "both"
+          },
+          "source_time": 0.328753,
+          "speed": 1
+        }
+      }
+    ]
+  },
+  {
+    "test": "vertical drag previews proposed piano pitch before commit and supports undo",
+    "viewport": "1366x768",
+    "name": "drag-preview-signal",
+    "measurement": {
+      "rms": 0.05212970147107845,
+      "peak_hz": 479.11376953125,
+      "piano_gain": 0.054999999701976776,
+      "vocal_gain": 0.800000011920929,
+      "sample_rate": 44100,
+      "last_tone": {
+        "pitch": 70.37,
+        "frequency": 476.23385710610495,
+        "scheduled_context_time": 0.08126984126984127,
+        "duration": 0.15
+      },
+      "media_sources": 1,
+      "segment": null,
+      "source_time": 0,
+      "speed": 1
+    }
+  },
+  {
+    "test": "piano keys generate measured A4 and A sharp frequencies without starting vocal audio",
+    "viewport": "1920x1080",
+    "name": "measured-reference-audio",
+    "measurement": {
+      "A4": {
+        "rms": 0.01617653276524387,
+        "peak_hz": 441.4306640625,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 69,
+          "frequency": 440,
+          "scheduled_context_time": 0,
+          "duration": 0.65
+        },
+        "media_sources": 1,
+        "segment": null,
+        "source_time": 0,
+        "speed": 1
+      },
+      "Asharp4": {
+        "rms": 0.015343198575988185,
+        "peak_hz": 468.34716796875,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 70,
+          "frequency": 466.1637615180899,
+          "scheduled_context_time": 0.3221768707482993,
+          "duration": 0.65
+        },
+        "media_sources": 1,
+        "segment": null,
+        "source_time": 0,
+        "speed": 1
+      }
+    }
+  },
+  {
+    "test": "vocal segment audition uses edited source boundaries with preroll/postroll and loop",
+    "viewport": "1920x1080",
+    "name": "measured-vocal-audio",
+    "measurement": {
+      "rms": 0.1413224626446364,
+      "peak_hz": 441.4306640625,
+      "piano_gain": 0.054999999701976776,
+      "vocal_gain": 0.800000011920929,
+      "sample_rate": 44100,
+      "last_tone": null,
+      "media_sources": 1,
+      "segment": {
+        "start": 0.1994331065759637,
+        "end": 0.9979138321995464,
+        "note": {
+          "id": "n00000",
+          "start": 0.2594331065759637,
+          "end": 0.9179138321995465,
+          "pitch": 69.37,
+          "confidence": 0.9841227996546346,
+          "frame_start": 0,
+          "frame_end": 0,
+          "phrase": 0,
+          "flags": [
+            "unreviewed_model_seed",
+            "human_corrected"
+          ],
+          "duration": 0.6584807256235827
+        },
+        "loop": false,
+        "mode": "vocal"
+      },
+      "source_time": 0.406304,
+      "speed": 1
+    }
+  },
+  {
+    "test": "Both mode has one vocal source, simultaneous audible buses and independent volumes",
+    "viewport": "1920x1080",
+    "name": "both-buses",
+    "measurement": {
+      "piano": {
+        "rms": 0.019541369391972548,
+        "peak_hz": 446.81396484375,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 69.37,
+          "frequency": 449.5049045517767,
+          "scheduled_context_time": 0.08317202721088435,
+          "duration": 0.6684807256235827
+        },
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": true,
+          "mode": "both"
+        },
+        "source_time": 0.468072,
+        "speed": 1
+      },
+      "vocal": {
+        "rms": 0.15809367965179974,
+        "peak_hz": 441.4306640625,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 69.37,
+          "frequency": 449.5049045517767,
+          "scheduled_context_time": 0.08317202721088435,
+          "duration": 0.6684807256235827
+        },
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": true,
+          "mode": "both"
+        },
+        "source_time": 0.479682,
+        "speed": 1
+      },
+      "mutedPiano": {
+        "rms": 0,
+        "peak_hz": 107.666015625,
+        "piano_gain": 0,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 69.37,
+          "frequency": 449.5049045517767,
+          "scheduled_context_time": 0.08317202721088435,
+          "duration": 0.6684807256235827
+        },
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": true,
+          "mode": "both"
+        },
+        "source_time": 0.790249,
+        "speed": 1
+      },
+      "stillVocal": {
+        "rms": 0.15821308809276144,
+        "peak_hz": 441.4306640625,
+        "piano_gain": 0,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 69.37,
+          "frequency": 449.5049045517767,
+          "scheduled_context_time": 0.08317202721088435,
+          "duration": 0.6684807256235827
+        },
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": true,
+          "mode": "both"
+        },
+        "source_time": 0.798957,
+        "speed": 1
+      },
+      "mutedBoth": {
+        "rms": 0,
+        "peak_hz": 107.666015625,
+        "piano_gain": 0,
+        "vocal_gain": 0,
+        "sample_rate": 44100,
+        "last_tone": {
+          "pitch": 69.37,
+          "frequency": 449.5049045517767,
+          "scheduled_context_time": 0.8814060022675736,
+          "duration": 0.6684807256235827
+        },
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": true,
+          "mode": "both"
+        },
+        "source_time": 0.27941,
+        "speed": 1
+      }
+    }
+  },
+  {
+    "test": "slow playback preserves source timestamps and requested pitch, with synchronized playhead",
+    "viewport": "1920x1080",
+    "name": "slow-vocal-measurement",
+    "measurement": {
+      "half": {
+        "rms": 0.1581152135434548,
+        "peak_hz": 441.4306640625,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": null,
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": false,
+          "mode": "vocal"
+        },
+        "source_time": 0.386083,
+        "speed": 0.5
+      },
+      "threeQuarter": {
+        "rms": 0.15821096454609038,
+        "peak_hz": 441.4306640625,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": null,
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": false,
+          "mode": "vocal"
+        },
+        "source_time": 0.404467,
+        "speed": 0.75
+      }
+    }
+  },
+  {
+    "test": "A/B plays original vocal then reference, with no vocal pitch-shift claim",
+    "viewport": "1920x1080",
+    "name": "A-B-sequence",
+    "measurement": {
+      "rms": 0.015043064089767381,
+      "peak_hz": 446.81396484375,
+      "piano_gain": 0.054999999701976776,
+      "vocal_gain": 0.800000011920929,
+      "sample_rate": 44100,
+      "last_tone": {
+        "pitch": 69.37,
+        "frequency": 449.5049045517767,
+        "scheduled_context_time": 0.8620408163265306,
+        "duration": 0.65
+      },
+      "media_sources": 1,
+      "segment": null,
+      "source_time": 0.999229,
+      "speed": 1
+    }
+  },
+  {
+    "test": "Auto routes annotation clicks to original vocal and every keyboard override to clean piano",
+    "viewport": "1920x1080",
+    "name": "contextual-click-audio",
+    "measurement": {
+      "voice": {
+        "rms": 0.13511223360070285,
+        "peak_hz": 441.4306640625,
+        "piano_gain": 0.054999999701976776,
+        "vocal_gain": 0.800000011920929,
+        "sample_rate": 44100,
+        "last_tone": null,
+        "media_sources": 1,
+        "segment": {
+          "start": 0.1894331065759637,
+          "end": 0.9979138321995464,
+          "note": {
+            "id": "n00000",
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465,
+            "pitch": 69.37,
+            "confidence": 0.9841227996546346,
+            "frame_start": 0,
+            "frame_end": 0,
+            "phrase": 0,
+            "flags": [
+              "unreviewed_model_seed"
+            ],
+            "duration": 0.6684807256235827
+          },
+          "loop": false,
+          "mode": "vocal"
+        },
+        "source_time": 0.396044,
+        "speed": 1
+      },
+      "keyboard": [
+        {
+          "mode": "auto",
+          "rms": 0.020719625375154996,
+          "peak_hz": 441.4306640625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69,
+            "frequency": 440,
+            "scheduled_context_time": 0.39183673469387753,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": null,
+          "source_time": 0.1,
+          "speed": 1
+        },
+        {
+          "mode": "piano",
+          "rms": 0.02050028244277718,
+          "peak_hz": 441.4306640625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69,
+            "frequency": 440,
+            "scheduled_context_time": 0.7604535147392291,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": null,
+          "source_time": 0.1,
+          "speed": 1
+        },
+        {
+          "mode": "vocal",
+          "rms": 0.020499822492794147,
+          "peak_hz": 441.4306640625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69,
+            "frequency": 440,
+            "scheduled_context_time": 1.1319727891156464,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": null,
+          "source_time": 0.1,
+          "speed": 1
+        },
+        {
+          "mode": "both",
+          "rms": 0.020719625366310165,
+          "peak_hz": 441.4306640625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69,
+            "frequency": 440,
+            "scheduled_context_time": 1.4918820861678004,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": null,
+          "source_time": 0.1,
+          "speed": 1
+        }
+      ]
+    }
+  },
+  {
+    "test": "Audition on click can be disabled; manual note overrides preserve their separate routes",
+    "viewport": "1920x1080",
+    "name": "manual-click-overrides",
+    "measurement": [
+      {
+        "mode": "piano",
+        "piano": {
+          "rms": 0.032841859205176266,
+          "peak_hz": 446.81396484375,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69.37,
+            "frequency": 449.5049045517767,
+            "scheduled_context_time": 0.011609977324263039,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": null,
+          "source_time": 0.1,
+          "speed": 1
+        },
+        "vocal": {
+          "rms": 0,
+          "peak_hz": 107.666015625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69.37,
+            "frequency": 449.5049045517767,
+            "scheduled_context_time": 0.011609977324263039,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": null,
+          "source_time": 0.1,
+          "speed": 1
+        }
+      },
+      {
+        "mode": "vocal",
+        "piano": {
+          "rms": 0,
+          "peak_hz": 107.666015625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69.37,
+            "frequency": 449.5049045517767,
+            "scheduled_context_time": 0.011609977324263039,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": {
+            "start": 0.1894331065759637,
+            "end": 0.9979138321995464,
+            "note": {
+              "id": "n00000",
+              "start": 0.2494331065759637,
+              "end": 0.9179138321995465,
+              "pitch": 69.37,
+              "confidence": 0.9841227996546346,
+              "frame_start": 0,
+              "frame_end": 0,
+              "phrase": 0,
+              "flags": [
+                "unreviewed_model_seed"
+              ],
+              "duration": 0.6684807256235827
+            },
+            "loop": false,
+            "mode": "vocal"
+          },
+          "source_time": 0.369388,
+          "speed": 1
+        },
+        "vocal": {
+          "rms": 0.1262894072993804,
+          "peak_hz": 441.4306640625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69.37,
+            "frequency": 449.5049045517767,
+            "scheduled_context_time": 0.011609977324263039,
+            "duration": 0.65
+          },
+          "media_sources": 1,
+          "segment": {
+            "start": 0.1894331065759637,
+            "end": 0.9979138321995464,
+            "note": {
+              "id": "n00000",
+              "start": 0.2494331065759637,
+              "end": 0.9179138321995465,
+              "pitch": 69.37,
+              "confidence": 0.9841227996546346,
+              "frame_start": 0,
+              "frame_end": 0,
+              "phrase": 0,
+              "flags": [
+                "unreviewed_model_seed"
+              ],
+              "duration": 0.6684807256235827
+            },
+            "loop": false,
+            "mode": "vocal"
+          },
+          "source_time": 0.378095,
+          "speed": 1
+        }
+      },
+      {
+        "mode": "both",
+        "piano": {
+          "rms": 0.01816365962891137,
+          "peak_hz": 446.81396484375,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69.37,
+            "frequency": 449.5049045517767,
+            "scheduled_context_time": 0.7624037346938775,
+            "duration": 0.6684807256235827
+          },
+          "media_sources": 1,
+          "segment": {
+            "start": 0.1894331065759637,
+            "end": 0.9979138321995464,
+            "note": {
+              "id": "n00000",
+              "start": 0.2494331065759637,
+              "end": 0.9179138321995465,
+              "pitch": 69.37,
+              "confidence": 0.9841227996546346,
+              "frame_start": 0,
+              "frame_end": 0,
+              "phrase": 0,
+              "flags": [
+                "unreviewed_model_seed"
+              ],
+              "duration": 0.6684807256235827
+            },
+            "loop": false,
+            "mode": "both"
+          },
+          "source_time": 0.357778,
+          "speed": 1
+        },
+        "vocal": {
+          "rms": 0.11487728646202022,
+          "peak_hz": 441.4306640625,
+          "piano_gain": 0.054999999701976776,
+          "vocal_gain": 0.800000011920929,
+          "sample_rate": 44100,
+          "last_tone": {
+            "pitch": 69.37,
+            "frequency": 449.5049045517767,
+            "scheduled_context_time": 0.7624037346938775,
+            "duration": 0.6684807256235827
+          },
+          "media_sources": 1,
+          "segment": {
+            "start": 0.1894331065759637,
+            "end": 0.9979138321995464,
+            "note": {
+              "id": "n00000",
+              "start": 0.2494331065759637,
+              "end": 0.9179138321995465,
+              "pitch": 69.37,
+              "confidence": 0.9841227996546346,
+              "frame_start": 0,
+              "frame_end": 0,
+              "phrase": 0,
+              "flags": [
+                "unreviewed_model_seed"
+              ],
+              "duration": 0.6684807256235827
+            },
+            "loop": false,
+            "mode": "both"
+          },
+          "source_time": 0.357778,
+          "speed": 1
+        }
+      }
+    ]
+  },
+  {
+    "test": "vertical drag previews proposed piano pitch before commit and supports undo",
+    "viewport": "1920x1080",
+    "name": "drag-preview-signal",
+    "measurement": {
+      "rms": 0.0548620664321819,
+      "peak_hz": 452.197265625,
+      "piano_gain": 0.054999999701976776,
+      "vocal_gain": 0.800000011920929,
+      "sample_rate": 44100,
+      "last_tone": {
+        "pitch": 70.37,
+        "frequency": 476.23385710610495,
+        "scheduled_context_time": 0.06095238095238095,
+        "duration": 0.15
+      },
+      "media_sources": 1,
+      "segment": null,
+      "source_time": 0,
+      "speed": 1
+    }
+  },
+  {
+    "test": "two sources: correspondence, original A/B signals, pause/resume and independent idea",
+    "viewport": "1366x768",
+    "name": "original-source-signal-RMS",
+    "measurement": [
+      0.15835627705937202,
+      0.12297674833736685
+    ]
+  },
+  {
+    "test": "two sources: correspondence, original A/B signals, pause/resume and independent idea",
+    "viewport": "1920x1080",
+    "name": "original-source-signal-RMS",
+    "measurement": [
+      0.15815943289002274,
+      0.12299769490932141
+    ]
+  },
+  {
+    "test": "complete song \u2192 evidenced technique \u2192 drawn, audible, edited, saved and exported idea journey",
+    "viewport": "1366x768",
+    "name": "learning-audio-and-source-link",
+    "measurement": {
+      "vocal": {
+        "rms": 0.15823202888913523,
+        "peak_hz": 441.4306640625,
+        "segment": {
+          "start": 0.2494331065759637,
+          "end": 0.9179138321995465,
+          "loop": false,
+          "mode": "vocal",
+          "note": {
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465
+          }
+        },
+        "sequence": null
+      },
+      "piano": {
+        "rms": 0.020639118068958785,
+        "peak_hz": 263.78173828125,
+        "segment": null,
+        "sequence": {
+          "started_context_time": 1.1466553287981858,
+          "end_context_time": 3.396655328798186,
+          "tempo": 100,
+          "frequencies": [
+            261.6255653005986,
+            329.6275569128699,
+            391.99543598174927,
+            293.6647679174076
+          ]
+        }
+      },
+      "source": {
+        "source_hash": "44d21c2e818ac84ca4d751e7a481b1b706981051dbaf3bbe3af3622f7facef8b",
+        "prediction_id": "717d90ac04619d3c1fc797357eddcdad264c6261c4b585451ebfea72ecae0dc2",
+        "correction_revision": "20261106T171217792615Z-fab19fc4",
+        "song": "DISPOSABLE EDITOR FIXTURE",
+        "artist": "",
+        "note_fingerprint": "91a1c78df6ddb7897bbe9201ff78163312a79db08b7566d35d658c8c8f7d2b3a",
+        "start": 0.2494331065759637,
+        "end": 4.958730158730159,
+        "note_edition": "saved working correction"
+      },
+      "idea_id": "ed3159d865f74b73ba3263e0b33dd528",
+      "reference_mutations": 0
+    }
+  },
+  {
+    "test": "two source phrases have aligned contour views and actual original-vocal A/B playback",
+    "viewport": "1366x768",
+    "name": "source-phrase-AB",
+    "measurement": {
+      "pair": {
+        "a": {
+          "start": 0.2494331065759637,
+          "end": 2.5142857142857142,
+          "note_ids": [
+            "n00000",
+            "n00001",
+            "n00002"
+          ],
+          "intervals": [
+            0,
+            2
+          ],
+          "durations": [
+            0.6684807256235827,
+            0.46893424036281184,
+            0.61859410430839
+          ],
+          "contour": [
+            0,
+            1
+          ]
+        },
+        "b": {
+          "start": 2.743764172335601,
+          "end": 4.958730158730159,
+          "note_ids": [
+            "n00003",
+            "n00004",
+            "n00005"
+          ],
+          "intervals": [
+            2,
+            -2
+          ],
+          "durations": [
+            0.7183673469387752,
+            0.5188208616780039,
+            0.5587301587301585
+          ],
+          "contour": [
+            1,
+            -1
+          ]
+        },
+        "variation": "compare_contour_and_rhythm",
+        "distance": 0.6043384137839547,
+        "label": "Phrase comparison, not an established recurring motif."
+      },
+      "vocal": {
+        "rms": 0.08795187690360007,
+        "peak_hz": 522.18017578125,
+        "segment": {
+          "start": 2.743764172335601,
+          "end": 4.958730158730159,
+          "loop": false,
+          "mode": "vocal",
+          "note": {
+            "start": 2.743764172335601,
+            "end": 4.958730158730159
+          }
+        },
+        "sequence": null
+      }
+    }
+  },
+  {
+    "test": "complete song \u2192 evidenced technique \u2192 drawn, audible, edited, saved and exported idea journey",
+    "viewport": "1920x1080",
+    "name": "learning-audio-and-source-link",
+    "measurement": {
+      "vocal": {
+        "rms": 0.15823202888913523,
+        "peak_hz": 441.4306640625,
+        "segment": {
+          "start": 0.2494331065759637,
+          "end": 0.9179138321995465,
+          "loop": false,
+          "mode": "vocal",
+          "note": {
+            "start": 0.2494331065759637,
+            "end": 0.9179138321995465
+          }
+        },
+        "sequence": null
+      },
+      "piano": {
+        "rms": 0.01954802596307377,
+        "peak_hz": 263.78173828125,
+        "segment": null,
+        "sequence": {
+          "started_context_time": 1.1959977324263038,
+          "end_context_time": 3.445997732426304,
+          "tempo": 100,
+          "frequencies": [
+            261.6255653005986,
+            329.6275569128699,
+            391.99543598174927,
+            293.6647679174076
+          ]
+        }
+      },
+      "source": {
+        "source_hash": "44d21c2e818ac84ca4d751e7a481b1b706981051dbaf3bbe3af3622f7facef8b",
+        "prediction_id": "717d90ac04619d3c1fc797357eddcdad264c6261c4b585451ebfea72ecae0dc2",
+        "correction_revision": "20261106T171408021435Z-cdc15b25",
+        "song": "DISPOSABLE EDITOR FIXTURE",
+        "artist": "",
+        "note_fingerprint": "f7f420aa53218f78edb75c975cb2261b1f2b0055468241a2c8829ae76b01efab",
+        "start": 0.2494331065759637,
+        "end": 4.958730158730159,
+        "note_edition": "saved working correction"
+      },
+      "idea_id": "7df713e68628403ea735b80954e5018a",
+      "reference_mutations": 0
+    }
+  },
+  {
+    "test": "two source phrases have aligned contour views and actual original-vocal A/B playback",
+    "viewport": "1920x1080",
+    "name": "source-phrase-AB",
+    "measurement": {
+      "pair": {
+        "a": {
+          "start": 0.2494331065759637,
+          "end": 2.5142857142857142,
+          "note_ids": [
+            "n00000",
+            "n00001",
+            "n00002"
+          ],
+          "intervals": [
+            0,
+            2
+          ],
+          "durations": [
+            0.6684807256235827,
+            0.46893424036281184,
+            0.61859410430839
+          ],
+          "contour": [
+            0,
+            1
+          ]
+        },
+        "b": {
+          "start": 2.743764172335601,
+          "end": 4.958730158730159,
+          "note_ids": [
+            "n00003",
+            "n00004",
+            "n00005"
+          ],
+          "intervals": [
+            2,
+            -2
+          ],
+          "durations": [
+            0.7183673469387752,
+            0.5188208616780039,
+            0.5587301587301585
+          ],
+          "contour": [
+            1,
+            -1
+          ]
+        },
+        "variation": "compare_contour_and_rhythm",
+        "distance": 0.6043384137839547,
+        "label": "Phrase comparison, not an established recurring motif."
+      },
+      "vocal": {
+        "rms": 0.0878500209619918,
+        "peak_hz": 522.18017578125,
+        "segment": {
+          "start": 2.743764172335601,
+          "end": 4.958730158730159,
+          "loop": false,
+          "mode": "vocal",
+          "note": {
+            "start": 2.743764172335601,
+            "end": 4.958730158730159
+          }
+        },
+        "sequence": null
+      }
+    }
+  },
+  {
+    "test": "song and passage transport pause/resume exact source position, seek and stop reset with audible media",
+    "viewport": "1366x768",
+    "name": "resumable-vocal",
+    "measurement": {
+      "bounds": [
+        0.2494331065759637,
+        4.958730158730159
+      ],
+      "paused": {
+        "key": "study:passage:0862b439f309c91cadb313ee8df26b2cf19fbbc4239f4b8fdc9f5fa839a6ae48",
+        "position": 0.69932,
+        "playing": false,
+        "segment": null,
+        "end": 4.958730158730159,
+        "kind": "vocal"
+      },
+      "resumed": {
+        "key": "study:passage:0862b439f309c91cadb313ee8df26b2cf19fbbc4239f4b8fdc9f5fa839a6ae48",
+        "position": 0.85893,
+        "playing": true,
+        "segment": null,
+        "end": 4.958730158730159,
+        "kind": "vocal"
+      },
+      "song": {
+        "key": "study:song:0862b439f309c91cadb313ee8df26b2cf19fbbc4239f4b8fdc9f5fa839a6ae48",
+        "position": 0.449705,
+        "playing": false,
+        "segment": null,
+        "end": 5.149886621315193,
+        "kind": "vocal"
+      }
+    }
+  },
+  {
+    "test": "composed piano pauses without sound, resumes mid-note, seeks and loops without changing notes",
+    "viewport": "1366x768",
+    "name": "resumable-piano",
+    "measurement": {
+      "audible": 0.020645310160482617,
+      "paused": {
+        "key": "compose:idea:1",
+        "position": 0.2146145124716553,
+        "playing": false,
+        "segment": null,
+        "end": 3.45,
+        "kind": "sequence"
+      },
+      "resumed": {
+        "key": "compose:idea:1",
+        "position": 0.3595691609977326,
+        "playing": true,
+        "segment": null,
+        "end": 3.45,
+        "kind": "sequence"
+      }
+    }
+  },
+  {
+    "test": "song and passage transport pause/resume exact source position, seek and stop reset with audible media",
+    "viewport": "1920x1080",
+    "name": "resumable-vocal",
+    "measurement": {
+      "bounds": [
+        0.2494331065759637,
+        4.958730158730159
+      ],
+      "paused": {
+        "key": "study:passage:0862b439f309c91cadb313ee8df26b2cf19fbbc4239f4b8fdc9f5fa839a6ae48",
+        "position": 0.719637,
+        "playing": false,
+        "segment": null,
+        "end": 4.958730158730159,
+        "kind": "vocal"
+      },
+      "resumed": {
+        "key": "study:passage:0862b439f309c91cadb313ee8df26b2cf19fbbc4239f4b8fdc9f5fa839a6ae48",
+        "position": 0.870567,
+        "playing": true,
+        "segment": null,
+        "end": 4.958730158730159,
+        "kind": "vocal"
+      },
+      "song": {
+        "key": "study:song:0862b439f309c91cadb313ee8df26b2cf19fbbc4239f4b8fdc9f5fa839a6ae48",
+        "position": 0.449705,
+        "playing": false,
+        "segment": null,
+        "end": 5.149886621315193,
+        "kind": "vocal"
+      }
+    }
+  },
+  {
+    "test": "composed piano pauses without sound, resumes mid-note, seeks and loops without changing notes",
+    "viewport": "1920x1080",
+    "name": "resumable-piano",
+    "measurement": {
+      "audible": 0.02011807020831204,
+      "paused": {
+        "key": "compose:idea:1",
+        "position": 0.2146145124716553,
+        "playing": false,
+        "segment": null,
+        "end": 3.45,
+        "kind": "sequence"
+      },
+      "resumed": {
+        "key": "compose:idea:1",
+        "position": 0.34795918367346956,
+        "playing": true,
+        "segment": null,
+        "end": 3.45,
+        "kind": "sequence"
+      }
+    }
+  }
+]
